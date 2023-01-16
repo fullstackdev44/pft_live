@@ -1,0 +1,11 @@
+logs/*
+!.gitkeep
+node_modules/
+tmp
+.DS_Store
+.idea
+.env
+npm-debug.log
+
+#development configuration
+# config/config.dev.js
