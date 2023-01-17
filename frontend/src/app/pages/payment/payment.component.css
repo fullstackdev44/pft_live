@@ -1,0 +1,117 @@
+input,
+.StripeElement {
+  height: 40px;
+  padding: 10px 12px;
+  width: 100%;
+
+  color: #32325d;
+  background-color: white;
+  border: 1px solid transparent;
+  border-radius: 4px;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+input:focus,
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+.form-header{
+  color: #C3C3D2;
+  font-family: 'Karla';
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.form-sec{
+  margin-bottom: 20px;
+}
+
+.btn-amount {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.input-amount{
+  width: 65px !important;
+}
+
+.text-amount{
+  font-size: 200%;
+  color: #C3C3D2;
+
+}
+
+.popup-message {
+	padding: 64px 0;
+	text-align: center;
+}
+.popup-message > h3 {
+	color: #C3C3D2;
+	font-size: 16px;
+}
+.popup-message > h3 a {
+	color: #EEA72A;
+}
+.msg-icon {
+	margin-bottom: 63px;
+	display: inline-block;
+}
+
+/* // To improve donate button
+.active_next_button {
+  background-color: #DC6721;
+  cursor: pointer;
+}
+
+.disable_next_button {
+  background-color: #444;
+  cursor: not-allowed;
+}*/
+
+@media (max-width: 480px) {
+  .form-sec{
+    margin-bottom: 0px;
+  }
+}
+
+.input-payment-class {
+  /*width: 395px !important;*/
+  height: 35px !important;
+  background:#363643 !important;
+  border-radius: 30px !important;
+  color:#C3C3D2 !important;
+  font-weight: normal !important;
+  font-size: 16px !important;
+  line-height: 19px !important;
+  border: none !important;
+  padding: 10px 15px !important;
+}
+
+.textarea-payment-class {
+  width: calc(100% - 0.2em);
+  height: 280px !important;
+  background:#363643 !important;
+  border-radius: 30px !important;
+  color:#C3C3D2 !important;
+  font-weight: normal !important;
+  font-size: 16px !important;
+  line-height: 19px !important;
+  border: none !important;
+  padding: 10 15px !important;
+}

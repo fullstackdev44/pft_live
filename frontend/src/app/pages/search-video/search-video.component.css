@@ -1,0 +1,7 @@
+.cursor-on {
+  cursor: pointer;
+}
+
+.cursor-off {
+  color: #575353;
+}

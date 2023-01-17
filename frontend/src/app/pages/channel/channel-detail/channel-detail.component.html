@@ -1,0 +1,1275 @@
+<div id="banner" (window:resize)="onResized()">
+	<section *ngIf="!banner_edit" (mouseover)="profile_image_hovered = true" class="single-img-pr">
+
+		<div (click)="editBanner()" *ngIf="userIsOwner()" (mouseout)="profile_image_hovered = false" class="update_control_container">
+			<i class="fa fa-edit"></i>
+			<label class="update_text" *ngIf="profile_image_hovered">&nbsp;&nbsp;Update banner</label>
+		</div>
+
+		<div *ngIf="profile_image_uploading" class="loading_container">
+			<i class="fa fa-refresh fa-spin"></i>
+		</div>
+
+		<div *ngIf="!channel.profile_image" id="banner_container" class="img-pr-sec vc_hd cr{{ channel.avatar_color }} pr"></div>
+		<div *ngIf="channel.profile_image" id="banner_container" [style.background-image]="'url(' + channel.profile_image + ')'" [style.background-position-y]="channel_profile_image_display_offset + 'px'" class="img-pr-sec"></div>
+		<!-- <div *ngIf="channel.profile_image" id="banner_container" [style.background-image]="'url(' + channel.profile_image + ')'" [style.background-position-y]="'0px'" class="img-pr-sec"></div> -->
+	</section>
+
+	<section *ngIf="userIsOwner() && banner_edit" class="single-img-pr">
+		<div id="edit_banner_container" (mouseenter)="bannerEditEntered($event)" (mouseleave)="bannerEditLeaved()" (mousedown)="bannerEditDown($event)" (mouseup)="bannerEditUp()" (mousemove)="bannerEditMove($event)" [style.background-image]="'url(' + channel.profile_image + ')'" [style.background-position-y]="channel_profile_image_display_offset + 'px'" class="img-pr-sec ch-pswd">
+			<label class="info">Drag to reposition<br/>(recommended resolution: 1330 X 384)<br/>(max file size: 7.5 MB)</label>
+			<br>
+			<br>
+			<button (click)="profileImage.click()">Select picture</button>
+			<br>
+			<br>
+			<button (click)="updateBannerPosition()" class="btn btn-success">Submit changes</button>
+
+			<input class="hidden" type="file" name="" accept="image/*" #profileImage (change)="updateProfileFile($event)">
+		</div>
+
+
+	</section>
+</div>
+<div *ngIf="image_size_error" class="text-danger"> Image upload error, make sure your image didn't exceed file limit </div>
+<!--single-img-pr-->
+<section class="videso_section">
+	<div class="info-pr-sec">
+		<div class="container">
+			<div class="vcp_inf cr">
+				<span class="vc_hd cr{{ channel.avatar_color }} pr">
+					{{ channel.avatar_card }}
+				</span>
+				<div class="vc_info pr">
+					<h4 *ngIf="!title_clicked || !userIsOwner()" (click)="title_clicked = userIsOwner()" (mouseover)="title_hovered = true" (mouseout)="title_hovered = false">
+						{{ channel.title }}
+						<i *ngIf="userIsOwner() && title_hovered" class="fa fa-edit"></i>
+					</h4>
+					<div *ngIf="title_clicked" class="ch-pswd" style="margin-bottom:0;">
+						<input (focusout)="updateTitle()" type="text" [(ngModel)]="channel.title" name="" style="width:auto;">
+					</div>
+					<span>{{ channel.meta?.subscribers || 0 | shortNumber }} subscribers</span>
+				</div>
+			</div>
+			<!--vcp_inf end-->
+			<ul class="chan_cantrz">
+				<!--
+				<li>
+					<a (click)="hire()" title="" class="hire link">Hire</a>
+				</li>
+				-->
+				<li>
+					<a routerLink="/payment/channel/{{ channel._id }}" title="" class="donate">Donate</a>
+				</li>
+				<li>
+					<a *ngIf="!userIsSubscribedTo(channel._id)" (click)="subscribe()" title="" class="subscribe link">Subscribe</a>
+					<a *ngIf="userIsSubscribedTo(channel._id)" (click)="unsubscribe()" title="" class="subscribe link">Unsubscribe</a>
+				</li>
+			</ul>
+			<!--chan_cantrz end-->
+			<div class="search_form">
+				<form>
+					<input (keyup.enter)="doSearch();search_tab_title.click();" type="text" name="search_term" [(ngModel)]="search_term" placeholder="Search in channel">
+					<button (click)="doSearch();search_tab_title.click();" type="submit">
+						<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M10 18.1221C5.58172 18.1221 2 14.5403 2 10.1221C2 5.70379 5.58172 2.12207 10 2.12207C14.4183 2.12207 18 5.70379 18 10.1221C18 11.9708 17.3729 13.673 16.3199 15.0277L21.7071 20.415L20.2929 21.8292L14.9056 16.4419C13.551 17.495 11.8487 18.1221 10 18.1221ZM16 10.1221C16 13.4358 13.3137 16.1221 10 16.1221C6.68629 16.1221 4 13.4358 4 10.1221C4 6.80836 6.68629 4.12207 10 4.12207C13.3137 4.12207 16 6.80836 16 10.1221Z" fill="#9494A0" />
+						</svg>
+					</button>
+				</form>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	<!--info-pr-sec end-->
+	<div class="history-lst tbY">
+		<div class="container">
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link" (click)="changeUrlParam('')" [ngClass]="{'active': aria_selected == 'home'}" id="home_tab" data-toggle="tab" href="#home_vidz" role="tab" aria-controls="home_tab" [attr.aria-selected]="aria_selected == 'home'">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" (click)="changeUrlParam('videos')" [ngClass]="{'active': aria_selected == 'videos'}" id="videos_taab" data-toggle="tab" href="#vvideo_tabz" role="tab" aria-controls="videos_taab" [attr.aria-selected]="aria_selected == 'videos'">Videos </a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" (click)="changeUrlParam('playlists')" [ngClass]="{'active': aria_selected == 'playlists'}" id="playlist-tab" data-toggle="tab" href="#playlist_tab" role="tab" aria-controls="playlist-tab" [attr.aria-selected]="aria_selected == 'playlists'">Playlist</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" (click)="changeUrlParam('featured')" [ngClass]="{'active': aria_selected == 'featured'}" id="channels-tab" data-toggle="tab" href="#channels_tab" role="tab" aria-controls="channels-tab" [attr.aria-selected]="aria_selected == 'featured'">Channels</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" (click)="changeUrlParam('about')" [ngClass]="{'active': aria_selected == 'about'}" id="about-tab" data-toggle="tab" href="#about_tab" role="tab" aria-controls="about-tab" [attr.aria-selected]="aria_selected == 'about'">About</a>
+				</li>
+				<!--
+				<li class="nav-item">
+					<a class="nav-link" (click)="changeUrlParam('products')" [ngClass]="{'active': aria_selected == 'products'}" id="amazon-tab" data-toggle="tab" href="#amazon-tb" role="tab" aria-controls="amazon-tab" [attr.aria-selected]="aria_selected == 'products'">Amazon Products</a>
+				</li>
+				-->
+				<li class="nav-item">
+					<a class="nav-link live_vd" (click)="changeUrlParam('live')" [ngClass]="{'active': aria_selected == 'live'}" id="live-tab" data-toggle="tab" href="#live_tab" role="tab" aria-controls="live-tab" [attr.aria-selected]="aria_selected == 'live'">
+						Live
+						<span class="live_sign"></span>
+					</a>
+				</li>
+				<!-- <li *ngIf="showSearch" class="nav-item"> -->
+				<li [ngClass]="{'hidden': !showSearch, 'active': aria_selected == 'search'}" class="nav-item">
+					<a class="nav-link search_vd" (click)="changeUrlParam('search')" id="search-tab" #search_tab_title data-toggle="tab" href="#search_tab" role="tab" aria-controls="live-tab" [attr.aria-selected]="aria_selected == 'search'">
+						Search
+						<span class="live_sign search_sign"></span>
+					</a>
+				</li>
+			</ul>
+			<!--nav-tabs end-->
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	<!--history-lst end-->
+	<div class="tab-content p-0" id="myTabContent">
+		<div class="tab-pane fade show" [ngClass]="{'active': aria_selected == 'home'}" id="home_vidz" role="tabpanel" aria-labelledby="home_tab">
+			<div class="home_tb_details">
+				<div class="viddz">
+					<div class="container">
+						<h3>Featured Videos</h3>
+						<div class="row">
+							<div *ngFor="let video of channel.featured_videos" class="col-lg-6 col-md-6 col-sm-6 col-12">
+								<div class="videoo pr">
+									<div class="vid_thumbainl featured_thumbnail">
+										<a routerLink="/video/{{ video.source_id }}" title="" class="thumb">
+											<img src="{{ video.thumbnail }}" alt="">
+										</a>
+										<a routerLink="/video/{{ video.source_id }}">
+											<span class="vid-time">{{ video.duration | hrminsec }}</span>
+											<span *ngIf="video.price && video.price > 0 && !isInPurchasedVideo(video._id)" class="vid-price">${{ video.price | number : '1.2-2' }}</span>
+										</a>
+										<a *ngIf="!isInWatchLater(video._id)" (click)="addToWatchLater(video)" title="add to watch later list" class="link play_vid">
+											<svg width="17" height="17" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0" />
+											</svg>
+										</a>
+										<a *ngIf="isInWatchLater(video._id)" (click)="removeFromWatchLater(video)" title="added to watch later" class="link play_vid">
+											<img src="/assets/images/checked_success.svg" alt="">
+										</a>
+										<a *ngIf="userIsOwner()" (click)="removeFromFeatured(video)" title="remove from featured" class="link play_vid remove_vid">
+											<i class="fa fa-times text-danger"></i>
+										</a>
+										<a *ngIf="video.price && video.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(video)" title="" class="play_vid">
+											<img src="/assets/images/info.svg" alt="">
+										</a>
+									</div>
+									<!--vid_thumbnail end-->
+									<div class="video_info md">
+										<h3><a routerLink="/video/{{ video.source_id }}" title="">{{ video.title | excerpt:50 }}</a></h3>
+										<h4><span title="">{{ video.channel_id?.title }}</span><span class="verify_ic"> <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<g>
+														<path fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+													</g>
+												</svg></span></h4>
+										<span> <ng-container *ngIf="!video.price || video.price == 0"> {{ video.meta?.views | number }} views . </ng-container> <small class="posted_dt">{{ video.created | dateAgo }}</small></span>
+									</div>
+								</div>
+								<!--videoo pr end-->
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--viddz end-->
+				<div class="viddz">
+					<div class="container">
+						<div class="vidz_sec">
+							<h3>Recent Uploads</h3>
+							<div *ngIf="showRecentUploads" class="vidz_list">
+								<div class="row">
+									<div *ngFor="let video of channel.recent_videos" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+										<div class="videoo">
+											<div class="vid_thumbainl video_small_thumbnail">
+												<a routerLink="/video/{{ video.source_id }}" title="" class="thumb">
+													<img src="{{ video.thumbnail }}" alt="">
+												</a>
+												<a routerLink="/video/{{ video.source_id }}">
+													<span class="vid-time">{{ video.duration | hrminsec }}</span>
+													<span *ngIf="video.price && video.price > 0 && !isInPurchasedVideo(video._id)" class="vid-price">${{ video.price | number : '1.2-2' }}</span>
+												</a>
+												<a *ngIf="!isInWatchLater(video._id)" (click)="addToWatchLater(video)" title="" class="link play_vid">
+													<svg width="17" height="17" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0" />
+													</svg>
+												</a>
+												<a *ngIf="isInWatchLater(video._id)" (click)="removeFromWatchLater(video)" title="" class="link play_vid">
+													<img src="/assets/images/checked_success.svg" alt="">
+												</a>
+												<a *ngIf="userIsOwner() && !isInFeatured(video._id)" (click)="addToFeatured(video)" title="add to featured" class="link play_vid remove_vid">
+													<i class="fa fa-plus text-success"></i>
+												</a>
+												<a *ngIf="video.price && video.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(video)" title="" class="play_vid">
+													<img src="/assets/images/info.svg" alt="">
+												</a>
+											</div>
+											<!--vid_thumbnail end-->
+											<div class="video_info">
+												<h3><a routerLink="/video/{{ video.source_id }}" title="">{{ video.title | excerpt:50 }}</a></h3>
+												<h4>{{ channel.title }}<span class="verify_ic"> <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<g>
+																<path id="icon107" fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+															</g>
+														</svg></span></h4>
+												<span> <ng-container *ngIf="!video.price || video.price == 0"> {{ video.meta?.views | number }} views . </ng-container> <small class="posted_dt">{{ video.created | dateAgo }}</small></span>
+											</div>
+										</div>
+										<!--videoo end-->
+									</div>
+
+								</div>
+							</div>
+							<!--vidz_list end-->
+							<a (click)="showRecentUploads = !showRecentUploads" title="collapse" class="link rm_dv">
+								<svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 0.228882L13.7071 1.6431L7.00001 8.3502L0.292908 1.6431L1.70712 0.228882L7.00001 5.52178L12.2929 0.228882Z" fill="#9494A0" />
+								</svg>
+							</a>
+						</div>
+
+						<!-- <section class="more_items_sec text-center"> -->
+						<div *ngIf="this.recentUploadsPage > -1" class="container more_items_sec text-center" style="padding-top: 25px !important; padding-bottom: 25px !important;">
+							<a (click)="showMoreRecentUploads()" title="Show more videos" class="link">
+								<svg width="19" height="24" viewBox="0 0 19 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M18.1618 24.0001H0.838235C0.374412 24.0001 0 23.6261 0 23.1628V5.86052C0 5.39727 0.374412 5.02332 0.838235 5.02332H18.1618C18.6256 5.02332 19 5.39727 19 5.86052V23.1628C19 23.6261 18.6256 24.0001 18.1618 24.0001ZM1.67647 22.3256H17.3235V6.69773H1.67647V22.3256Z" fill="#9494A0" />
+									<g opacity="0.25">
+										<path opacity="0.25" d="M13.1324 4.18605C12.6685 4.18605 12.2941 3.81209 12.2941 3.34884V1.67442H6.70589V3.34884C6.70589 3.81209 6.33148 4.18605 5.86765 4.18605C5.40383 4.18605 5.02942 3.81209 5.02942 3.34884V0.83721C5.02942 0.373954 5.40383 0 5.86765 0H13.1324C13.5962 0 13.9706 0.373954 13.9706 0.83721V3.34884C13.9706 3.81209 13.5962 4.18605 13.1324 4.18605Z" fill="#9494A0" />
+									</g>
+									<path d="M9.50001 19.3479C9.28487 19.3479 9.06972 19.267 8.90766 19.1024L5.92634 16.1275C5.59942 15.801 5.59942 15.2707 5.92634 14.9442C6.25325 14.6177 6.78413 14.6177 7.11104 14.9442L9.50001 17.3275L11.8862 14.9442C12.2131 14.6177 12.744 14.6177 13.0709 14.9442C13.3978 15.2707 13.3978 15.801 13.0709 16.1275L10.0924 19.1024C9.93031 19.267 9.71516 19.3479 9.50001 19.3479Z" fill="#9494A0" />
+									<path d="M9.49999 18.4186C9.03617 18.4186 8.66176 18.0447 8.66176 17.5814V10.3256C8.66176 9.86236 9.03617 9.4884 9.49999 9.4884C9.96382 9.4884 10.3382 9.86236 10.3382 10.3256V17.5814C10.3382 18.0447 9.96382 18.4186 9.49999 18.4186Z" fill="#9494A0" />
+									<g opacity="0.5">
+										<path opacity="0.5" d="M15.6471 6.69764C15.1832 6.69764 14.8088 6.32369 14.8088 5.86043V4.18601H4.19118V5.86043C4.19118 6.32369 3.81677 6.69764 3.35294 6.69764C2.88912 6.69764 2.51471 6.32369 2.51471 5.86043V3.34881C2.51471 2.88555 2.88912 2.5116 3.35294 2.5116H15.6471C16.1109 2.5116 16.4853 2.88555 16.4853 3.34881V5.86043C16.4853 6.32369 16.1109 6.69764 15.6471 6.69764Z" fill="#9494A0" />
+									</g>
+								</svg>
+							</a>
+						</div>
+						<!-- </section> -->
+						<!--vidz_videos end-->
+					</div>
+				</div>
+				<!--viddz end-->
+				<div class="viddz" style="border-bottom: none;">
+					<div class="container">
+						<div class="vidz_sec">
+							<h3>Popular Videos</h3>
+							<div *ngIf="showPopularVideos" class="vidz_list">
+								<div class="row">
+									<div *ngFor="let video of channel.popular_videos" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+										<div class="videoo">
+											<div class="vid_thumbainl video_small_thumbnail">
+												<a routerLink="/video/{{ video.source_id }}" title="" class="thumb">
+													<img src="{{ video.thumbnail }}" alt="">
+												</a>
+												<a routerLink="/video/{{ video.source_id }}">
+													<span class="vid-time">{{ video.duration | hrminsec }}</span>
+													<span *ngIf="video.price && video.price > 0 && !isInPurchasedVideo(video._id)" class="vid-price">${{ video.price | number : '1.2-2' }}</span>
+												</a>
+												<a *ngIf="!isInWatchLater(video._id)" (click)="addToWatchLater(video)" title="" class="link play_vid">
+													<svg width="17" height="17" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0" />
+													</svg>
+												</a>
+												<a *ngIf="isInWatchLater(video._id)" (click)="removeFromWatchLater(video)" title="" class="link play_vid">
+													<img src="/assets/images/checked_success.svg" alt="">
+												</a>
+												<a *ngIf="userIsOwner() && !isInFeatured(video._id)" (click)="addToFeatured(video)" title="add to featured" class="link play_vid remove_vid">
+													<i class="fa fa-plus text-success"></i>
+												</a>
+												<a *ngIf="video.price && video.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(video)" title="" class="play_vid">
+													<img src="/assets/images/info.svg" alt="">
+												</a>
+											</div>
+											<!--vid_thumbnail end-->
+											<div class="video_info">
+												<h3><a routerLink="/video/{{ video.source_id }}" title="">{{ video.title | excerpt:50 }}</a></h3>
+												<h4>{{ channel.title }}<span class="verify_ic"> <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<g>
+																<path id="icon166" fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+															</g>
+														</svg></span></h4>
+												<span> <ng-container *ngIf="!video.price || video.price == 0"> {{ video.meta?.views | number }} views . </ng-container> <small class="posted_dt">{{ video.created | dateAgo }}</small></span>
+											</div>
+										</div>
+										<!--videoo end-->
+									</div>
+
+								</div>
+							</div>
+							<!--vidz_list end-->
+							<a (click)="showPopularVideos = !showPopularVideos" title="collapse" class="link rm_dv">
+								<svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 0.228882L13.7071 1.6431L7.00001 8.3502L0.292908 1.6431L1.70712 0.228882L7.00001 5.52178L12.2929 0.228882Z" fill="#9494A0" />
+								</svg>
+							</a>
+						</div>
+						<!--vidz_videos end-->
+
+						<div *ngIf="popularVideosPage > -1" class="container more_items_sec text-center" style="padding-top: 25px !important; padding-bottom: 25px !important;">
+							<a (click)="showMorePopularVideos()" title="Show more videos" class="link">
+								<svg width="19" height="24" viewBox="0 0 19 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M18.1618 24.0001H0.838235C0.374412 24.0001 0 23.6261 0 23.1628V5.86052C0 5.39727 0.374412 5.02332 0.838235 5.02332H18.1618C18.6256 5.02332 19 5.39727 19 5.86052V23.1628C19 23.6261 18.6256 24.0001 18.1618 24.0001ZM1.67647 22.3256H17.3235V6.69773H1.67647V22.3256Z" fill="#9494A0" />
+									<g opacity="0.25">
+										<path opacity="0.25" d="M13.1324 4.18605C12.6685 4.18605 12.2941 3.81209 12.2941 3.34884V1.67442H6.70589V3.34884C6.70589 3.81209 6.33148 4.18605 5.86765 4.18605C5.40383 4.18605 5.02942 3.81209 5.02942 3.34884V0.83721C5.02942 0.373954 5.40383 0 5.86765 0H13.1324C13.5962 0 13.9706 0.373954 13.9706 0.83721V3.34884C13.9706 3.81209 13.5962 4.18605 13.1324 4.18605Z" fill="#9494A0" />
+									</g>
+									<path d="M9.50001 19.3479C9.28487 19.3479 9.06972 19.267 8.90766 19.1024L5.92634 16.1275C5.59942 15.801 5.59942 15.2707 5.92634 14.9442C6.25325 14.6177 6.78413 14.6177 7.11104 14.9442L9.50001 17.3275L11.8862 14.9442C12.2131 14.6177 12.744 14.6177 13.0709 14.9442C13.3978 15.2707 13.3978 15.801 13.0709 16.1275L10.0924 19.1024C9.93031 19.267 9.71516 19.3479 9.50001 19.3479Z" fill="#9494A0" />
+									<path d="M9.49999 18.4186C9.03617 18.4186 8.66176 18.0447 8.66176 17.5814V10.3256C8.66176 9.86236 9.03617 9.4884 9.49999 9.4884C9.96382 9.4884 10.3382 9.86236 10.3382 10.3256V17.5814C10.3382 18.0447 9.96382 18.4186 9.49999 18.4186Z" fill="#9494A0" />
+									<g opacity="0.5">
+										<path opacity="0.5" d="M15.6471 6.69764C15.1832 6.69764 14.8088 6.32369 14.8088 5.86043V4.18601H4.19118V5.86043C4.19118 6.32369 3.81677 6.69764 3.35294 6.69764C2.88912 6.69764 2.51471 6.32369 2.51471 5.86043V3.34881C2.51471 2.88555 2.88912 2.5116 3.35294 2.5116H15.6471C16.1109 2.5116 16.4853 2.88555 16.4853 3.34881V5.86043C16.4853 6.32369 16.1109 6.69764 15.6471 6.69764Z" fill="#9494A0" />
+									</g>
+								</svg>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--home_tb_details end-->
+			<br>
+			<br>
+		</div>
+		<div class="tab-pane fade show" [ngClass]="{'active': aria_selected == 'videos'}" id="vvideo_tabz" role="tabpanel" aria-labelledby="videos_taab">
+			<div class="videso_tb_details">
+				<div class="container">
+					<div class="vidz_sec">
+						<h3>Uploads</h3>
+						<div *ngIf="showUploads" class="vidz_list">
+							<div class="row">
+								<div *ngFor="let video of channel.videos" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+									<div class="videoo">
+										<div class="vid_thumbainl video_small_thumbnail">
+											<a routerLink="/video/{{ video.source_id }}" title="" class="thumb">
+												<img src="{{ video.thumbnail }}" alt="">
+											</a>
+											<a routerLink="/video/{{ video.source_id }}">
+												<span class="vid-time">{{ video.duration | hrminsec }}</span>
+												<span *ngIf="video.price && video.price > 0 && !isInPurchasedVideo(video._id)" class="vid-price">${{ video.price | number : '1.2-2' }}</span>
+											</a>
+											<a *ngIf="!isInWatchLater(video._id)" (click)="addToWatchLater(video)" title="" class="link play_vid">
+												<svg width="17" height="17" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0" />
+												</svg>
+											</a>
+											<a *ngIf="isInWatchLater(video._id)" (click)="removeFromWatchLater(video)" title="" class="link play_vid">
+												<img src="/assets/images/checked_success.svg" alt="">
+											</a>
+											<a *ngIf="userIsOwner() && !isInFeatured(video._id)" (click)="addToFeatured(video)" title="add to featured" class="link play_vid remove_vid">
+												<i class="fa fa-plus text-success"></i>
+											</a>
+											<a *ngIf="video.price && video.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(video)" title="" class="play_vid">
+												<img src="/assets/images/info.svg" alt="">
+											</a>
+										</div>
+										<!--vid_thumbnail end-->
+										<div class="video_info">
+											<h3><a routerLink="/video/{{ video.source_id }}" title="">{{ video.title | excerpt:50 }}</a></h3>
+											<h4>{{ channel.title }}<span class="verify_ic"> <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<g>
+															<path fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+														</g>
+													</svg></span></h4>
+											<span> <ng-container *ngIf="!video.price || video.price == 0"> {{ video.meta?.views | number }} views . </ng-container> <small class="posted_dt">{{ video.created | dateAgo }}</small></span>
+										</div>
+									</div>
+									<!--videoo end-->
+								</div>
+
+							</div>
+						</div>
+						<!--vidz_list end-->
+						<a (click)="showUploads = !showUploads" title="collapse" class="link rm_dv">
+							<svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 0.228882L13.7071 1.6431L7.00001 8.3502L0.292908 1.6431L1.70712 0.228882L7.00001 5.52178L12.2929 0.228882Z" fill="#9494A0" />
+							</svg>
+						</a>
+					</div>
+					<!--vidz_videos end-->
+
+					<div *ngIf="uploadsPage > -1" class="container more_items_sec text-center" style="padding-top: 25px !important; padding-bottom: 25px !important;">
+						<a (click)="showMoreUploads()" title="Show more videos" class="link">
+							<svg width="19" height="24" viewBox="0 0 19 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M18.1618 24.0001H0.838235C0.374412 24.0001 0 23.6261 0 23.1628V5.86052C0 5.39727 0.374412 5.02332 0.838235 5.02332H18.1618C18.6256 5.02332 19 5.39727 19 5.86052V23.1628C19 23.6261 18.6256 24.0001 18.1618 24.0001ZM1.67647 22.3256H17.3235V6.69773H1.67647V22.3256Z" fill="#9494A0" />
+								<g opacity="0.25">
+									<path opacity="0.25" d="M13.1324 4.18605C12.6685 4.18605 12.2941 3.81209 12.2941 3.34884V1.67442H6.70589V3.34884C6.70589 3.81209 6.33148 4.18605 5.86765 4.18605C5.40383 4.18605 5.02942 3.81209 5.02942 3.34884V0.83721C5.02942 0.373954 5.40383 0 5.86765 0H13.1324C13.5962 0 13.9706 0.373954 13.9706 0.83721V3.34884C13.9706 3.81209 13.5962 4.18605 13.1324 4.18605Z" fill="#9494A0" />
+								</g>
+								<path d="M9.50001 19.3479C9.28487 19.3479 9.06972 19.267 8.90766 19.1024L5.92634 16.1275C5.59942 15.801 5.59942 15.2707 5.92634 14.9442C6.25325 14.6177 6.78413 14.6177 7.11104 14.9442L9.50001 17.3275L11.8862 14.9442C12.2131 14.6177 12.744 14.6177 13.0709 14.9442C13.3978 15.2707 13.3978 15.801 13.0709 16.1275L10.0924 19.1024C9.93031 19.267 9.71516 19.3479 9.50001 19.3479Z" fill="#9494A0" />
+								<path d="M9.49999 18.4186C9.03617 18.4186 8.66176 18.0447 8.66176 17.5814V10.3256C8.66176 9.86236 9.03617 9.4884 9.49999 9.4884C9.96382 9.4884 10.3382 9.86236 10.3382 10.3256V17.5814C10.3382 18.0447 9.96382 18.4186 9.49999 18.4186Z" fill="#9494A0" />
+								<g opacity="0.5">
+									<path opacity="0.5" d="M15.6471 6.69764C15.1832 6.69764 14.8088 6.32369 14.8088 5.86043V4.18601H4.19118V5.86043C4.19118 6.32369 3.81677 6.69764 3.35294 6.69764C2.88912 6.69764 2.51471 6.32369 2.51471 5.86043V3.34881C2.51471 2.88555 2.88912 2.5116 3.35294 2.5116H15.6471C16.1109 2.5116 16.4853 2.88555 16.4853 3.34881V5.86043C16.4853 6.32369 16.1109 6.69764 15.6471 6.69764Z" fill="#9494A0" />
+								</g>
+							</svg>
+						</a>
+					</div>
+				</div>
+			</div>
+			<!--videso_tb_details end-->
+			<br>
+			<br>
+		</div>
+
+		<div class="tab-pane fade show" [ngClass]="{'active': aria_selected == 'playlists'}" id="playlist_tab" role="tabpanel" aria-labelledby="playlist-tab">
+			<div class="playlist_tab">
+
+				<div *ngIf="userIsOwner()" class="viddz section_title">
+					<div class="container">
+						<div class="vidz_sec"><h2>Featured Playlists</h2></div>
+					</div>
+				</div>
+				<div *ngFor="let playlist of channel.playlists; index as i" class="viddz">
+					<div class="container">
+						<div class="vidz_sec">
+							<h3>
+								<a routerLink="/playlist/{{ playlist._id }}">
+									{{ playlist.title }}
+									<svg width="15" height="15" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+	                   <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317ZM3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317ZM8 17.2317V7.2317C8 6.44626 8.86395 5.96742 9.53 6.3837L17.53 11.3837C18.1567 11.7754 18.1567 12.688 17.53 13.0797L9.53 18.0797C8.86395 18.496 8 18.0171 8 17.2317ZM10 9.03593L15.1132 12.2317L10 15.4274V9.03593Z" fill="#9494A0" />
+	                </svg>
+	                Play all
+	              </a>
+							</h3>
+							<div class="vidz_list">
+								<div class="row">
+									<div *ngFor="let video of playlist.videos" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+										<div class="videoo">
+											<div class="vid_thumbainl video_small_thumbnail">
+												<a routerLink="/playlist/{{ playlist._id }}/{{ video.source_id }}" title="" class="thumb">
+													<img src="{{ video.thumbnail }}" alt="">
+												</a>
+												<a routerLink="/playlist/{{ playlist._id }}/{{ video.source_id }}">
+													<span class="vid-time">{{ video.duration | hrminsec }}</span>
+													<span *ngIf="video.price && video.price > 0 && !isInPurchasedVideo(video._id)" class="vid-price">${{ video.price | number : '1.2-2' }}</span>
+												</a>
+												<a *ngIf="!isInWatchLater(video._id)" (click)="addToWatchLater(video)" class="link play_vid">
+													<svg width="17" height="17" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0" />
+													</svg>
+												</a>
+												<a *ngIf="isInWatchLater(video._id)" (click)="removeFromWatchLater(video)" title="" class="link play_vid">
+													<img src="/assets/images/checked_success.svg" alt="">
+												</a>
+												<a *ngIf="isVideoOfChannel(video) && userIsOwner() && !isInFeatured(video._id)" (click)="addToFeatured(video)" title="add to featured" class="link play_vid remove_vid">
+													<i class="fa fa-plus text-success"></i>
+												</a>
+												<a *ngIf="video.price && video.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(video)" title="" class="play_vid">
+													<img src="/assets/images/info.svg" alt="">
+												</a>
+											</div>
+											<!--vid_thumbnail end-->
+											<div class="video_info">
+												<h3><a routerLink="/playlist/{{ playlist._id }}/{{ video.source_id }}" title="">{{ video.title | excerpt:50 }}</a></h3>
+												<h4>
+													{{ video.channel_id?.title }}
+													<span class="verify_ic">
+														<svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<g>
+																<path id="icon103" fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+															</g>
+														</svg>
+													</span>
+												</h4>
+												<span> <ng-container *ngIf="!video.price || video.price == 0"> {{ video.meta?.views | number }} views . </ng-container> <small class="posted_dt">{{ video.created | dateAgo }}</small></span>
+											</div>
+										</div>
+										<!--videoo end-->
+									</div>
+
+								</div>
+							</div>
+							<!--vidz_list end-->
+							<a *ngIf="userIsOwner()" (click)="removeFromFeaturedPlaylist(playlist, i)" title="remove from featured" class="link rm_dv">
+								<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" clip-rule="evenodd" d="M12.0001 14.1213L5.56077 20.5607L3.43945 18.4394L9.87879 12L3.43945 5.56068L5.56077 3.43936L12.0001 9.8787L18.4395 3.43936L20.5608 5.56068L14.1214 12L20.5608 18.4394L18.4395 20.5607L12.0001 14.1213Z" fill="#9494A0"/>
+								</svg>
+							</a>
+						</div>
+						<!--vidz_videos end-->
+					</div>
+				</div>
+
+				<div *ngIf="userIsOwner()" class="viddz section_title">
+					<div class="container">
+						<div class="vidz_sec"><h2>User's playlists</h2></div>
+					</div>
+				</div>
+				<div *ngIf="userIsOwner()">
+					<div *ngFor="let playlist of user.playlists" class="viddz">
+						<div class="container">
+							<div class="vidz_sec">
+								<h3>
+									{{ playlist.title }}<br><br>
+									<button (click)="addPlaylistToChannel(playlist)" class="button-custom-class">Add to channel</button>
+								</h3>
+								<div class="vidz_list">
+									<div class="row">
+										<div *ngFor="let video of playlist.videos" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+											<div class="videoo">
+												<div class="vid_thumbainl video_small_thumbnail">
+													<a routerLink="/playlist/{{ playlist._id }}/{{ video.source_id }}" title="" class="thumb">
+														<img src="{{ video.thumbnail }}" alt="">
+													</a>
+													<a routerLink="/playlist/{{ playlist._id }}/{{ video.source_id }}">
+														<span class="vid-time">{{ video.duration | hrminsec }}</span>
+													</a>
+													<a routerLink="/playlist/{{ playlist._id }}/{{ video.source_id }}" title="" class="link play_vid">
+														<svg width="17" height="17" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0" />
+														</svg>
+													</a>
+													<a *ngIf="video.price && video.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(video)" title="" class="play_vid">
+														<img src="/assets/images/info.svg" alt="">
+													</a>
+												</div>
+												<!--vid_thumbnail end-->
+												<div class="video_info">
+													<h3><a routerLink="/playlist/{{ playlist._id }}/{{ video.source_id }}" title="">{{ video.title | excerpt:50 }}</a></h3>
+													<h4>{{ video.channel_id?.title }}<span class="verify_ic"> <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+																<g>
+																	<path id="icon103" fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+																</g>
+															</svg></span></h4>
+													<span> <ng-container *ngIf="!video.price || video.price == 0"> {{ video.meta?.views | number }} views . </ng-container> <small class="posted_dt">{{ video.created | dateAgo }}</small></span>
+												</div>
+											</div>
+											<!--videoo end-->
+										</div>
+
+									</div>
+								</div>
+								<!--vidz_list end-->
+								<!-- <a routerLink="/video/more" title="" class="rm_dv">
+									<svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 0.228882L13.7071 1.6431L7.00001 8.3502L0.292908 1.6431L1.70712 0.228882L7.00001 5.52178L12.2929 0.228882Z" fill="#9494A0" />
+									</svg>
+								</a> -->
+							</div>
+							<!--vidz_videos end-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--home_tb_details end-->
+			<br>
+			<br>
+			<br>
+			<br>
+		</div>
+		<div class="tab-pane fade show" [ngClass]="{'active': aria_selected == 'featured'}" id="channels_tab" role="tabpanel" aria-labelledby="channels-tab">
+			<div class="abt-channels">
+				<div class="container">
+					<div class="chaz_row">
+						<h3 *ngIf="userIsOwner()">Featured Channels</h3>
+						<div class="row">
+							<div *ngFor="let featured of channel.featured_channels; index as i" class="col-lg-3 col-md-4 col-sm-6 col-12">
+								<div class="img-info-ch">
+
+									<div class="img-ch channel_thumbnail">
+										<a routerLink="/channels/{{ featured._id }}" title="">
+											<img *ngIf="featured.profile_image" style="height: 170px;" src="{{ featured.profile_image }}" alt="">
+											<span *ngIf="!featured.profile_image" class="vc_hd cr{{ featured.avatar_color }} pr" style="width: 100% !important; height: 168px !important; margin-bottom: 22px !important; margin-top: -12px !important;"><label style="line-height: 170px; font-size: 60px;">{{ featured.avatar_card }}</label></span>
+											<!-- <img src="{{ featured.profile_image }}" alt=""> -->
+										</a>
+									</div>
+									<!--img-ch end-->
+
+									<div class="video_info pr">
+										<a routerLink="/channels/{{ featured._id }}" title="">
+											<span class="vc_hd cr5 pr">
+												{{ featured.avatar_card }}
+											</span>
+										</a>
+										<h4>
+											<a routerLink="/channels/{{ featured._id }}" title="">{{ featured.title }}</a>
+											<span class="verify_ic">
+												<svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<g>
+														<path fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black"></path>
+													</g>
+												</svg>
+											</span>
+										</h4>
+										<p>{{ featured.meta?.subscribers | number }} subscribers. {{ featured.meta?.videos | number }} videos</p>
+										<span>{{ featured.meta?.views | number }} views</span>
+										<br>
+										<button *ngIf="userIsOwner()" (click)="removeFromFeaturedChannel(featured, i)" class="btn btn-danger">Remove feature</button>
+									</div>
+									<!--video_info pr-->
+								</div>
+								<!--img-info-ch end-->
+
+								<!-- <a *ngIf="userIsOwner()" (click)="removeFromFeaturedChannel(channel, i)" title="remove from featured channels" class="link play_vid remove_vid">
+									<i class="fa fa-times text-danger"></i>
+								</a> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div *ngIf="userIsOwner()" class="abt-channels">
+				<div class="container">
+					<div class="chaz_row">
+						<h3>User's subscriptions</h3>
+						<div class="row">
+							<div *ngFor="let subscribed of user.subscribed_channels" class="col-lg-3 col-md-4 col-sm-6 col-12">
+								<div class="img-info-ch">
+									<div class="img-ch channel_thumbnail">
+										<a routerLink="/channels/{{ subscribed._id }}" title="">
+											<img src="{{ subscribed.profile_image }}" alt="">
+										</a>
+									</div>
+									<!--img-ch end-->
+									<div class="video_info pr">
+										<a routerLink="/channels/{{ subscribed._id }}" title="">
+											<span class="vc_hd cr5 pr">
+												{{ subscribed.avatar_card }}
+											</span>
+										</a>
+										<h4>
+											<a routerLink="/channels/{{ subscribed._id }}" title="">{{ subscribed.title }}</a>
+											<span class="verify_ic">
+												<svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<g>
+														<path fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black"></path>
+													</g>
+												</svg>
+											</span>
+										</h4>
+										<p>{{ subscribed.meta?.subscribers | number }} subscribers. {{ subscribed.meta?.videos | number }} videos</p>
+										<span>{{ subscribed.meta?.views | number }} views</span>
+										<br>
+										<button (click)="featureChannel(subscribed)" class="btn btn-success">Feature</button>
+									</div>
+									<!--video_info pr-->
+								</div>
+								<!--img-info-ch end-->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
+			<br>
+			<br>
+		</div>
+		<div class="tab-pane fade show" [ngClass]="{'active': aria_selected == 'about'}" id="about_tab" role="tabpanel" aria-labelledby="about-tab">
+			<div class="about_tab_content">
+				<div class="container">
+					<div class="description">
+						<div class="row">
+							<div class="col-lg-8">
+								<div class="decp_cotnet">
+									<h2 (mouseover)="detail_hovered = userIsOwner()" (mouseout)="detail_hovered = false" (click)="detail_clicked = userIsOwner()" class="ab-fd">
+										Description
+										<i *ngIf="detail_hovered" class="fa fa-edit"></i>
+									</h2>
+									<p *ngIf="!detail_clicked || !userIsOwner()" (click)="detail_clicked = userIsOwner()" (mouseover)="detail_hovered = userIsOwner()" (mouseout)="detail_hovered = false" class="description_paragraph">{{ channel.detail }}</p>
+									<div *ngIf="detail_clicked && userIsOwner()" class="ch-pswd">
+										<p>{{ description_length_limit - (channel.detail.length || 0) }}/{{ description_length_limit }} Characters left</p>
+										<textarea (keyup)="checkDescriptionLimitation()" (change)="checkDescriptionLimitation()" (focusout)="updateDetail()" [(ngModel)]="channel.detail"></textarea>
+										<div class="ch-pswd" style="margin-top: 5px !important;">
+											<button (click)="updateDetail()" class="btn btn-success">Update</button>
+										</div>
+									</div>
+								</div>
+								<!--abt-founder end-->
+								<div class="link-pr">
+									<h2 (mouseover)="links_hovered = userIsOwner()" (mouseout)="links_hovered = false" (click)="links_clicked = userIsOwner()" class="ab-fd">
+										Links
+										<i *ngIf="links_hovered" class="fa fa-edit"></i>
+									</h2>
+									<div *ngIf="!links_clicked || !userIsOwner()" class="row link-list">
+										<div *ngFor="let link of channel.links" class="col-md-6">
+											<a href="{{ link.url }}" target="_blank" title="">{{ link.name }}</a>
+										</div>
+									</div>
+
+									<ul *ngIf="links_clicked && userIsOwner()">
+										<li *ngFor="let link of channel.links;index as i" class="ch-pswd">
+											<span style="padding-right:1em;">
+												<input placeholder="link title" type="text" style="width:45%" [(ngModel)]="link.name">
+											</span>
+											<span style="padding-right:1em;">
+												<input placeholder="link url (http://...)" type="text" style="width:45%" [(ngModel)]="link.url">
+											</span>
+											<span style="width:10%;">
+												<i (click)="removeLink(i)" class="fa fa-times text-danger"></i>
+											</span>
+										</li>
+										<li class="ch-pswd">
+											<span style="padding-right:1em;">
+												<input placeholder="link title" type="text" style="width:45%" [(ngModel)]="new_link.name" >
+											</span>
+											<span style="padding-right:1em;">
+												<input placeholder="link url (http://...)" type="text" style="width:45%;" [(ngModel)]="new_link.url" >
+											</span>
+											<span style="width:10%;">
+												<i (click)="addNewLink()" class="fa fa-save text-success"></i>
+											</span>
+										</li>
+										<li>
+											<div class="ch-pswd">
+												<button (click)="updateLinks()" class="btn btn-success">Update</button>
+											</div>
+										</li>
+									</ul>
+
+									<div class="clearfix"></div>
+								</div>
+
+								<!--
+								<div class="link-pr">
+									<h2 (mouseover)="inquiries_hovered = userIsOwner()" (mouseout)="inquiries_hovered = false" (click)="inquiries_clicked = userIsOwner()" class="ab-fd">
+										Business enquiries
+										<i *ngIf="inquiries_hovered" class="fa fa-edit"></i>
+									</h2>
+
+									<div *ngIf="!inquiries_clicked || !userIsOwner()" class="row link-list">
+										<div *ngFor="let inquiry of channel.business_inquiries" class="col-md-6">
+											<a href="{{ inquiry.url }}" title="">{{ inquiry.name }}</a>
+										</div>
+									</div>
+
+									<ul *ngIf="inquiries_clicked && userIsOwner()">
+										<li *ngFor="let inquiry of channel.business_inquiries;index as i" class="ch-pswd">
+											<span style="padding-right:1em;">
+												<input placeholder="Inquiry title" type="text" style="width:45%" [(ngModel)]="inquiry.name">
+											</span>
+											<span style="padding-right:1em;">
+												<input placeholder="Inquiry email address" type="text" style="width:45%" [(ngModel)]="inquiry.url">
+											</span>
+											<span style="width:10%">
+												<i (click)="removeInquiry(i)" class="fa fa-times text-danger"></i>
+											</span>
+										</li>
+										<li class="ch-pswd">
+											<span style="padding-right:1em;">
+												<input placeholder="Inquiry email address" type="text" style="width:45%" [(ngModel)]="new_inquiry.name">
+											</span>
+											<span style="padding-right:1em;">
+												<input placeholder="Inquiry email address" type="text" style="width:45%" [(ngModel)]="new_inquiry.url">
+											</span>
+											<span style="width:10%">
+												<i (click)="addNewInquiry()" class="fa fa-save text-success"></i>
+											</span>
+										</li>
+										<li>
+											<div class="ch-pswd">
+												<button (click)="updateInquiries()" class="btn btn-success">Update</button>
+											</div>
+										</li>
+									</ul>
+
+									<br>
+									<div class="messaging_box ch-pswd">
+										<a routerLink="/user-account/message" [queryParams]="{channel:channel._id}" class="link">
+											<button class="btn btn-success">Send message</button>
+										</a>
+									</div>
+
+								</div>
+								-->
+							</div>
+							<div class="col-lg-4">
+								<div class="stats">
+									<h2 class="ab-fd">Stats</h2>
+									<ul>
+										<li>Joined {{ channel.created | date:'MMM yyyy' }}</li>
+										<li>{{ channel.meta?.views | number }} views</li>
+										<li>{{ channel.meta?.subscribers | number }} subscribers</li>
+										<li>{{ channel.meta?.videos | number }} videos</li>
+									</ul>
+								</div>
+								<!--stats end-->
+								<div class="flagg">
+									<a (click)="showFlagModal()" class="link" title="">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<g id="24 / basic / flag">
+												<path id="icon" fill-rule="evenodd" clip-rule="evenodd" d="M7 23H5H4V21H5V12V4V1H7V2H21.1247L18.126 7.99991L21.126 14H7V21H8V23H7ZM7 12V4H17.8893L15.89 8.00009L17.89 12H7Z" fill="#9494A0" />
+											</g>
+										</svg>
+									</a>
+								</div>
+								<!--flagg end-->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--about_tab_content end-->
+			<br>
+			<br>
+			<br>
+			<br>
+		</div>
+		<div class="tab-pane fade show" [ngClass]="{'active': aria_selected == 'products'}" id="amazon-tb" role="tabpanel" aria-labelledby="amazon-tab">
+			<div class="amz_products_content">
+				<div class="amazon sr" style="border-bottom: none;">
+					<div class="container">
+						<div class="abt-amz">
+							<div class="amz-hd">
+								<h2>Get my merchandise </h2>
+								<!-- <h3>Use CODE:<span> ScereBro26</span> 10% Discount</h3> -->
+							</div>
+							<!--amz-hd end-->
+							<div class="amz-lg">
+								<img src="/assets/images/logo1.png" alt="">
+							</div>
+							<!--amz-lg end-->
+							<div class="clearfix"></div>
+						</div>
+						<!--abt-amz end-->
+						<div class="amz-img-inf">
+							<div class="row">
+								<div *ngFor="let product of channel.featured_products" class="col-lg-2 col-md-3 col-sm-6 col-6 full_wdth">
+									<div class="mg-inf">
+										<div class="img-sr">
+											<img src="{{ product.image }}" alt="">
+										</div>
+										<div class="info-sr">
+											<h3><a href="{{ product.link }}" title="">{{ product.name }}</a></h3>
+											<span>${{ product.price | number : '1.2-2' }}</span>
+										</div>
+									</div>
+									<!--mg-inf end-->
+								</div>
+							</div>
+						</div>
+						<br>
+
+						<div *ngIf="userIsOwner()" class="amz-img-inf">
+							<div class="row">
+
+								<div class="col-md-12">
+									<div class="amz-hd">
+										<h2>Update products</h2>
+									</div>
+								</div>
+
+								<div class="col-md-12">
+
+									<div *ngFor="let item of channel.featured_products; index as i;" class="row top-buffer">
+										<div class="col-lg-3 col-md-3 col-sm-6 col-12">
+											<div class="form_field pr">
+												<input type="text" name="product-name-{{i}}" [(ngModel)]="channel.featured_products[i].name" placeholder="Product #{{ channel.featured_products.length + 1 }} name">
+											</div>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-6 col-12">
+											<div class="form_field pr">
+												<input type="text" name="product-link-{{i}}" [(ngModel)]="channel.featured_products[i].link" placeholder=" Product #{{ channel.featured_products.length + 1 }} URL Link">
+											</div>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-6 col-12">
+											<div class="form_field pr">
+												<input type="text" name="product-image-{{i}}" [(ngModel)]="channel.featured_products[i].image" placeholder="Product #{{ channel.featured_products.length + 1 }} image URL">
+											</div>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-6 col-12">
+											<div class="form_field pr">
+												<input type="text" name="product-price-{{i}}" [(ngModel)]="channel.featured_products[i].price" placeholder="Product #{{ channel.featured_products.length + 1 }} price">
+											</div>
+										</div>
+									</div>
+
+									<div class="row action_container">
+										<div class="col-md-12 center">
+											<button (click)="updateProducts()" class="button-custom-class">Update products</button>
+										</div>
+									</div>
+									<br>
+
+									<div *ngIf="channel.featured_products.length < 4"  class="row">
+
+										<div style="margin-bottom: 1em;" class="col-md-12">
+											<div class="amz-hd">
+												<h2>New product</h2>
+											</div>
+										</div>
+
+										<div class="col-lg-3 col-md-3 col-sm-6 col-12">
+											<div class="form_field pr">
+												<input type="text" name="product-name-new" [(ngModel)]="channelNewProduct.name" placeholder="Product #{{ channel.featured_products.length + 1 }} name">
+											</div>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-6 col-12">
+											<div class="form_field pr">
+												<input type="text" name="product-link-new" [(ngModel)]="channelNewProduct.link" placeholder="Product #{{ channel.featured_products.length + 1 }} link">
+											</div>
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-6 col-12">
+											<div class="form_field pr">
+												<input type="text" name="product-image-new" [(ngModel)]="channelNewProduct.image" placeholder="Product #{{ channel.featured_products.length + 1 }} image">
+											</div>
+										</div>
+
+										<div class="col-lg-3 col-md-3 col-sm-6 col-12">
+											<div class="form_field pr">
+												<input type="text" name="product-price-new" [(ngModel)]="channelNewProduct.price" placeholder="Product #{{ channel.featured_products.length + 1 }} price">
+											</div>
+										</div>
+
+										<div class="col-md-12 center action_container">
+											<button (click)="addMoreProduct()" class="button-custom-class">Add product</button>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<!--amz-img-in-->
+					</div>
+				</div>
+			</div>
+			<!--amz_products_content end-->
+			<br>
+			<br>
+			<br>
+			<br>
+		</div>
+		<div class="tab-pane fade show" [ngClass]="{'active': aria_selected == 'live'}" id="live_tab" role="tabpanel" aria-labelledby="live-tab">
+			<div class="live_tb_content">
+				<div class="wrkout">
+					<div class="container">
+						<div *ngIf="channel.current_live && channel.current_live._id" class="row">
+							<div class="col-lg-6 video_large_thumbnail">
+								<a routerLink="/live/{{ channel.current_live._id }}">
+									<div class="wk-img thumb">
+										<img *ngIf="channel.current_live.live_info?.live_thumbnail" [src]="channel.current_live.live_info?.live_thumbnail" alt="" style="max-height: 320px;">
+										<img *ngIf="!channel.current_live.live_info?.live_thumbnail" width="100%" src="/assets/images/upcomming_live.png" alt="" style="max-height: 320px;">
+										<span class="vid-time">{{ channel.current_live.duration | hrminsec }}</span>
+									</div>
+								</a>
+								<!--wk-img end-->
+							</div>
+							<div class="col-lg-6">
+								<div class="wk-info">
+									<h3>Currently playing</h3>
+									<h2>{{ channel.current_live.title }}</h2>
+									<div class="vcp_inf md">
+										<span class="vc_hd cr5">{{ channel.avatar_card }}</span>
+										<div class="vc_info pr">
+											<h4>{{ channel.title }}</h4>
+											<span>{{ channel.meta?.subscribers | number }} subscribers</span>
+										</div>
+									</div>
+									<!--vcp_inf end-->
+									<p class="description_paragraph">{{ channel.current_live.description }}</p>
+									<ul>
+										<li>
+											<a routerLink="/live/{{ channel.current_live._id }}" title="">
+												<span>
+													<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path fill-rule="evenodd" clip-rule="evenodd" d="M23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317ZM3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317ZM8 17.2317V7.2317C8 6.44626 8.86395 5.96742 9.53 6.3837L17.53 11.3837C18.1567 11.7754 18.1567 12.688 17.53 13.0797L9.53 18.0797C8.86395 18.496 8 18.0171 8 17.2317ZM10 9.03593L15.1132 12.2317L10 15.4274V9.03593Z" fill="#EEA72A"></path>
+													</svg>
+													Start Watching
+												</span>
+											</a>
+										</li>
+										<!-- <li>
+											<a (click)="watchlater(channel.current_live)" title="">
+												<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0"></path>
+												</svg>
+											</a>
+										</li> -->
+									</ul>
+								</div>
+								<!--wk-info end-->
+							</div>
+						</div>
+						<div *ngIf="!channel.current_live._id" class="row no_live_container">
+							<div class="columns col-md-12">
+								<h1 style="color: #C3C3D2 !important">
+									No currently running live for this channel
+								</h1>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--wrkout end-->
+				<div class="brd-schedule">
+					<div class="container">
+						<div class="br-sch">
+							<h3>Broadcast Schedule</h3>
+							<ul class="br-list">
+								<li *ngFor="let day of days;index as i;">
+									<h4>{{ i == 0 ? 'Today' : days_name[day] }}</h4>
+									<span *ngIf="!schedules[day]">--- </span>
+									<span *ngIf="schedules[day]">
+										<div *ngFor="let live of schedules[day]">
+											<a *ngIf="userIsOwner()" class="link" routerLink="/live/go/{{ live._id }}">
+												{{ live.live_info.start | date:'hh:mm a' }}
+											</a>
+											<a *ngIf="!userIsOwner()" class="link" routerLink="/live/{{ live._id }}">
+												{{ live.live_info.start | date:'hh:mm a' }}
+											</a>
+										</div>
+									</span>
+									<span *ngIf="max_length.length > 0 "> <div *ngFor="let view_row of max_length"> &nbsp; </div> </span>
+								</li>
+							</ul>
+							<div class="clearfix"></div>
+						</div>
+						<!--br-sch end-->
+						<div class="vidz-row ms">
+							<div class="vidz_sec">
+								<h3>Offline Videos </h3>
+								<div *ngIf="showOfflineVideos" class="vidz_list">
+									<div class="row">
+										<div *ngFor="let video of channel.live_videos" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+											<div class="videoo">
+												<div class="vid_thumbainl video_small_thumbnail">
+													<a routerLink="/video/{{ video.source_id }}" title="" class="thumb">
+														<img src="{{ video.thumbnail }}" alt="">
+													</a>
+													<a routerLink="/video/{{ video.source_id }}">
+														<span class="vid-time">{{ video.duration | hrminsec }}</span>
+														<span *ngIf="video.price && video.price > 0 && !isInPurchasedVideo(video._id)" class="vid-price">${{ video.price | number : '1.2-2' }}</span>
+													</a>
+													<a *ngIf="isInWatchLater(video._id)" (click)="removeFromWatchLater(video)" title="" class="link play_vid">
+														<svg width="17" height="17" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0"></path>
+														</svg>
+													</a>
+													<a *ngIf="isInWatchLater(video._id)" (click)="removeFromWatchLater(video)" title="" class="link play_vid">
+														<img src="/assets/images/checked_success.svg" alt="">
+													</a>
+													<a *ngIf="video.price && video.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(video)" title="" class="play_vid">
+														<img src="/assets/images/info.svg" alt="">
+													</a>
+												</div>
+												<!--vid_thumbnail end-->
+												<div class="video_info">
+													<h3><a routerLink="/video/{{ video.source_id }}" title="">{{ video.title | excerpt:50 }}</a></h3>
+													<h4>{{ channel.title }}<span class="verify_ic"> <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+																<g>
+																	<path id="icon105" fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black"></path>
+																</g>
+															</svg></span></h4>
+													<span><ng-container *ngIf="!video.price || video.price == 0"> {{ video.meta?.views | number }} views . </ng-container>  <small class="posted_dt">{{ video.created | dateAgo }}</small></span>
+												</div>
+											</div>
+											<!--videoo end-->
+										</div>
+
+									</div>
+								</div>
+								<!--vidz_list end-->
+								<a (click)="showOfflineVideos = !showOfflineVideos" title="" class="link rm_dv">
+									<svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 0.228882L13.7071 1.6431L7.00001 8.3502L0.292908 1.6431L1.70712 0.228882L7.00001 5.52178L12.2929 0.228882Z" fill="#9494A0"></path>
+									</svg>
+								</a>
+							</div>
+							<!--vidz_videos end-->
+
+							<div *ngIf="offlineVideosPage > -1" class="container more_items_sec text-center" style="padding-top: 25px !important; padding-bottom: 25px !important;">
+								<a (click)="showMoreOfflineVideos()" title="Show more videos" class="link">
+									<svg width="19" height="24" viewBox="0 0 19 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M18.1618 24.0001H0.838235C0.374412 24.0001 0 23.6261 0 23.1628V5.86052C0 5.39727 0.374412 5.02332 0.838235 5.02332H18.1618C18.6256 5.02332 19 5.39727 19 5.86052V23.1628C19 23.6261 18.6256 24.0001 18.1618 24.0001ZM1.67647 22.3256H17.3235V6.69773H1.67647V22.3256Z" fill="#9494A0" />
+										<g opacity="0.25">
+											<path opacity="0.25" d="M13.1324 4.18605C12.6685 4.18605 12.2941 3.81209 12.2941 3.34884V1.67442H6.70589V3.34884C6.70589 3.81209 6.33148 4.18605 5.86765 4.18605C5.40383 4.18605 5.02942 3.81209 5.02942 3.34884V0.83721C5.02942 0.373954 5.40383 0 5.86765 0H13.1324C13.5962 0 13.9706 0.373954 13.9706 0.83721V3.34884C13.9706 3.81209 13.5962 4.18605 13.1324 4.18605Z" fill="#9494A0" />
+										</g>
+										<path d="M9.50001 19.3479C9.28487 19.3479 9.06972 19.267 8.90766 19.1024L5.92634 16.1275C5.59942 15.801 5.59942 15.2707 5.92634 14.9442C6.25325 14.6177 6.78413 14.6177 7.11104 14.9442L9.50001 17.3275L11.8862 14.9442C12.2131 14.6177 12.744 14.6177 13.0709 14.9442C13.3978 15.2707 13.3978 15.801 13.0709 16.1275L10.0924 19.1024C9.93031 19.267 9.71516 19.3479 9.50001 19.3479Z" fill="#9494A0" />
+										<path d="M9.49999 18.4186C9.03617 18.4186 8.66176 18.0447 8.66176 17.5814V10.3256C8.66176 9.86236 9.03617 9.4884 9.49999 9.4884C9.96382 9.4884 10.3382 9.86236 10.3382 10.3256V17.5814C10.3382 18.0447 9.96382 18.4186 9.49999 18.4186Z" fill="#9494A0" />
+										<g opacity="0.5">
+											<path opacity="0.5" d="M15.6471 6.69764C15.1832 6.69764 14.8088 6.32369 14.8088 5.86043V4.18601H4.19118V5.86043C4.19118 6.32369 3.81677 6.69764 3.35294 6.69764C2.88912 6.69764 2.51471 6.32369 2.51471 5.86043V3.34881C2.51471 2.88555 2.88912 2.5116 3.35294 2.5116H15.6471C16.1109 2.5116 16.4853 2.88555 16.4853 3.34881V5.86043C16.4853 6.32369 16.1109 6.69764 15.6471 6.69764Z" fill="#9494A0" />
+										</g>
+									</svg>
+								</a>
+							</div>
+						</div>
+						<!--vidz-row end-->
+					</div>
+				</div>
+				<!--brd-schedule end-->
+				<!-- Remove recent text donator as Eldad request -->
+				<!-- <div class="ab-donaters">
+					<div class="container">
+						<h3>Recent Donators</h3>
+						<ul>
+							<li *ngFor="let donator of channel.recent_donators">
+								<a routerLink="/donator/{{ donator._id }}">
+									<span class="vc_hd cr{{ donator.avatar_color }} pr">{{ donator.avatar_card }}</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div> -->
+			</div>
+			<!--live_tb_content end-->
+			<br>
+			<br>
+		</div>
+
+		<div class="tab-pane fade show" [ngClass]="{'active': aria_selected == 'search'}" id="search_tab" role="tabpanel" aria-labelledby="videos_taab">
+			<div class="videso_tb_details">
+				<div class="container">
+					<div class="vidz_sec">
+						<h3>Search results for "{{ search_term }}"</h3>
+						<div *ngIf="showUploads" class="vidz_list">
+							<div class="row">
+								<div *ngFor="let video of search_results" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+									<div class="videoo">
+										<div class="vid_thumbainl video_small_thumbnail">
+											<a routerLink="/video/{{ video.source_id }}" title="" class="thumb">
+												<img src="{{ video.thumbnail }}" alt="">
+											</a>
+											<a routerLink="/video/{{ video.source_id }}">
+												<span class="vid-time">{{ video.duration | hrminsec }}</span>
+											</a>
+											<a *ngIf="!isInWatchLater(video._id)" (click)="addToWatchLater(video)" title="" class="link play_vid">
+												<svg width="17" height="17" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0" />
+												</svg>
+											</a>
+											<a *ngIf="isInWatchLater(video._id)" (click)="removeFromWatchLater(video)" title="" class="link play_vid">
+												<img src="/assets/images/checked_success.svg" alt="">
+											</a>
+											<a *ngIf="video.price && video.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(video)" title="" class="play_vid">
+												<img src="/assets/images/info.svg" alt="">
+											</a>
+										</div>
+										<!--vid_thumbnail end-->
+										<div class="video_info">
+											<h3><a routerLink="/video/{{ video.source_id }}" title="">{{ video.title | excerpt:50 }}</a></h3>
+											<h4>
+												{{ channel.title }}
+												<span class="verify_ic">
+													<svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<g>
+															<path fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+														</g>
+													</svg>
+												</span>
+											</h4>
+											<span> <ng-container *ngIf="!video.price || video.price == 0"> {{ video.meta?.views | number }} views . </ng-container>  <small class="posted_dt">{{ video.created | dateAgo }}</small></span>
+										</div>
+									</div>
+									<!--videoo end-->
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!--vidz_videos end-->
+
+					<div *ngIf="searchPage > -1" class="container more_items_sec text-center" style="padding-top: 25px !important; padding-bottom: 25px !important;">
+						<a (click)="showMoreSearch()" title="Show more videos" class="link">
+							<svg width="19" height="24" viewBox="0 0 19 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M18.1618 24.0001H0.838235C0.374412 24.0001 0 23.6261 0 23.1628V5.86052C0 5.39727 0.374412 5.02332 0.838235 5.02332H18.1618C18.6256 5.02332 19 5.39727 19 5.86052V23.1628C19 23.6261 18.6256 24.0001 18.1618 24.0001ZM1.67647 22.3256H17.3235V6.69773H1.67647V22.3256Z" fill="#9494A0" />
+								<g opacity="0.25">
+									<path opacity="0.25" d="M13.1324 4.18605C12.6685 4.18605 12.2941 3.81209 12.2941 3.34884V1.67442H6.70589V3.34884C6.70589 3.81209 6.33148 4.18605 5.86765 4.18605C5.40383 4.18605 5.02942 3.81209 5.02942 3.34884V0.83721C5.02942 0.373954 5.40383 0 5.86765 0H13.1324C13.5962 0 13.9706 0.373954 13.9706 0.83721V3.34884C13.9706 3.81209 13.5962 4.18605 13.1324 4.18605Z" fill="#9494A0" />
+								</g>
+								<path d="M9.50001 19.3479C9.28487 19.3479 9.06972 19.267 8.90766 19.1024L5.92634 16.1275C5.59942 15.801 5.59942 15.2707 5.92634 14.9442C6.25325 14.6177 6.78413 14.6177 7.11104 14.9442L9.50001 17.3275L11.8862 14.9442C12.2131 14.6177 12.744 14.6177 13.0709 14.9442C13.3978 15.2707 13.3978 15.801 13.0709 16.1275L10.0924 19.1024C9.93031 19.267 9.71516 19.3479 9.50001 19.3479Z" fill="#9494A0" />
+								<path d="M9.49999 18.4186C9.03617 18.4186 8.66176 18.0447 8.66176 17.5814V10.3256C8.66176 9.86236 9.03617 9.4884 9.49999 9.4884C9.96382 9.4884 10.3382 9.86236 10.3382 10.3256V17.5814C10.3382 18.0447 9.96382 18.4186 9.49999 18.4186Z" fill="#9494A0" />
+								<g opacity="0.5">
+									<path opacity="0.5" d="M15.6471 6.69764C15.1832 6.69764 14.8088 6.32369 14.8088 5.86043V4.18601H4.19118V5.86043C4.19118 6.32369 3.81677 6.69764 3.35294 6.69764C2.88912 6.69764 2.51471 6.32369 2.51471 5.86043V3.34881C2.51471 2.88555 2.88912 2.5116 3.35294 2.5116H15.6471C16.1109 2.5116 16.4853 2.88555 16.4853 3.34881V5.86043C16.4853 6.32369 16.1109 6.69764 15.6471 6.69764Z" fill="#9494A0" />
+								</g>
+							</svg>
+						</a>
+					</div>
+				</div>
+			</div>
+			<!--videso_tb_details end-->
+		</div>
+	</div>
+</section>
+
+<section id="add_flag_modal" class="form_popup modal">
+  <div class="add_flag_form" id="add_flag_form">
+    <div class="hd-lg">
+      <h2>
+        <span>Flag this channel</span>
+        <a style="position: absolute; left: 92%;" (click)="hideFlagModal()" title="">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0" />
+          </svg>
+        </a>
+      </h2>
+    </div>
+
+    <div class="operation_notify">
+      <div *ngIf="flag_add_progress > 0" class="operation_progress" [ngStyle]="{'width': flag_add_progress + '%'}" ></div>
+      <!-- <br> -->
+
+      <div class="operation_result">
+        <label *ngIf="flag_success_message && flag_success_message != ''" class="text-success">{{ flag_success_message }}</label>
+        <label *ngIf="flag_warning_message && flag_warning_message != ''" class="text-warning">{{ flag_warning_message }}</label>
+        <label *ngIf="flag_error_message && flag_error_message != ''" class="text-danger">{{ flag_error_message }}</label>
+      </div>
+    </div>
+
+    <!--hd-lg end-->
+    <div class="lg-in flag_content">
+
+      <ul>
+        <li>
+          <div class="chekbox-lg">
+            <label>
+            <input [(ngModel)]="channel_flags.inappropriate" type="checkbox" name="inapropriate">
+            <b class="checkmark"></b>
+            <b style="position: relative; left: 30px;">Inappropriate</b>
+            <p>
+              This channel does not complain with FitnessTV Terms of use policy for the section "Inapropriate contents", "Social line of conduit"
+            </p>
+            </label>
+          </div>
+        </li>
+
+        <li>
+            <div class="chekbox-lg">
+              <label>
+              <input [(ngModel)]="channel_flags.copyrighted" type="checkbox" name="copyright">
+              <b class="checkmark"></b>
+              <b style="position: relative; left: 30px;">Copyrighted</b>
+              <p>
+                This channel is copyrighted by his owner and does not complain with FitnessTV Terms of use policy for the section "Authors rights & copyrights"
+              </p>
+            </label>
+          </div>
+        </li>
+
+        <li>
+          <b style="position: relative;">Comments</b>
+          <textarea placeholder="Any comments" style="padding: 10px 15px !important; width: 100% !important; height: 100px !important;" class="textarea-custom-class" [(ngModel)]="channel_flags.comment"></textarea>
+        </li>
+      </ul>
+
+      <button (click)="flagChannel()" class="button-custom-class">
+        Flag the content
+      </button>
+
+    </div>
+    <!--fr-ps end-->
+  </div>
+  <!--login end--->
+</section>
+
+<section id="video_info_modal" class="form_popup modal" style="height: 420px; top: -100px;">
+  <div class="video_info_form" id="video_info_form">
+    <div class="hd-lg">
+      <h2>
+				<span>Video Info</span>
+        <a style="position: absolute; left: 92%;" (click)="hideVideoInfoModal()" title="">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+        </svg>
+        </a>
+      </h2>
+		</div>
+		<div class="lg-in flag_content" style="text-align: unset; height: 280px;">
+			<h4 style="color: white;" style="margin-bottom: 0px !important">
+				<strong> Title: </strong> {{ video_info.title }}
+				<br>
+				<br>
+				<strong> Description: </strong>
+				<br>
+			</h4>
+			<p class="description_paragraph" style="color: white;">{{ video_info.description }}</p>
+		</div>
+		<div style="height: 50px !important; text-align: center; margin-top: 15px; margin-bottom: 10px; color: white;">
+			<a (click)="hideVideoInfoModal()" title="" class="close_button btn-cancel link">
+				Close
+			</a>
+		</div>
+	</div>
+</section>

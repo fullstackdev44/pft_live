@@ -1,0 +1,13 @@
+@media (max-width: 480px) {
+  .text_area_for_mobile{
+    width: calc(100% - 0.2em) !important;
+    height: 160px !important;
+    overflow: auto;
+  }
+}
+
+.text_area_for_mobile{
+  width: 500px;
+  height: 350px;
+  overflow: auto;
+}

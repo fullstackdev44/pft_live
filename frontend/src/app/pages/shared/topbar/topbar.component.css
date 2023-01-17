@@ -1,0 +1,19 @@
+.side_menu_link_active {
+  color: #e4a128;
+}
+
+.side_menu_svg_active {
+  fill: #e4a128 !important;
+}
+
+.unread_notification_class_number{
+  background-color: red;
+  border-radius: 50%;
+  position: relative;
+  left: 14px;
+  color: white;
+  font-size: 13px;
+  margin-top: -18px;
+  width: 15px;
+  text-align: center;
+}

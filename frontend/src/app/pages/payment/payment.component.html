@@ -1,0 +1,147 @@
+<section class="form_popup" style="overflow-y: auto;">
+  <div class="payment_modal_form" id="payment_modal_form">
+
+    <div class="hd-lg" style="padding: 22px 0 10px">
+      <img  class="text-center" src="/assets/images/stripe-badge/outline-light/powered_by_stripe.svg" alt="Powered by Stripe">
+
+       <div class="row">
+         <div class="col-3">
+           <h2>
+           <a class="link" *ngIf="!before_payment" (click)="before_payment=true; payment_has_been_posted = false; payment_error_message = ''">
+             &lt;&lt;Back
+           </a>
+           </h2>
+         </div>
+          <div class="col-6"><h2>Payment</h2></div>
+          <div class="col-3">
+             <h2>
+            <a (click)="hidePaymentdModal()" title="">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+            </svg>
+           </a>
+           </h2>
+          </div>
+        </div>
+    </div>
+
+    <div *ngIf="payment_success_message" align="center" >
+      <div class="alert alert-success">
+        <strong>Success!</strong>
+      </div>
+
+      <div class="popup-message">
+       <strong class="msg-icon">
+         <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+           <path d="M28 0C12.5611 0 0 12.5611 0 28C0 43.4389 12.5611 56 28 56C43.4389 56 56 43.4389 56 28C56 12.5611 43.4389 0 28 0ZM28 53.6667C13.8473 53.6667 2.3333 42.1527 2.3333 28C2.3333 13.8473 13.8473 2.3333 28 2.3333C42.1527 2.3333 53.6667 13.8473 53.6667 28C53.6667 42.1527 42.1527 53.6667 28 53.6667Z" fill="#9494A0"></path>
+           <path d="M42.3414 16.6752L22.1663 36.8504L11.3245 26.0086C10.8688 25.5529 10.1305 25.5529 9.67483 26.0086C9.21907 26.4644 9.21907 27.2027 9.67483 27.6583L21.3415 39.325C21.5694 39.5529 21.868 39.6668 22.1664 39.6668C22.4649 39.6668 22.7634 39.5529 22.9913 39.325L43.9913 18.325C44.4471 17.8693 44.4471 17.131 43.9913 16.6753C43.5355 16.2196 42.7972 16.2196 42.3414 16.6752Z" fill="#9494A0"></path>
+         </svg>
+       </strong>
+       <h3>Thank you for your {{ show_message == true ? 'donation' : 'payment' }} of ${{ amount | number : '1.2-2'}}.</h3>
+     </div>
+
+      <button class="button-custom-class" style="margin-bottom: 15px;" type="submit" (click)="hidePaymentdModal()"> Close  </button>
+    </div>
+
+    <div *ngIf="payment_error_message"   align="center" >
+      <div class="alert alert-danger">
+        <strong>Oops! Something went wrong!</strong>
+      </div>
+
+      <div class="popup-message">
+       <strong class="msg-icon">
+         <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M28 0C12.5611 0 0 12.5611 0 28C0 43.4389 12.5611 56 28 56C43.4389 56 56 43.4389 56 28C56 12.5611 43.4389 0 28 0ZM28 53.6667C13.8473 53.6667 2.3333 42.1527 2.3333 28C2.3333 13.8473 13.8473 2.3333 28 2.3333C42.1527 2.3333 53.6667 13.8473 53.6667 28C53.6667 42.1527 42.1527 53.6667 28 53.6667Z" fill="#9494A0"></path>
+					<path d="M39.3248 16.6753C38.869 16.2196 38.1307 16.2196 37.6751 16.6753L27.9999 26.3505L18.3248 16.6754C17.869 16.2197 17.1307 16.2197 16.6751 16.6754C16.2193 17.1312 16.2193 17.8695 16.6751 18.3251L26.3502 28.0002L16.6751 37.6753C16.2193 38.1311 16.2193 38.8694 16.6751 39.325C16.9029 39.5528 17.2015 39.6668 17.5 39.6668C17.7985 39.6668 18.097 39.5528 18.3249 39.325L27.9999 29.6499L37.675 39.325C37.9028 39.5528 38.2014 39.6668 38.4999 39.6668C38.7984 39.6668 39.0968 39.5528 39.3248 39.325C39.7805 38.8692 39.7805 38.131 39.3248 37.6753L29.6496 28.0002L39.3247 18.3251C39.7804 17.8694 39.7804 17.1311 39.3248 16.6753Z" fill="#9494A0"></path>
+				</svg>
+       </strong>
+       <h3>There was an error processing your payment.</h3>
+       <span style="color:#C3C3D2">{{ payment_error_message }}</span>
+     </div>
+
+      <button class="button-custom-class" style="margin-bottom: 15px;" type="submit" (click)="before_payment=true; payment_has_been_posted = false; payment_error_message = ''; billing.name = ''; billing.email = ''; donation_message = ''; amount = (show_message == true ? 25 : video.price)"> Retry  </button>
+    </div>
+
+    <div class="user-account-pr" *ngIf="before_payment && !payment_has_been_posted">
+      <div class="form-row form-sec">
+       <div class="col">
+         <span *ngIf="!checkIfDecimal(amount)" class="text-amount">$ {{ amount | number : '1.2-2'}}</span>
+         <span *ngIf="checkIfDecimal(amount)" class="text-amount">$ {{ amount }}</span>
+         <h2 *ngIf="!video_priced" class="form-header">Select or enter amount ($)</h2>
+         <div *ngIf="!video_priced" class="form_field">
+           <button (click)="setAmount(5)" [disabled]="video_priced" type="button" class="btn btn-primary btn-amount" name="button">$5</button>
+           <button (click)="setAmount(10)" [disabled]="video_priced" type="button" class="btn btn-primary btn-amount" name="button">$10</button>
+           <button (click)="setAmount(25)" [disabled]="video_priced" type="button" class="btn btn-primary btn-amount" name="button">$25</button>
+           <button (click)="setAmount(50)" [disabled]="video_priced" type="button" class="btn btn-primary btn-amount" name="button">$50</button>
+           $
+           <input id="amount" [disabled]="video_priced" [(ngModel)]="amount" class="input-custom-class input-amount" style="box-shadow: none !important" placeholder="amount" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col form-sec">
+          <!-- <label for="name" style="color: #C3C3D2 !important;">Name</label> -->
+          <h2 class="form-header">Name on card</h2>
+          <div class="form_field">
+            <input id="full_name"  [(ngModel)]="billing.name" placeholder="name" class="input-payment-class" style="box-shadow: none !important" required>
+          </div>
+         </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col form-sec">
+          <!-- <label for="email" style="color: #C3C3D2 !important;">Email</label> -->
+          <h2 class="form-header">Email</h2>
+          <div class="form_field">
+              <input id="email" [(ngModel)]="billing.email" placeholder="email" class="input-payment-class" style="box-shadow: none !important" required>
+          </div>
+         </div>
+      </div>
+
+      <div *ngIf="show_message == true" class="form-row">
+        <div class="col form-sec">
+          <h2 class="form-header">Message for the donation</h2>
+          <div class="form_field">
+            <textarea [(ngModel)]="donation_message" placeholder="donation message" maxlength="500" type="text" style="padding: 10px 15px !important; height: 120px !important;" class="textarea-payment-class" name="content"></textarea>
+          </div>
+         </div>
+      </div>
+
+     <!--
+      <div class="form-row">
+        <div class="col form-sec">
+          <h2 class="form-header">Phone (optional)</h2>
+          <div class="form_field">
+            <input id="phone" name="phone" [(ngModel)]="billing.phone" placeholder="" class="input-custom-class" style="box-shadow: none !important" required>
+          </div>
+         </div>
+      </div>
+      -->
+
+      <div class="form-row">
+         <!-- <button [disabled]="!(billing.name && billing.email)" class="button-custom-class {{ billing.name && billing.email ? 'active_next_button' : 'disable_next_button' }}" style="position: relative; left: 110px; margin-bottom: 25px;" type="submit" (click)="initiatePayment()"> Next </button> -->
+         <button class="button-custom-class" style="position: relative; left: 110px; margin-bottom: 25px;" type="submit" (click)="initiatePayment()"> Next </button>
+      </div>
+    </div>
+
+    <div  class="user-account-pr" *ngIf="!before_payment && !payment_has_been_posted">
+      <span *ngIf="!checkIfDecimal(amount)" class="text-amount">$ {{ amount | number : '1.2-2'}}</span>
+      <span *ngIf="checkIfDecimal(amount)" class="text-amount">$ {{ amount }}</span>
+
+      <form action="/charge" method="post" id="payment-form">
+          <div class="form-row">
+           <label for="card-element form-header" style="color: #C3C3D2 !important; margin-bottom: 15px;">Please enter your card infos below</label>
+            <div id="card-element"></div>
+            <div id="card-errors" style="color: red;" role="alert"></div>
+          </div>
+
+          <br/>
+
+          <button style="margin-top: 25px;" type="submit"> Pay  </button>
+      </form>
+    </div>
+
+
+  </div>
+</section>

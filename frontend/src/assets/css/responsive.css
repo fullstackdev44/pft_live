@@ -1,0 +1,486 @@
+
+
+@media (max-width: 1600px) {
+	.form_popup {height: 90vh;}
+}
+@media (max-width: 1450px) {
+	header .container {max-width: 1380px;padding: 0;}
+	.menu_logo {width: 420px;}
+	.search_form {width: 540px;}
+	.search_form form {width: 100%;margin: 0;}
+	header .container {padding: 0 15px;}
+	.chat_view {min-width: 360px;}
+}
+
+
+@media (max-width: 1366px) {
+	.search_form {width: 37%;}
+	/*.shr_links {float: right;}*/
+	/*.vid_status {margin-top: 10px;width: 100%;}*/
+	.menu_logo {width: 30%;}
+	.shr_links li {margin-right: 10px;}
+	.video_main .row .col-lg-9 {
+		max-width: 70%;
+	}
+	.video_main .row .col-lg-3 {
+		max-width: 30%;
+	}
+
+	/* playlist list section ui in player */
+	/* .playlist_list_ui_responsive { height: 403px !important; } */
+	.playlist_list_ui_responsive { height: 419px !important; }
+} 
+@media (max-width: 1200px) {
+	.search_form {width: 35%;}
+	/*.vid_status {margin-top: 10px;width: 100%;}*/
+	.menu_logo {width: 30%;}
+	.container {max-width: 100%;padding: 0 15px;}
+	.video_info > h4 {font-size: 14px;}
+	.btm_bar, .btm_bar .container {padding: 0;}
+	.btm_bar_content {display: flex; flex-wrap: nowrap; overflow-x: scroll; padding: 22px 40px 15px 15px; }
+	.shr_links {float: none; flex: 0 0 auto; }
+	nav {float: none; flex: 0 0 auto; }
+	.vid_status {float: right; flex: 0 0 auto; padding-left: 150px; }
+	.video_main .row .col-lg-9 {max-width: 65%;}
+	.video_main .row .col-lg-3 {max-width: 35%;}
+	.amazon {padding-left: 0;}
+	.sm-vidz {font-size: 14px;}
+	.aut-vid {font-size: 14px;}
+	.abt-mk .info-pr-sec .vc_info.pr {padding-left: 20px;}
+	.abt-mk p {padding-left: 0;}
+	.mk-ct {padding-left: 0;}
+	.abt-mk > a {padding-left: 0;}
+	.video-file {padding: 100px 0;}
+	.youtube-dwn {padding: 100px 0;}
+	.latest-vid-option {padding: 21px 20px 25px 30px;}
+	.blocked-users {padding: 42px 20px 25px 30px;}
+	.blocked-vcp {padding: 29px 20px 26px 30px;}
+	.play_ms {right: 20px;}
+	.manage-sub {padding: 13px 20px 0 30px;}
+	.user-account .sidebar {padding-left: 20px;}
+	.info-pr-sec .search_form {width: 225px;}
+	.videso_section .vc_info.pr {padding-left: 20px;}
+	.wk-info {padding-top: 0;}
+	.ab-donaters ul li {margin-right: 25px;}
+	.close-search {right: 20px;}
+
+	/*copied from his new template*/
+	/*used in withdrawal user-account*/
+	.payment-history-head {padding: 26px 29px 0 0;}
+	.nextt {padding-right: 20px;}
+	/* -------------- end withdrawal ------------------ */
+
+	/* playlist list section ui in player */
+	/* .playlist_list_ui_responsive { height: 403px !important; } */
+	.playlist_list_ui_responsive { height: 419px !important; }
+}
+
+@media (max-width: 991px) {
+	.video-js{
+		height: inherit!important;
+		width: 100%!important;
+	}
+	.chat_view{
+		height:410px!important;
+	}
+	.chat_msgs{
+		height:240px!important;
+	}
+	#coach-media-div video{
+		height: auto!important;
+		margin:0!important;
+		width: 100%!important;
+	}
+	.btn-sbmit button{
+		margin:10px 10px!important;
+	}
+	.search_form form input {display: none;}
+	.search_form form button {position: static;}
+	.menu_logo {width: 90%;}
+	.menu {width: 10%;}
+	.logo {margin-left: 0;width: 89%;text-align: center;}
+	.search_form {width: 10%;text-align: right;position: relative;top: 4px;}
+	.vcp_inf {margin-bottom: 20px;}
+	.video_info > h3 {font-size: 13px;line-height: 18px;}
+	.video_info > h4 {font-size: 14px;}
+	.posted_dt, .video_info > span {font-size: 12px;}
+	.vidz_list.text-center .video_info > h4 {font-size: 14px;}
+	.vc_info h4 {font-size: 14px;}
+	.side_links {display: none;}
+	.vid_thumbainl.br.ms {display: block;}
+	.history-lst .search_form {display: none;}
+	.uploading-lst > ul li {display: inline-block;margin-right: 25px;}
+	.abt-upload-sec ul {margin-bottom: 20px;}
+	.uploading-lst > ul li a {opacity: 0.6;}
+	.video_main .row .col-lg-9 {max-width: 100%;}
+	.video_main.via_chat .vid-pr {height: auto;}
+	.cmt-bx {padding-bottom: 60px;}
+	.sm-vidz {font-size: 16px;}
+	.aut-vid {font-size: 16px;}
+	.videoo-list-ab {display: flex;flex-wrap: wrap;margin: 0 -10px;}
+	.sidebar .videoo-list {flex: 0 0 33%;margin-bottom: 30px;padding: 0 10px;}
+	.sm-vidz {margin-bottom: 25px;}
+	.fl_wd {width: 100%;}
+	.video_main .row .col-lg-3.fl_wd {max-width: 100%;margin-top: 30px;}
+	.video_main .vid-pr {height: auto;}
+	.playlist_hd {padding-right: 0;}
+	.upload-detail .video_info > h3 {font-size: 15px;}
+	.upload-detail .video_info.sr {padding-top: 0;}
+	.upload-detail .video_info.sr p {font-size: 14px;}
+	.upload-videooz::before {display: none;}
+	.video-file {padding-bottom: 0;}
+	.user-account .vid_thumbainl.br.ms {display: table-cell;width: 100%;}
+	.latest-vid-option {padding: 21px 15px 25px 15px;}
+	.tb-pr {padding: 29px 15px 25px 15px;}
+	.blocked-users {padding: 42px 15px 25px 15px;}
+	.blocked-vcp {padding: 29px 15px 26px 15px;}
+	.change-pswd {padding: 42px 15px 0 15px;}
+	.manage-sub {padding: 13px 15px 0 15px;}
+	.account-details {padding: 41px 15px 0 15px;}
+	.info-pr-sec .search_form {display: none;}
+	.stats {padding-top: 20px;}
+	.amz_products_content .mg-inf {margin-bottom: 25px;}
+	.wk-info {padding-top: 20px;}
+	.br-list li {width: calc(100% / 4);}
+	.ab-donaters ul li {margin-right: 12px;}
+	.search-page.active {opacity: 1; visibility: visible; -webkit-transform: scale(1); -moz-transform: scale(1); -ms-transform: scale(1); -o-transform: scale(1); transform: scale(1); }
+	.side_menu .dp_down {display: block;}
+	.chat_view {min-width: 100%;}
+	.video_main .row .col-lg-3.ful-dt {max-width: 100%;}
+	.amz_prods {margin-bottom: 60px;border-bottom: 0;}
+	.video-file {padding-bottom: 100px;border-bottom: 1px solid #363643;width: 100%;}
+	.form_popup {height: 100%;}
+	.form_dvv {display: block;}
+	/*.hp_1 .side_menu .dp_ul li.live_dv {margin-top: 0;}*/
+
+	/*copied from his new template*/
+	/*used in withdrawal user-account*/
+	.table-content.pb-200 {padding-bottom: 0;}
+	.nextt {padding-bottom: 100px;padding-right: 20px;}
+	/* -------------- end withdrawal ------------------ */
+
+	/* Adding Message and Notification on top bar on mobile view */
+	.menu_logo {width: 65%;}
+	.search_form {width: auto; right: -110px;}
+	.side_links {display: block;}
+	.side_links .user_contrl.link {display: none;}
+	.side_links .mg-15 {display: none;}
+	.side_links .for_access_from_css_only {display: none;}
+	.side_links .notification {margin-right: 15px; right: -10px;}
+	.side_links .msg {margin-right: 15px; right: 10px;}
+	.side_links .msg .notification-box.message {right: -25px;}
+	/* -------- End Message and Notification top bar pop up for mobile ---------- */
+
+	/* Resolving live show more/less spacing */
+	.sidebar.mgt-50 {margin-top: 0px;}
+	.abt-mk {border-bottom: 1px solid #363643 !important}
+	.vidz-prt {margin-top: 25px;}
+
+	/* Remove "Free to Join" and "Sign up" button on mobile view */
+	.side_links ul li.user_form {display: none;}
+	.user_offline_search_form_position { width: auto; right: -55px !important;}
+	.user_offline_menu_logo_position {width: 90% !important;}
+
+	/* Moved search icon on left side as Eldad request */
+	.user_online_search_form_position { width: auto; right: 78% !important;}
+	.user_online_menu_logo_position {width: 85% !important;}
+}
+
+
+@media (max-width: 768px) {
+	.video_info > h3 {font-size: 15px;line-height: 22px;}
+	.video_info > h4 {font-size: 15px;}
+	.ab-history .vid_thumbainl.ms {width: 35%;}
+	.tab-history .videoo .video_info.ms {vertical-align: top;}
+	.sidebar .videoo-list {flex: 0 0 50%;}
+	.vcp_inf.cr {width: 100%;}
+	.chan_cantrz {width: 100%;margin-top: 30px;}
+	.abt-mk .info-pr-sec {margin-bottom: 25px;}
+	.mg-inf {margin-bottom: 20px;}
+	.amazon {padding-bottom: 20px;}
+	.pr_links {width: 100%;text-align: left;margin-top: 20px;}
+	.pr_links::before {display: none;}
+	.ab-updates .videoo {margin-bottom: 25px;}
+	.upload-detail .video_info.sr {width: 100%;padding-left: 0;padding-top: 25px;}
+	.form_field {margin-bottom: 20px;}
+	.catgss_list li {width: 50%;}
+	.video-file {padding: 0 0 50px;}
+	.youtube-dwn {padding: 70px 0;}
+	.icon-list {text-align: center;padding-top: 30px;}
+	.videso_section .videoo {margin-bottom: 25px;}
+	.form_popup {overflow-y: auto;}
+
+	/*copied from his new template*/
+	/*used in withdrawal user-account*/
+	.payment-history-sec.earningss .selected-filter {margin-top: 0;}
+	.payment-history-sec .sclted-field {float: left;}
+	.payment-history-sec.earningss .selected-filter {width: auto;margin-top: -10px;}
+	.tble-status ul li {margin-right: 50px;}
+	.tble-status {margin-bottom: 25px;}
+	.withdraw {margin-right: 0;}
+	.withdraw {margin-top: -10px;}
+	.popup-div {width: calc(100% - 30px)}
+	.popup-div .channel-pop .vcp_inf {width: 50%;}
+	.popup-div .frm-field .form_field {margin-bottom: 0;}
+	/* -------------- end withdrawal ------------------ */
+
+	/* channel profile banner image for mobile view */
+	.img-pr-sec{background-size: 100% 100% !important;}
+
+	/* Adding Message and Notification on top bar on mobile view */
+	.menu_logo {width: 65%;}
+	.search_form {width: auto; right: -60px;}
+	.side_links {display: block;}
+	.side_links .user_contrl.link {display: none;}
+	.side_links .mg-15 {display: none;}
+	.side_links .for_access_from_css_only {display: none;}
+	.side_links .notification {margin-right: 15px; right: -10px;}
+	.side_links .msg {margin-right: 15px; right: 10px;}
+	.side_links .msg .notification-box.message {right: -25px;}
+	/* -------- End Message and Notification top bar pop up for mobile ---------- */
+
+	/* Resolving live show more/less spacing */
+	.sidebar.mgt-50 {margin-top: 0px;}
+	.abt-mk {border-bottom: 1px solid #363643 !important}
+	.vidz-prt {margin-top: 25px;}
+
+	/* Remove "Free to Join" and "Sign up" button on mobile view */
+	.side_links ul li.user_form {display: none}
+	.user_offline_search_form_position { width: auto; right: -35px !important;}
+	.user_offline_menu_logo_position {width: 90% !important;}
+
+	/* Moved search icon on left side as Eldad request */
+	.user_online_search_form_position { width: auto; right: 73% !important;}
+	.user_online_menu_logo_position {width: 80% !important;}
+}
+
+
+
+@media (max-width: 576px) {
+	.video_info > h3 {font-size: 14px;}
+	.video_info > h4 {font-size: 16px;}
+	.tab-history .videoo .video_info.ms > h3 {width: 80%;}
+	.mk-ct ul {width: 68%;float: right;}
+	.mk-ct li h4 {width: 31%;}
+	.abt-mk > a {margin-top: 35px;}
+	.info-pr > span {width: 100%;}
+	.rt-cmt svg {top: -25px;right: 115px;}
+	.youtube-dwn {padding: 50px 0;}
+	.user-account .vid_thumbainl.br.ms {float: left;width: 100%;}
+	.user-account .tab-history .videoo .video_info.ms {float: left;width: 100%;padding-left: 0;text-align: center;}
+	.user-account .tab-history .videoo .video_info.ms > h3 {width: 100%;}
+	.tb-pr {padding: 29px 15px 25px 15px;}
+	.user-account .video_info > h3 {font-size: 16px;}
+	.user-account .video_info > span {margin-top: 10px;font-size: 15px;}
+	.blocked-pr .vc_info.st {padding-left: 15px;}
+	.play_ms {display: none;}
+	.active-mb {float: right;}
+	.videso_section .viddz .videoo {margin-bottom: 30px;}
+	.videso_section .posted_dt {font-size: 14px;margin-top: 10px;}
+	.history-lst.tbY {overflow: hidden;}
+	.history-lst .nav-tabs {display: flex;flex-wrap: nowrap;float: none;}
+	.history-lst .nav-tabs .nav-item {flex: 0 0 auto;}
+	.br-list li {width: calc(100% / 2);}
+	.form_popup {width: 100%;padding: 0 20px;overflow-y: auto;}
+	.side_menu {z-index: 9999999999999;}
+	.mCSB_scrollTools {right: -7px;}
+	body.overlay .wrapper {display: none; }
+
+	/*copied from his new template*/
+	/*used in withdrawal user-account*/
+	.payment-history-sec.earningss .selected-filter {width: 100%;margin-top: 20px;}
+	.payment-history-sec.earningss .sclted-field select {text-align: center;}
+	.payment-history-head > h3 {padding-left: 20px;}
+	.withdraw {width: 100%;padding-left: 29px;margin-top: 10px;}
+	.withdraw > a {width: 100%;padding: 0 23px;}
+	.withdraw > a {text-align: center;}
+	.withdraw {padding-left: 20px;}
+	.popup-div .channel-pop .vcp_inf {width: 100%;margin-bottom: 20px;}
+	.popup-div .frm-field .form_field {margin-bottom: 15px;}
+	/* -------------- end withdrawal ------------------ */
+
+	/* channel profile banner image for mobile view */
+	.img-pr-sec{background-size: 100% 100% !important;}
+
+	/* Adding Message and Notification on top bar on mobile view */
+	.menu_logo {width: 65%;}
+	.search_form {width: auto; right: -50px;}
+	.side_links {display: block;}
+	.side_links .user_contrl.link {display: none;}
+	.side_links .mg-15 {display: none;}
+	.side_links .for_access_from_css_only {display: none;}
+	.side_links .notification {margin-right: 15px; right: -10px;}
+	.side_links .msg {margin-right: 15px; right: -10px;}
+	.side_links .msg .notification-box.message {width: 300px; right: -25px;}
+	.side_links .notification .notification-box.notification {width: 300px;}
+	/* -------- End Message and Notification top bar pop up for mobile ---------- */
+
+	/* Resolving live show more/less spacing */
+	.sidebar.mgt-50 {margin-top: 0px;}
+	.abt-mk {border-bottom: 1px solid #363643 !important}
+	.vidz-prt {margin-top: 25px;}
+
+	/* Fix live timer size for mobile view */
+	.timer_container .timer{ font-size: 2em !important}
+
+	/* Remove "Free to Join" and "Sign up" button on mobile view */
+	.side_links ul li.user_form {display: none;}
+	.user_offline_search_form_position { width: auto; right: -25px !important;}
+	.user_offline_menu_logo_position {width: 90% !important;}
+
+	/* Moved search icon on left side as Eldad request */
+	.user_online_search_form_position { width: auto; right: 69% !important;}
+	.user_online_menu_logo_position {width: 77% !important;}
+}
+
+
+
+@media (max-width: 480px) {
+	.logo {width: 88%;}
+	.full_wdth {width: 100%;max-width:100%;flex: 0 0 100%;}
+	.video_info > h3 {font-size: 16px;line-height: 23px;}
+	.video_info > h4 {font-size: 14px;}
+	.posted_dt, .video_info > span {font-size: 14px;}
+	.tab-history .videoo .vid_thumbainl.ms {display: block;}
+	.tab-history .videoo .video_info.ms {display: block;padding-left: 0;}
+	.ab-history .vid_thumbainl.ms {width: 100%;}
+	.tab-history .videoo .rm_cl {display: none;}
+	/*.history-lst .nav-tabs {display: flex;flex-wrap: nowrap;overflow-x: scroll;}*/
+	.history-lst .nav-tabs {display: flex;flex-wrap: nowrap;overflow: hidden;}
+	.history-lst .nav-tabs .nav-item {flex: 0 0 auto;}
+	.uploading-lst > ul li {display: block;margin: 0;margin-bottom: 10px;}
+	.sidebar .videoo-list {flex: 0 0 100%;}
+	.abt-mk > a {margin-top: 45px;}
+	.pr_links li {margin-bottom: 20px;}
+	.chan_cantrz li {display: block;width: 100%;margin-bottom: 15px;}
+	.chan_cantrz li a {width: 100%;display: block;}
+	.vid-info h3 {font-size: 18px;}
+	.amz-hd {width: 60%;}
+	.vcp_inf.pc form {margin-top: 40px;}
+	.vcp_inf.pc form input {padding: 6px 100px 0 0;}
+	.rt-cmt svg {top: -25px;right: 0;}
+	.coments p {padding-right: 0;}
+	.coments {padding-left: 0;float: left;margin-top: 25px;}
+	.playlist_view {min-width: 100%;}
+	.playlist_view .vidz_row .video_info > h3 {padding-right: 0;}
+	.playlist_view .vidz_row .video_info {padding-left: 15px;}
+	.mCSB_inside > .mCSB_container {margin-right: 0;}
+	.playlist_hd > ul li {margin-right: 7px;}
+	.playlist_hd {padding-right: 30px;}
+	.playlist_view .video_info > h3 {font-size: 12px;line-height: 20px;}
+	.playlist_view .vidz_row .video_info > h4 {font-size: 12px;}
+	.playlist_hd > ul {display: none;}
+	.upload-detail .vid_thumbainl.tr {width: 100%;}
+	.catgss_list li {width: 100%;}
+	.abt-vidz ul li {margin-bottom: 15px;}
+	.abt-vidz {padding: 30px 0;}
+	.youtube-dwn {width: 100%;padding: 50px 30px 30px;}
+	.video-file {width: 100%;}
+	.youtube-dwn form input[type="text"] {width: 100%;}
+	.blocked-users form {width: 100%;}
+	.blocked-users form input {width: 100%;margin-bottom: 15px;}
+	.blocked-users form button {float: none;}
+	.ch-pswd input {width: 100%;}
+	.blocked-pr .vc_info.st {float: left;width: 100%;padding-left: 0;margin-top: 15px;}
+	.active-mb {float: none;margin-top: 15px;display: inline-block;}
+	.mange_sub .vcp_inf {width: 100%;}
+	.mange_sub .vc_hd {display: inline-block;float: none;}
+	.mange_sub .blckd_list {text-align: center;}
+	.account_details_content {width: 100%;}
+	.user-account .sidebar {text-align: center;padding-left: 0;}
+	.blocked-users {text-align: center;}
+	.blocked-pr .vcp_inf {width: 100%;text-align: center;}
+	.blocked-pr .vc_hd {float: none;display: inline-block;}
+	.change-pswd {text-align: center;}
+	.account-details {text-align: center;}
+	.wk-info h2 {font-size: 19px;}
+	.lg-in ul li {margin-right: 0;margin-bottom: 20px;}
+	.lg-in ul {margin-bottom: 20px;}
+
+	/*copied from his new template*/
+	/*used in withdrawal user-account*/
+	.payment-history-head {text-align: center;}
+	.payment-history-head > h3 {float: none;}
+	.payment-history-head {padding-left: 29px;}
+	.payment-history-head > h3 {padding-left: 0;}
+	.tble-status ul li {margin-right: 0;width: 100%;margin-bottom: 30px;}
+	.tble-status {margin-bottom: 0;}
+	.tble-status  {text-align: center;padding: 0;}
+	.withdraw {padding-left: 0;}
+	.popup-div .price-footer ul li {display: block;margin-bottom: 10px;}
+	.amount-info ul li {width: 100%;margin: 0;margin-bottom: 15px;}
+	.amount-info ul li:last-child {margin-bottom: 0;}
+	.fields-fter {text-align: center;}
+	.fields-fter > h3 {float: none;margin-bottom: 15px;top: 0;}
+	.fields-fter button {float: none;}
+	.vid_thumbainl.ms { width: 100% !important; } /*to resolve mobile search video thumbnail, playlist thumbnail, channel thumbnail */
+	/* -------------- end withdrawal ------------------ */
+
+	/* channel profile banner image for mobile view */
+	.img-pr-sec{background-size: 100% 100% !important;}
+
+	/* Adding Message and Notification on top bar on mobile view */
+	.menu_logo {width: 62%;}
+	.search_form {width: auto; right: -10px;}
+	.side_links {display: block;}
+	.side_links .user_contrl.link {display: none;}
+	.side_links .mg-15 {display: none;}
+	.side_links .for_access_from_css_only {display: none;}
+	.side_links .notification {margin-right: 15px; right: -10px;}
+	.side_links .msg {margin-right: 15px; right: -10px;}
+	.side_links .msg .notification-box.message {width: 300px; right: -25px;}
+	.side_links .notification .notification-box.notification {width: 300px;}
+	/* -------- End Message and Notification top bar pop up for mobile ---------- */
+
+	/* Resolving live show more/less spacing */
+	.sidebar.mgt-50 {margin-top: 0px;}
+	.abt-mk {border-bottom: 1px solid #363643 !important}
+	.vidz-prt {margin-top: 25px;}
+
+	/* Fix live timer size for mobile view */
+	.timer_container .timer{ font-size: 2em !important}
+
+	/* Fixing "Free to Join" and "Sign up" button on mobile view between 320px to 480px */
+	/* .side_links ul li.user_form {margin-right: 10px} */
+
+	/* Remove "Free to Join" and "Sign up" button on mobile view */
+	.side_links ul li.user_form {display: none;}
+	.user_offline_search_form_position { width: auto; right: -10px !important;}
+	.user_offline_menu_logo_position {width: 90% !important;}
+
+	/* Start ---------------- Moved search icon on left side as Eldad request */
+	.user_online_search_form_position { width: auto; right: 80% !important;}
+	.user_online_menu_logo_position {width: 85% !important;}
+
+	.side_links { right: -10px !important; position: relative !important; top: -30px !important;}
+	.search_form { right: 79% !important;}
+	.menu_logo { width: 90% !important;}
+	.top_header_content { height: 34px !important;}
+	.btm_bar_content { width: 100% !important}
+
+	.user_online_btm_bar_mobile_view { height: 68px !important; }
+	.user_online_container_mobile_view { position: relative !important; top: -15px !important;}
+	/* End ------------------ Moved search icon on left side as Eldad request */
+}
+
+/* I added this, It seems that Eldad check smallest screen not even in his template */
+@media (max-width: 320px) {
+	.menu_logo {width: 95%;}
+	.search_form {width: auto; right: -10px;}
+
+	/* Remove "Free to Join" and "Sign up" button on mobile view */
+	.side_links ul li.user_form {display: none;}
+	.user_offline_search_form_position { width: auto; right: -10px !important;}
+	.user_offline_menu_logo_position {width: 90% !important;}
+}
+
+/* I added this, It seems that Eldad check smallest screen not even in his template */
+@media (max-width: 280px) {
+	.menu_logo {width: 100%;}
+	.search_form {width: auto; right: -10px;}
+
+	/* Remove "Free to Join" and "Sign up" button on mobile view */
+	.side_links ul li.user_form {display: none;}
+	.user_offline_search_form_position { width: auto; right: -10px !important;}
+	.user_offline_menu_logo_position {width: 90% !important;}
+}

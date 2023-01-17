@@ -1,0 +1,366 @@
+<div class="latest-vid-option">
+	<a [routerLink]="['/user-account/playlist']" title="">
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<g id="24 / arrows / circle-arrow-left">
+				<path id="icon" fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM17 11H10.4142L12.7071 8.70711L11.2929 7.29289L6.58579 12L11.2929 16.7071L12.7071 15.2929L10.4142 13H17V11Z" fill="#9494A0"/>
+			</g>
+		</svg>
+	</a>
+
+	<h2 class="hd-op"> Title: <label *ngIf="edit_title == false || edit_title == undefined"> &nbsp;&nbsp; {{ playlist.title }} &nbsp;&nbsp;&nbsp;&nbsp;</label>
+		<a (click)="edit_title = true; old_title_value = playlist.title" *ngIf="edit_title == false || edit_title == undefined" title="edit playlist name">
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M16.4374 2C17.0921 2 17.7197 2.26142 18.1781 2.72342L21.279 5.82432C21.7407 6.286 22.0001 6.91217 22.0001 7.56508C22.0001 8.21799 21.7407 8.84416 21.279 9.30584L9.95751 20.6238C9.25902 21.4295 8.2689 21.9245 7.1346 22.0023H2V21.0023L2.00325 16.7873C2.08844 15.7328 2.57867 14.7523 3.3265 14.0934L14.6954 2.72463C15.1564 2.26083 15.7834 2 16.4374 2ZM7.06398 20.0048C7.59821 19.967 8.09549 19.7184 8.49479 19.2616L16.0567 11.6997L12.3023 7.94519L4.6961 15.5496C4.29095 15.9079 4.04031 16.4092 4 16.8678V20.0029L7.06398 20.0048ZM13.7167 6.53115L17.4709 10.2855L19.8648 7.89162C19.9514 7.80502 20.0001 7.68756 20.0001 7.56508C20.0001 7.4426 19.9514 7.32514 19.8648 7.23854L16.7611 4.13486C16.6755 4.04855 16.5589 4 16.4374 4C16.3158 4 16.1992 4.04855 16.1136 4.13486L13.7167 6.53115Z" fill="#9494A0"/>
+			</svg>
+		</a>
+
+		<input *ngIf="edit_title == true" type="text" [(ngModel)]="playlist.title" class="input-custom-class" name="channel_name" placeholder="enter channel name">&nbsp;&nbsp;
+		<button *ngIf="edit_title == true && playlist.title" class="button-custom-class" (click)="updatePlaylistTitleOrChannel(); edit_title=false;"> Update </button>&nbsp;&nbsp;
+		<button *ngIf="edit_title == true" class="button-custom-class" (click)="edit_title=false; playlist.title = old_title_value"> Cancel </button>
+	</h2>
+	<h4 class="hd-op"> Channel: <label *ngIf="edit_channel == false || edit_channel == undefined"> &nbsp;&nbsp; {{ playlist.channel ? playlist.channel.title : '(Not related to any channel)' }} &nbsp;&nbsp;&nbsp;&nbsp;</label>
+		<a (click)="edit_channel = true; old_channel_value = playlist.channel" *ngIf="edit_channel == false || edit_channel == undefined" title="edit playlist channel">
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M16.4374 2C17.0921 2 17.7197 2.26142 18.1781 2.72342L21.279 5.82432C21.7407 6.286 22.0001 6.91217 22.0001 7.56508C22.0001 8.21799 21.7407 8.84416 21.279 9.30584L9.95751 20.6238C9.25902 21.4295 8.2689 21.9245 7.1346 22.0023H2V21.0023L2.00325 16.7873C2.08844 15.7328 2.57867 14.7523 3.3265 14.0934L14.6954 2.72463C15.1564 2.26083 15.7834 2 16.4374 2ZM7.06398 20.0048C7.59821 19.967 8.09549 19.7184 8.49479 19.2616L16.0567 11.6997L12.3023 7.94519L4.6961 15.5496C4.29095 15.9079 4.04031 16.4092 4 16.8678V20.0029L7.06398 20.0048ZM13.7167 6.53115L17.4709 10.2855L19.8648 7.89162C19.9514 7.80502 20.0001 7.68756 20.0001 7.56508C20.0001 7.4426 19.9514 7.32514 19.8648 7.23854L16.7611 4.13486C16.6755 4.04855 16.5589 4 16.4374 4C16.3158 4 16.1992 4.04855 16.1136 4.13486L13.7167 6.53115Z" fill="#9494A0"/>
+			</svg>
+		</a>
+
+		<select [compareWith]="compareFn" *ngIf="edit_channel == true" class="select-custom-class" [(ngModel)]="playlist.channel">
+			<option [ngValue]="channel" *ngFor="let channel of channels">{{ channel.title }}</option>
+		</select>
+		<a *ngIf="edit_channel == true" title="choose playlist name" class="svg-custom-position">
+			<svg style="width: 15px; height: 15px;" width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M19.9394 7.51447L22.0607 9.63579L12 19.6964L1.93936 9.63579L4.06068 7.51447L12 15.4538L19.9394 7.51447Z" fill="#9494A0"></path>
+			</svg>
+		</a>
+		<svg *ngIf="(edit_channel == true && playlist.channel) || old_channel_value" title="don't relate to any channel" (click)="playlist.channel = undefined;" style="position: relative; top: 8px; right: 10px;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+		</svg>
+		<button *ngIf="(edit_channel == true && playlist.channel) || old_channel_value" class="button-custom-class" (click)="updatePlaylistTitleOrChannel(); edit_channel=false; old_channel_value = undefined;"> Update </button>&nbsp;&nbsp;
+		<button *ngIf="edit_channel == true" class="button-custom-class" (click)="edit_channel=false; playlist.channel = old_channel_value; old_channel_value = null"> Cancel </button>
+	</h4>
+	<br/>
+	<h2 class="hd-op">
+		<button class="button-custom-class" (click)="addNewVideoModal()"> Add new video </button>
+	</h2>
+	<a title="" class="op-1">Video Details</a>
+	<a title="" class="op-2"> Options</a>
+	<div class="clearfix"></div>
+</div><!--latest-vid-option end-->
+<div class="vidz_list" *ngFor="let video of playlist.videos; index as i">
+	<div class="tb-pr">
+		<div class="row">
+			<div class="col-lg-8 col-md-8 col-sm-12">
+				<div class="tab-history acct_page">
+					<div class="videoo">
+						<div class="vid_thumbainl ms br">
+							<a routerLink="/playlist/{{ playlist._id }}/{{ video.source_id }}" title="">
+								<img src="{{ video.thumbnail }}" alt="">
+								<span class="vid-time">{{ video.duration | hrminsec }}</span>
+								<span *ngIf="video.price && video.price > 0 && !isInPurchasedVideo(video._id)" class="vid-price">${{ video.price | number : '1.2-2' }}</span>
+							</a>
+							<a *ngIf="!isInWatchLater(video._id)" (click)="addToWatchLater(video)" title="" class="play_vid">
+								<svg width="17" height="17" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0"/>
+								</svg>
+							</a>
+							<a *ngIf="isInWatchLater(video._id)" (click)="removeFromWatchLater(video)" title="" class="play_vid">
+								<img src="assets/images/checked.svg" alt="">
+							</a>
+							<a *ngIf="video.price && video.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(video)" title="" class="play_vid">
+								<img src="assets/images/info.svg" alt="">
+							</a>
+						</div><!--vid_thumbnail end-->
+						<div class="video_info ms br">
+							<h3><a routerLink="/playlist/{{ playlist._id }}/{{ video.source_id }}" title="">{{ video.title }}</a></h3>
+							<h4>
+								<a routerLink="/channels/{{ video.channel_id?._id }}" title="">{{ video.channel_id?.title }}</a>
+								<span class="verify_ic">
+									<svg *ngIf="userIsSubscribedTo(video.channel_id?._id)" width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<g>
+											<path fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+										</g>
+									</svg>
+								</span>
+							</h4>
+							<span><ng-container *ngIf="!video.price || video.price == 0">{{ (video.meta.views | shortNumber) ? (video.meta.views | shortNumber) : '0' }} views</ng-container></span>
+							<!-- <ul>
+								<li><span class="br-1">Inactive</span></li>
+								<li><span class="br-2">Successful</span></li>
+							</ul> -->
+						</div>
+						<div class="clearfix"></div>
+					</div><!--videoo end-->
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-12">
+				<div class="icon-list">
+					<ul>
+						<li>
+							<a routerLink="/playlist/{{ playlist._id }}/{{ video.source_id }}" title="">
+								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M5 2.99932V20.9993C5 21.7905 5.87525 22.2683 6.54076 21.8405L20.5408 12.8405C21.1531 12.4469 21.1531 11.5518 20.5408 11.1581L6.54076 2.15814C5.87525 1.73031 5 2.20815 5 2.99932ZM18.1507 12L7 19.1683V4.83166L18.1507 12Z" fill="#9494A0"/>
+								</svg>
+							</a>
+						</li>
+						<li>
+							<a (click)="showConfirmationModal(i)" title="">
+								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+								</svg>
+							</a>
+						</li>
+					</ul>
+				</div><!--icon-list end-->
+			</div>
+		</div>
+	</div><!--tb-pr end-->
+</div><!--vidz_list end-->
+
+<section class="form_popup" id="login_form_popup">
+  <div class="login_form" id="login_form">
+    <div class="hd-lg">
+      <h2>
+        <span>Are you sure ?</span>
+        <a style="position: absolute; left: 92%;" (click)="hideConfirmationModal()" title="">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+        </svg>
+        </a>
+      </h2>
+		</div>
+		<div class="user-account-pr">
+			<h4 *ngIf="loading" style="margin-bottom: 0px !important">Deleting... Please wait...</h4>
+		</div>
+    <div class="lg-in">
+      <ul>
+        <li class="link">
+          <a *ngIf="!loading" (click)="removeVideoFromPlaylist()" title="" class="btn-ok">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg> OK
+					</a>
+					<a *ngIf="loading" title="" class="link_disabled">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg> OK
+          </a>
+        </li>
+        <li class="link">
+          <a *ngIf="!loading" (click)="hideConfirmationModal()" title="" class="btn-cancel">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg> Cancel
+					</a>
+					<a *ngIf="loading" title="" class="link_disabled">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg> Cancel
+					</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- <section id="add_video_modal" class="form_popup modal">
+  <div class="add_video_form" id="add_video_form">
+    <div class="hd-lg">
+      <h2>
+				<span>Add video to playlist</span>
+        <a style="position: absolute; left: 92%;" (click)="hideNewVideoModal()" title="">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+					</svg>
+        </a>
+      </h2>
+		</div>
+
+		<div class="history-lst tbY">
+			<div class="container">
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+					<li class="nav-item" style="width: 235px;">
+						<a class="nav-link link" (click)="aria_selected = 'search'" [ngClass]="{'active': aria_selected == 'search'}" id="search_tab" data-toggle="tab" role="tab" aria-controls="search_tab" [attr.aria-selected]="aria_selected == 'search'">Video Search</a>
+					</li>
+					<li class="nav-item" style="width: 235px;">
+						<a class="nav-link link" (click)="aria_selected = 'videos'" [ngClass]="{'active': aria_selected == 'videos'}" id="videos_taab" data-toggle="tab" role="tab" aria-controls="videos_taab" [attr.aria-selected]="aria_selected == 'videos'">Your Video</a>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+
+		<div style="height: 600px; overflow-y: auto;">
+		<div class="tab-content p-0" id="myTabContent">
+			<div class="tab-pane fade show" [ngClass]="{'active': aria_selected == 'search'}" id="video_search" role="tabpanel" aria-labelledby="search_tab">
+				<div class="home_tb_details">
+
+					<div class="search_form" style="margin-top: 20px; margin-left: 50px; width: 450px; margin-bottom: 50px;">
+						<form>
+							<input (keyup.enter)="doSearch();" type="text" name="search_term" [(ngModel)]="search_term" placeholder="Search Video">
+							<button (click)="doSearch();" type="submit">
+								<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M10 18.1221C5.58172 18.1221 2 14.5403 2 10.1221C2 5.70379 5.58172 2.12207 10 2.12207C14.4183 2.12207 18 5.70379 18 10.1221C18 11.9708 17.3729 13.673 16.3199 15.0277L21.7071 20.415L20.2929 21.8292L14.9056 16.4419C13.551 17.495 11.8487 18.1221 10 18.1221ZM16 10.1221C16 13.4358 13.3137 16.1221 10 16.1221C6.68629 16.1221 4 13.4358 4 10.1221C4 6.80836 6.68629 4.12207 10 4.12207C13.3137 4.12207 16 6.80836 16 10.1221Z" fill="#9494A0" />
+								</svg>
+							</button>
+						</form>
+					</div>
+
+					<ul>
+						<li *ngFor="let video of search_results; index as i" style="display: block !important; margin-left: 50px;">
+							<div class="chekbox-lg">
+								<label>
+									<input type="checkbox" [(ngModel)]="video.checked" name="video-{{i}}" (change)="checkbox_clicked($event, video)" value="ab">
+									<b style="top: 30px !important;" class="checkmark"></b>
+									<img style="margin-left: 50px; height: 80px;" src="{{ video.thumbnail }}" alt="">
+									<span style="position: absolute; top: 10px; width: 265px;">{{ excerpt(video.title) }} <br/> <label style="color: #777781"> {{ excerpt(video.channel_id?.title) }} </label> </span>
+								</label>
+							</div>
+						</li>
+					</ul>
+
+				</div>
+			</div>
+
+			<div class="tab-pane fade show" [ngClass]="{'active': aria_selected == 'videos'}" id="your_video" role="tabpanel" aria-labelledby="videos_taab">
+				<div class="videso_tb_details">
+					<div class="container">
+						<div class="vidz_sec">
+
+							<ul>
+								<li *ngFor="let video of my_videos; index as i" style="display: block !important; margin-left: 35px;">
+									<div class="chekbox-lg">
+										<label>
+											<input type="checkbox" [(ngModel)]="video.checked" name="video-{{i}}" (change)="checkbox_clicked($event, video)" value="ab">
+											<b style="top: 30px !important;" class="checkmark"></b>
+											<img style="margin-left: 50px; height: 80px;" src="{{ video.thumbnail }}" alt="">
+											<span style="position: absolute; top: 10px; width: 265px;">{{ excerpt(video.title) }} <br/> <label style="color: #777781"> {{ excerpt(video.channel_id?.title) }} </label> </span>
+										</label>
+									</div>
+								</li>
+							</ul>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+    <div class="lg-in">
+      <ul>
+        <li class="link">
+          <a (click)="hideNewVideoModal()" title="" class="btn-cancel">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg> Close
+					</a>
+        </li>
+      </ul>
+		</div>
+
+	</div>
+	</div>
+</section> -->
+
+<section id="add_video_modal" class="form_popup modal" style="height: 575px !important; top: -200px;">
+  <div class="add_video_form" id="add_video_form">
+    <div class="hd-lg">
+      <h2>
+				<span>Add video to playlist</span>
+        <a style="position: absolute; left: 92%;" (click)="hideNewVideoModal()" title="">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+					</svg>
+        </a>
+			</h2>
+			<span *ngIf="already_exist == true" class="text-danger"> This video already exist inside the playlist!</span>
+		</div>
+
+		<div class="row" style="height: 40px; color: #C3C3D2 !important; text-align: center !important; margin-top: 15px !important;">
+			<div class="col-md-6" [ngClass]="{'activate_tab': aria_selected == 'search'}" (click)="aria_selected = 'search'">
+				<a class="link">Video Search</a>
+			</div>
+			<div *ngIf="coach_mode == true" class="col-md-6" [ngClass]="{'activate_tab': aria_selected == 'videos'}" (click)="aria_selected = 'videos'">
+				<a class="link" >Your Video</a>
+			</div>
+		</div>
+
+		<div class="col-md-12" *ngIf="aria_selected == 'search'">
+			<div class="row" style="margin-top: 10px;">
+				<div class="search_form" style="margin-left: 50px; width: 450px; margin-bottom: 30px;">
+					<form>
+						<input (keyup.enter)="doSearch();" type="text" name="search_term" [(ngModel)]="search_term" placeholder="Search Video">
+						<button (click)="doSearch();" type="submit">
+							<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" clip-rule="evenodd" d="M10 18.1221C5.58172 18.1221 2 14.5403 2 10.1221C2 5.70379 5.58172 2.12207 10 2.12207C14.4183 2.12207 18 5.70379 18 10.1221C18 11.9708 17.3729 13.673 16.3199 15.0277L21.7071 20.415L20.2929 21.8292L14.9056 16.4419C13.551 17.495 11.8487 18.1221 10 18.1221ZM16 10.1221C16 13.4358 13.3137 16.1221 10 16.1221C6.68629 16.1221 4 13.4358 4 10.1221C4 6.80836 6.68629 4.12207 10 4.12207C13.3137 4.12207 16 6.80836 16 10.1221Z" fill="#9494A0" />
+							</svg>
+						</button>
+					</form>
+				</div>
+			</div>
+			<div class="row" style="overflow-y: auto; height: 300px;">
+				<ul>
+					<li *ngFor="let video of search_results; index as i" style="display: block !important; margin-left: 50px;">
+						<div class="chekbox-lg">
+							<label>
+								<input type="checkbox" [(ngModel)]="video.checked" name="video-{{i}}" (change)="checkbox_clicked($event, video)" value="ab">
+								<b style="top: 30px !important;" class="checkmark"></b>
+								<img style="margin-left: 50px; height: 80px;" src="{{ video.thumbnail }}" alt="">
+								<span style="position: absolute; top: 10px; width: 265px;">{{ excerpt(video.title) }} <br/> <label style="color: #777781"> {{ excerpt(video.channel_id?.title) }} </label> </span>
+							</label>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-md-12" *ngIf="aria_selected == 'videos'">
+			<div class="row" style="margin-top: 20px; overflow-y: auto; height: 355px;">
+				<ul>
+					<li *ngFor="let video of my_videos; index as i" style="display: block !important; margin-left: 35px;">
+						<div class="chekbox-lg">
+							<label>
+								<input type="checkbox" [(ngModel)]="video.checked" name="video-{{i}}" (change)="checkbox_clicked($event, video)" value="ab">
+								<b style="top: 30px !important;" class="checkmark"></b>
+								<img style="margin-left: 50px; height: 80px;" src="{{ video.thumbnail }}" alt="">
+								<span style="position: absolute; top: 10px; width: 265px;">{{ excerpt(video.title) }} <br/> <label style="color: #777781"> {{ excerpt(video.channel_id?.title) }} </label> </span>
+							</label>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div style="height: 50px !important; text-align: center; margin-top: 15px;">
+			<a (click)="hideNewVideoModal()" title="" class="close_button btn-cancel link">
+				Close
+			</a>
+		</div>
+
+	</div>
+</section>
+
+<section id="video_info_modal" class="form_popup modal" style="height: 420px; top: -100px;">
+  <div class="video_info_form" id="video_info_form">
+    <div class="hd-lg">
+      <h2>
+				<span>Video Info</span>
+        <a style="position: absolute; left: 92%;" (click)="hideVideoInfoModal()" title="">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+        </svg>
+        </a>
+      </h2>
+		</div>
+		<div class="lg-in flag_content" style="text-align: unset; height: 280px;">
+			<h4 style="color: white;" style="margin-bottom: 0px !important">
+				<strong> Title: </strong> {{ video_info.title }}
+				<br>
+				<br>
+				<strong> Description: </strong>
+				<br>
+			</h4>
+			<p class="description_paragraph" style="color: white;">{{ video_info.description }}</p>
+		</div>
+		<div style="height: 50px !important; text-align: center; margin-top: 15px; margin-bottom: 10px; color: white;">
+			<a (click)="hideVideoInfoModal()" title="" class="close_button btn-cancel link">
+				Close
+			</a>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,271 @@
+<div class="container">
+
+  <section class="video_main via_chat">
+
+    <br>
+    <br>
+
+    <div class="row">
+
+      <div *ngIf="error" class="message_container col-lg-12">
+        <p class="error">
+          {{ error_message }}
+        </p>
+      </div>
+
+      <div class="col-lg-9">
+        <div class="live_form">
+          <video poster="{{ liveEvent.live_info?.live_thumbnail }}" width="100%" style="max-height:560px" #streamPreviewer>
+          </video>
+
+          <div *ngIf="!live" class="btn-sbmit">
+            <button routerLink="/live/{{ liveEvent._id }}" class="custom-file-upload btn">
+                <label *ngIf="!live_loading">Go</label>
+                <i *ngIf="live_loading" class="fa fa-refresh fa-spin"></i>
+            </button>
+          </div>
+
+          <div *ngIf="live" class="btn-sbmit">
+            <!-- <span class="live_marker">&nbsp;</span> -->
+            <span class="live_timer">
+              {{ timer | timeout }}
+            </span>
+            <br>
+            <br>
+            <!-- <button (click)="endLive()" class="custom-live-end btn">
+                End live
+            </button> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 ful-dt">
+        <div class="chat_view">
+          <div class="chat_hd">
+            <h3>
+              Live Chat
+              <!-- <span>
+                <svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M19.9394 7.51447L22.0607 9.63579L12 19.6964L1.93936 9.63579L4.06068 7.51447L12 15.4538L19.9394 7.51447Z" fill="#9494A0"></path>
+                </svg>
+              </span> -->
+            </h3>
+            <!-- <ul class="chat_optz">
+              <li>
+                <a *ngIf="show_live_chat" (click)="show_live_chat = !show_live_chat" class="link" title="">Hide Chat</a>
+                <a *ngIf="!show_live_chat" (click)="show_live_chat = !show_live_chat" class="link" title="">Show Chat</a>
+              </li> -->
+              <!-- <li>
+                <span>
+                  <svg width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 2C0 3.10457 0.89543 4 2 4C3.10457 4 4 3.10457 4 2C4 0.89543 3.10457 0 2 0C0.89543 0 0 0.89543 0 2ZM2 11C0.89543 11 0 10.1046 0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11ZM2 18C0.89543 18 0 17.1046 0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18Z" fill="#9494A0"/>
+                  </svg>
+                </span>
+              </li> -->
+            <!-- </ul> --><!--chat_optz end-->
+          </div><!--chat_hd end-->
+          <div class="clearfix"></div>
+          <!-- <ul class="chat_msgs mCustomScrollbar scrollable-element" style="overflow-y: auto;" data-mcs-theme="dark">
+            <ng-container *ngIf="show_live_chat == true">
+              <li *ngFor="let chat of chats">
+                <div class="chat_msg">
+                  <span class="vc_hd cr{{ (chat.user_id && chat.user_id.avatar_color) ? chat.user_id.avatar_color : chat.sender_avatar_color }} pr">{{ (chat.user_id && chat.user_id.avatar_card) ? chat.user_id.avatar_card : chat.sender_avatar_card }}</span>
+                  <div class="cht_connt">
+                    <p><span class="c_name">{{ (chat.user_id && chat.user_id.full_name) ? chat.user_id.full_name : chat.sender_full_name }}</span>{{ chat.comment_content ? chat.comment_content : chat.comment }}</p>
+                  </div>
+                </div>
+              </li>
+            </ng-container>
+            <ng-container *ngIf="show_live_chat == false">
+              <span style="position: relative; left: 100px; top: 20px; color: #C3C3D2;">Live chat are hidden</span>
+            </ng-container>
+          </ul>
+          <div *ngIf="user._id" class="post_ch_msg">
+            <form>
+              <span class="usr_name">{{ user.avatar_card }}</span>
+              <span class="c_namee"></span>
+              <input type="text" name="chat" [(ngModel)]="new_comment.comment" style="padding: 0 50px 0 50px !important;" placeholder="Say something" autocomplete="off">
+              <button (click)="sendChat()">
+                <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M0.740234 0.252014L2.10524 9.80704L2.87699 9.99998L2.10524 10.1929L0.740234 19.7479L20.2362 9.99998L0.740234 0.252014ZM3.89495 8.19292L3.25996 3.74794L15.764 9.99998L3.25996 16.252L3.89495 11.807L11.1232 9.99998L3.89495 8.19292Z" fill="#9494A0"/>
+                </svg>
+              </button>
+            </form>
+          </div> -->
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="vid-1">
+
+          <div class="vid-info">
+            <h3>{{ liveEvent.title | excerpt:50 }}</h3>
+            <!-- <div class="info-pr">
+              <span>{{ liveEvent?.meta?.views >= 0 ? liveEvent?.meta?.views : 0 }} viewers</span>
+              <ul class="pr_links">
+                <li *ngIf="liveEvent.live_status == true && ( liveEvent.live_info?.status == 'UPCOMMING' || liveEvent.live_info?.status == 'LIVE' ) ">
+                  <a class="link" (click)="share()" title="">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M14 6C14 6.28742 14.0303 6.56777 14.0879 6.83801L9.01694 9.3735C8.28363 8.53189 7.20393 8 6 8C3.79086 8 2 9.79086 2 12C2 14.2091 3.79086 16 6 16C7.20393 16 8.28363 15.4681 9.01694 14.6265L14.0879 17.162C14.0303 17.4322 14 17.7126 14 18C14 20.2091 15.7909 22 18 22C20.2091 22 22 20.2091 22 18C22 15.7909 20.2091 14 18 14C16.7961 14 15.7164 14.5319 14.9831 15.3735L9.91208 12.838C9.96968 12.5678 10 12.2874 10 12C10 11.7126 9.96968 11.4322 9.91208 11.162L14.9831 8.6265C15.7164 9.46811 16.7961 10 18 10C20.2091 10 22 8.20914 22 6C22 3.79086 20.2091 2 18 2C15.7909 2 14 3.79086 14 6ZM8 12C8 13.1046 7.10457 14 6 14C4.89543 14 4 13.1046 4 12C4 10.8954 4.89543 10 6 10C7.10457 10 8 10.8954 8 12ZM18 8C19.1046 8 20 7.10457 20 6C20 4.89543 19.1046 4 18 4C16.8954 4 16 4.89543 16 6C16 7.10457 16.8954 8 18 8ZM20 18C20 19.1046 19.1046 20 18 20C16.8954 20 16 19.1046 16 18C16 16.8954 16.8954 16 18 16C19.1046 16 20 16.8954 20 18Z" fill="#9494A0" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a class="link" (click)="updateVideoLike(liveEvent, 'like')" title="">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path [attr.fill]="liveEvent.is_liked ? '#D07735' : '#9494A0'" fill-rule="evenodd" clip-rule="evenodd" d="M22 11.9991C22 10.3166 20.8696 8.99908 19 8.99908H15.927L15.9548 8.92336C15.9826 8.84819 16.0609 8.64171 16.137 8.4412L16.1371 8.44092L16.1375 8.43999C16.2046 8.26297 16.2699 8.09081 16.2971 8.01799C16.4872 7.50764 16.626 7.09644 16.7382 6.68921C16.9079 6.07372 17 5.5192 17 4.99909C17 3.52708 16.0919 2.6128 14.7483 2.22157C14.1423 2.04511 13.6148 1.99899 13 1.99908H12.5205L12.2203 2.37297C11.8811 2.79532 11.215 3.5565 10.447 4.43405L10.447 4.43409C9.03026 6.053 7.2669 8.06799 6.57035 9.08248C6.38961 9.0288 6.19817 8.99998 6 8.99998H4C2.89543 8.99998 2 9.89541 2 11V20C2 21.1045 2.89543 22 4 22H6C6.68712 22 7.29331 21.6535 7.65337 21.1257C7.95674 21.3219 8.29522 21.4856 8.66312 21.6173C9.50544 21.9186 10.3408 22.0112 11.0344 21.9985L18 21.9991C20.7551 21.9991 22 17.9427 22 11.9991ZM9.33688 19.7342C8.45197 19.4176 8 18.9013 8 17.9991V11V10.9991C8 10.7589 8.04443 10.5462 8.14171 10.3191C8.31645 9.91108 9.90193 8.10222 11.4047 6.38776L11.4047 6.38772C12.1803 5.50289 12.9338 4.6432 13.46 4.01422C13.7114 4.03307 13.9484 4.07171 14.1891 4.14182C14.7622 4.30868 15 4.54811 15 4.99908C15 5.31567 14.9359 5.7014 14.8101 6.15769C14.7161 6.49866 14.5944 6.85945 14.4229 7.31975C14.3986 7.38508 14.3378 7.54518 14.2733 7.71541L14.2731 7.71586C14.1944 7.92312 14.1102 8.14528 14.079 8.22963C13.9489 8.58125 13.8633 8.84015 13.8047 9.0754C13.5555 10.0754 13.8055 10.9991 15 10.9991H19C19.6912 10.9991 20 11.359 20 11.9991C20 16.7898 19.0151 19.9991 18 19.9991H11L10.9631 19.9997C10.5254 20.0075 9.91062 19.9394 9.33688 19.7342ZM4 20V11H6V20H4Z" />
+                    </svg>
+                    <span>{{ (liveEvent?.meta?.likes) ? (liveEvent?.meta?.likes | shortNumber) : '0' }}</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="link" (click)="updateVideoLike(liveEvent, 'dislike')" title="">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path [attr.fill]="liveEvent.is_disliked ? '#D07735' : '#9494A0'" fill-rule="evenodd" clip-rule="evenodd" d="M16.137 15.5579C16.0609 15.3574 15.9826 15.1509 15.9548 15.0757L15.927 15H19C20.8696 15 22 13.6825 22 12C22 6.05642 20.7551 1.99999 18 1.99999C18 1.99999 11.0231 2.00021 10.9989 1.9997C10.3408 1.9879 9.50544 2.08044 8.66312 2.38181C8.29505 2.5135 7.95642 2.67736 7.65294 2.87369C7.29284 2.34623 6.68686 1.99999 6 1.99999H4C2.89543 1.99999 2 2.89542 2 3.99999V13C2 14.1046 2.89543 15 4 15H6C6.19836 15 6.38997 14.9711 6.57086 14.9173C7.26776 15.9321 9.03061 17.9465 10.447 19.565L10.447 19.565C11.215 20.4426 11.8811 21.2038 12.2203 21.6261L12.5205 22H13.0077C13.6148 22.0001 14.1423 21.954 14.7483 21.7775C16.0919 21.3863 17 20.472 17 19C17 18.4799 16.9079 17.9254 16.7382 17.3099C16.626 16.9026 16.4872 16.4914 16.2971 15.9811C16.2699 15.9081 16.2043 15.7353 16.137 15.5579ZM8 13V5.99999C8 5.09776 8.45197 4.58152 9.33688 4.26491C9.91062 4.05963 10.5254 3.99153 10.9656 3.9994L16.5338 3.99997L18 3.99999C19.0151 3.99999 20 7.20924 20 12C20 12.6401 19.6912 13 19 13H15C13.8055 13 13.5555 13.9236 13.8047 14.9237C13.8633 15.1589 13.9489 15.4178 14.079 15.7694C14.1101 15.8538 14.1944 16.0759 14.273 16.2831L14.2732 16.2834L14.2733 16.2837L14.2733 16.2837C14.3378 16.4539 14.3986 16.614 14.4229 16.6793C14.5944 17.1396 14.7161 17.5004 14.8101 17.8414C14.9359 18.2977 15 18.6834 15 19C15 19.451 14.7622 19.6904 14.1891 19.8573C13.9484 19.9274 13.7114 19.966 13.46 19.9849C12.9338 19.3559 12.1803 18.4962 11.4047 17.6113C9.90194 15.8969 8.31645 14.088 8.14171 13.68C8.04443 13.4529 8 13.2402 8 13ZM4 13V3.99999H6V13H4Z" />
+                    </svg>
+                    <span>{{ (liveEvent?.meta?.dislikes) ? (liveEvent?.meta?.dislikes | shortNumber) : '0' }}</span>
+                  </a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div> -->
+            <!-- <br>
+            <p style="color: white;">
+              {{ liveEvent.description }}
+            </p> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+			<div class="col-lg-9">
+				<div class="mn-vid-sc single_video">
+					<div class="abt-mk" style="border-bottom: none">
+						<div class="info-pr-sec">
+							<div class="vcp_inf cr">
+								<a routerLink="/channels/{{ liveEvent.channel_id?._id }}" class="link">
+									<span class="vc_hd cr{{ liveEvent.channel_id?.avatar_color }} pr">{{ liveEvent.channel_id?.avatar_card }}</span>
+									<div class="vc_info pr">
+										<h4>{{ liveEvent.channel_id?.title }}</h4>
+										<span>{{ liveEvent.channel_id?.meta?.subscribers | shortNumber }} subscribers</span>
+									</div>
+								</a>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div class="clearfix"></div>
+						<p class="description_paragraph" *ngIf="show_more == false">{{ liveEvent.description | excerpt:260 }}</p>
+            <p class="description_paragraph" *ngIf="show_more == true">{{ liveEvent.description }}</p>
+						<ul *ngIf="show_more == true" class="mk-ct">
+							<li>
+								<h4>Category</h4>
+								<a style="color: #C3C3D2; text-transform: capitalize;" *ngFor="let categorie of liveEvent.categories; let last_item = last;" title="">{{ categorie.title + (last_item ? "" : ", " ) }}</a>
+							</li>
+							<li>
+								<h4>Tags</h4>
+								<ul *ngIf="liveEvent.tags && liveEvent.tags.length">
+									<li>
+										<a *ngFor="let tag of liveEvent.tags.split(' '); let last = last" title="">{{ tag }}{{ last ? '' : ', ' }}</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+						<a class="link" (click)="show_more=!show_more" title="">show {{ show_more ? "less" : "more" }}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+  </section>
+
+<!--   <div class="row">
+    <div class="col-lg-9">
+      <div class="mn-vid-sc single_video">
+        <div class="abt-mk">
+          <div class="info-pr-sec">
+            <div class="vcp_inf cr">
+              <span class="vc_hd cr{{ live.channel_id?.avatar_color }} pr">{{ live.channel_id?.avatar_card }}</span>
+              <div class="vc_info pr">
+                <h4>{{ live.channel_id?.title }}</h4>
+                <p>{{  }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+</div>
+
+<br>
+<br>
+<br>
+<br>
+
+<section class="suggestions">
+  <div class="container">
+    <div class="sgst_content">
+      <h3>Help & Suggestions</h3>
+      <p>By submitting your videos to ProjectFitnessTV, you acknowledge that you agree to ProjectFitnessTV’s<a routerLink="/page/terms_of_service" title="Terms of service"> Terms of Service</a>and<a routerLink="/page/community_rules" title="Community rules">Community Guidelines</a>. Please be sure not to violate others’ copyright or
+        privacy rights.<a routerLink="/page/privacy_notice" title="Learn more"> Learn more</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="abt-vidz">
+  <ul>
+    <li>
+      <a routerLink="/page/upload_instruction">Live Instructions </a>
+    </li>
+    <li>
+      <a routerLink="/page/troubleshooting">Troubleshooting </a>
+    </li>
+    <li>
+      <a routerLink="/page/mobile_upload">Mobile Live </a>
+    </li>
+  </ul>
+</section>
+
+<section id="add_share_modal" class="form_popup modal">
+  <div class="add_share_form" id="add_share_form">
+    <div class="hd-lg">
+      <h2>
+        <span>Share live</span>
+        <a style="position: absolute; left: 92%;" title="">
+        <!-- <a style="position: absolute; left: 92%;" (click)="hideShareModal()" title=""> -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0" />
+          </svg>
+        </a>
+      </h2>
+    </div>
+
+    <!--hd-lg end-->
+    <div class="lg-in share_content">
+
+      <ul>
+        <li>
+          <!-- <a href="https://www.facebook.com/sharer/sharer.php?u={{ live_url }}&t={{ live.title | excerpt:50 }}" class="share-button facebook" target="_blank">Share on Facebook</a> -->
+          <a href="#" class="share-button facebook">Share on Facebook</a>
+        </li>
+
+        <li>
+          <!--
+        <a href="https://www.twitter.com/intent/tweet?url={{ live_url }}&text={{ live.title | excerpt:50 }}" class="share-button twitter" target="_blank">Tweet Me!</a> -->
+         <a href="#" class="share-button twitter">Tweet Me!</a>
+        </li>
+      </ul>
+
+      <br>
+
+    </div>
+    <!--fr-ps end-->
+  </div>
+  <!--login end--->
+</section>

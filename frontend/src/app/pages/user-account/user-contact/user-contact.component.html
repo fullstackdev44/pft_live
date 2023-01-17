@@ -1,0 +1,69 @@
+<div class="blocked-users">
+	<h2 class="hd-op"> Manage Contacts </h2>
+	<!-- <form>
+		<ng-select [allowClear]="true" [(ngModel)]="new_contacts" [multiple]="true" (selected)="selected($event)" (removed)="removed($event)" [items]="all_contacts" name="new_contacts" placeholder="Selectionner le(s) contact(s)"></ng-select>
+		<button (click)="update_contact()"> Add Contact </button>
+	</form> -->
+	<ul class="optz_list">
+		<li><a title="">Contact</a></li>
+		<li><a title="">Actions</a></li>
+	</ul>
+	<div class="clearfix"></div>
+</div>
+<div class="blocked-pr">
+	<div class="blocked-vcp" *ngFor="let contact of user_contacts; index as i">
+		<div class="vcp_inf">
+			<span class="vc_hd cr{{ contact.avatar_color }} pr">{{ contact.avatar_card }}</span>
+		<div class="vc_info st">
+			<h4><a title="">{{ contact.full_name }}</a></h4>
+			<!-- <span>Blocked on {{ blocked_user.date | dateAgo }}</span> -->
+		</div>
+	</div>
+	<a (click)="showConfirmationModal(i)" class="play_ms link">
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+		</svg>
+	</a>
+</div>
+
+<section class="form_popup">
+  <div class="login_form" id="login_form">
+    <div class="hd-lg">
+      <h2>
+        <span>Are you sure ?</span>
+        <a style="position: absolute; left: 92%;" (click)="hideConfirmationModal()" title="">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+        </svg>
+        </a>
+      </h2>
+    </div>
+    <div class="user-account-pr">
+			<h4 *ngIf="loading" style="margin-bottom: 0px !important">Deleting... Please wait...</h4>
+		</div>
+    <div class="lg-in">
+      <ul>
+        <li class="link">
+          <a *ngIf="!loading" (click)="removeUserContactList()" title="" class="btn-ok">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg> OK
+          </a>
+          <a *ngIf="loading" title="" class="link_disabled">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg> OK
+          </a>
+        </li>
+        <li class="link">
+          <a *ngIf="!loading" (click)="hideConfirmationModal()" title="" class="btn-cancel">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg> Cancel
+          </a>
+          <a *ngIf="loading" title="" class="link_disabled">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg> Cancel
+					</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>

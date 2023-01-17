@@ -1,0 +1,92 @@
+<section class="form_popup">
+  <div class="login_form" id="login_form">
+    <div class="hd-lg">
+      <h2>
+        <span>Login</span>
+        <a style="position: absolute; left: 92%;" (click)="hideLoginModal('clearAction')" title="">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+        </svg>
+        </a>
+      </h2>
+    </div>
+    <!--hd-lg end-->
+    <!-- removed for now as Eldad correction -->
+    <!-- <div class="lg-in">
+      <ul>
+        <li class="link">
+          <a (click)="loginFacebook()" title="" class="facebook">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 3.33356C20 1.582 18.4187 0 16.6667 0H3.33333C1.58133 0 0 1.582 0 3.33356V16.6664C0 18.418 1.58133 20 3.33356 20H10V12.4444H7.55556V9.11111H10V7.81244C10 5.57267 11.6818 3.55556 13.75 3.55556H16.4444V6.88889H13.75C13.4551 6.88889 13.1111 7.24689 13.1111 7.78311V9.11111H16.4444V12.4444H13.1111V20H16.6667C18.4187 20 20 18.418 20 16.6664V3.33356Z"
+                fill="white" />
+            </svg> Facebook
+          </a>
+        </li>
+        <li class="link">
+          <a (click)="loginTwitter()" title="" class="twitter">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 0H2C0.9 0 0 0.9 0 2V18C0 19.1 0.9 20 2 20H18C19.1 20 20 19.1 20 18V2C20 0.9 19.1 0 18 0ZM15.7 7.3C15.6 11.9 12.7 15.1 8.3 15.3C6.5 15.4 5.2 14.8 4 14.1C5.3 14.3 7 13.8 7.9 13C6.6 12.9 5.8 12.2 5.4 11.1C5.8 11.2 6.2 11.1 6.5 11.1C5.3 10.7 4.5 10 4.4 8.4C4.7 8.6 5.1 8.7 5.5 8.7C4.6 8.2 4 6.3 4.7 5.1C6 6.5 7.6 7.7 10.2 7.9C9.5 5.1 13.3 3.6 14.8 5.5C15.5 5.4 16 5.1 16.5 4.9C16.3 5.6 15.9 6 15.4 6.4C15.9 6.3 16.4 6.2 16.8 6C16.7 6.5 16.2 6.9 15.7 7.3Z"
+                fill="white" />
+            </svg>
+            Twitter
+          </a>
+        </li>
+      </ul>
+      <span>or</span>
+    </div> -->
+    <!--lg-in end-->
+    <div class="user-account-pr">
+      <!-- <h4>login with email to continue with</h4> -->
+      <img src="assets/images/icon3.png" alt="" style="margin: 1em 0">
+      <form [formGroup]="loginForm" style="padding-top: 0 !important;" (ngSubmit)="onSubmit()">
+
+        <h4 [hidden]="!login_error" class="text-danger">
+          {{ login_error }}
+        </h4>
+        <div class="input-sec">
+          <input type="text"  placeholder="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+          <span class="field_shp">
+            <img src="assets/images/vc3.png" alt="">
+          </span>
+          <p *ngIf="submitted && f.email.errors && f.email.errors.required" class="text-danger">
+            Email is required
+          </p>
+          <p *ngIf="submitted && f.email.errors && f.email.errors.email" class="text-danger">
+            Email must be a valid email address
+          </p>
+        </div>
+
+        <div class="input-sec">
+          <input type="password" placeholder="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+          <span class="field_shp">
+            <img src="assets/images/vc2.png" alt="">
+          </span>
+          <p *ngIf="submitted && f.password.errors && f.password.errors.required" class="text-danger">
+            Password is required
+          </p>
+        </div>
+        <!-- <div class="chekbox-lg">
+          <label>
+            <input type="checkbox" name="remember" value="rem">
+            <b class="checkmark"> </b>
+            <span>Remember me</span>
+          </label>
+        </div> -->
+        <div class="input-sec mb-0">
+          <button [disabled]="loading" class="btn btn-primary">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+              Login
+          </button>
+        </div>
+        <!--input-sec end-->
+      </form>
+      <a routerLink="/forgot-password" class="fg_btn link">Forgot password?</a>
+    </div>
+    <!--user-account end-->
+    <div class="fr-ps">
+      <h1>Don’t have an account? <a class="link" (click)="goToSignup()">Signup here.</a></h1>
+    </div>
+    <!--fr-ps end-->
+  </div>
+  <!--login end--->
+</section>

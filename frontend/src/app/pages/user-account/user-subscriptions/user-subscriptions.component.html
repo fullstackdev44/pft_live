@@ -1,0 +1,29 @@
+<div class="video-details">
+	<div class="blocked-pr mange_sub">
+		<div class="manage-sub">
+			<h2 class="hd-op"> Manage Subscriptions </h2>
+			<ul class="optz_list">
+				<li><a title="">User</a></li>
+				<li><a title="">Options</a></li>
+			</ul><!--optz_list end-->
+			<div class="clearfix"></div>
+		</div><!--Manage-Sub end-->
+		<div class="blckd_list">
+			<div class="blocked-vcp" *ngFor="let subscription of user.subscribed_channels, index as i">
+				<div class="vcp_inf">
+					<span routerLink="/channels/{{ subscription.channel._id }}" class="vc_hd cr{{ subscription.channel.avatar_color }} pr">{{ subscription.channel.avatar_card }}</span>
+				<div class="vc_info st">
+					<h4><a routerLink="/channels/{{ subscription.channel._id }}" title="">{{ subscription.channel.title }}</a></h4>
+					<!-- <span>Blocked on {{ subscription.date | dateAgo }}</span> -->
+				</div>
+			</div><!--vcp_inf end-->
+			<span (click)="update_status(i, subscription.status)" class="play_ms link active-mb {{ subscription.status == 'Active' ? 'pr' : '' }} {{ subscription.status == 'Inactive' ? 'mr' : '' }} {{ subscription.status == 'Paused' ? 'sr' : '' }}"> {{ subscription.status }}</span> <!-- possible color value: pr, mr, sr -->
+			<!-- <a routerLink="/more" title="" class="play_ms link">
+				<svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M19.9394 7.51447L22.0607 9.63579L12 19.6964L1.93936 9.63579L4.06068 7.51447L12 15.4538L19.9394 7.51447Z" fill="#9494A0"/>
+				</svg>
+			</a> -->
+			<div class="clearfix"></div>
+		</div><!--blocked-vcp-->
+	</div><!--blocked-pr end-->
+</div><!--video-details end-->

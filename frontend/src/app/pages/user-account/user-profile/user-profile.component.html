@@ -1,0 +1,93 @@
+<div class="account-details">
+	<div class="account_details_content">
+		<h2 class="hd-op">  Profile Settings </h2>
+		<h4 class="slct-hd">
+			<label> Avatar </label>
+			<svg *ngIf="user.avatar" title="remove the avatar" (click)="user.avatar = null;" style="margin-left: 20px; margin-bottom: -9px;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+			</svg>
+		</h4>
+		<div class="ch-pswd">
+			<img *ngIf="user.avatar" (click)="file_selector.click()" src="{{ user.avatar }}" class="photo_preview">
+			<svg *ngIf="!user.avatar" (click)="file_selector.click()" width="36" height="41" style="margin-left: 40px; margin-top: 30px;" viewBox="0 0 36 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M20.0001 29.0001V7.82848L26.5859 14.4143L29.4143 11.5858L18.0001 0.171631L6.58586 11.5858L9.41429 14.4143L16.0001 7.82848V29.0001H20.0001ZM36 37V19H32V37H4V19H0V37C0 39.2092 1.79086 41 4 41H32C34.2091 41 36 39.2092 36 37Z" fill="#9494A0"/>
+			</svg>
+			<input class="file_selector" accept="image/*" type="file" name="file_selector" #file_selector (change)="filePrepare($event)">
+		</div>
+		<h4 class="slct-hd">Phone Number</h4>
+		<div class="ch-pswd">
+			<input type="text" [(ngModel)]="user.phone_number" name="phone_number" placeholder="phone number">
+		</div>
+		<h4 class="slct-hd"> Mail </h4>
+		<div class="ch-pswd">
+			<input type="text" [(ngModel)]="user.email" name="email" placeholder="email">
+		</div>
+		<h4 class="slct-hd">Country</h4>
+		<div class="slct_optz">
+			<select [(ngModel)]="user.country">
+				<option [value]="country" *ngFor="let country of country_list">{{ country }}</option>
+			</select>
+			<a title="" class="arw_vz">
+				<svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M19.9394 7.51447L22.0607 9.63579L12 19.6964L1.93936 9.63579L4.06068 7.51447L12 15.4538L19.9394 7.51447Z" fill="#9494A0"></path>
+				</svg>
+			</a>
+		</div>
+		<h4 class="slct-hd"> Gender</h4>
+		<ul class="gend">
+			<li>
+				<div class="chekbox-lg">
+					<label>
+						<input [(ngModel)]="user.gender" type="radio" name="gender" value="M">
+						<b class="checkmark"></b>
+						<span>Male</span>
+					</label>
+				</div>
+			</li>
+			<li>
+				<div class="chekbox-lg">
+					<label>
+						<input [(ngModel)]="user.gender" type="radio" name="gender" value="F">
+						<b class="checkmark"> </b>
+						<span>Female</span>
+					</label>
+				</div>
+			</li>
+		</ul>
+
+		<!--
+		<h4 class="slct-hd">Account Details </h4>
+		<div class="slct_optz">
+			<select [(ngModel)]="user.account_type">
+				<option value="USER"> User</option>
+				<option value="COACH"> Coach</option>
+			</select>
+			<a title="" class="arw_vz">
+				<svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M19.9394 7.51447L22.0607 9.63579L12 19.6964L1.93936 9.63579L4.06068 7.51447L12 15.4538L19.9394 7.51447Z" fill="#9494A0"></path>
+				</svg>
+			</a>
+		</div>
+		-->
+		
+		<h4 class="slct-hd">Date of Birth </h4>
+		<div class="ch-pswd">
+			<input type="text" [(ngModel)]="dob" style="width: 390px; height: 35px; background: #363643; border-radius: 30px; color: #C3C3D2; font-weight: normal; font-size: 16px; line-height: 19px; border: none; padding: 0 15px;" placeholder="Datepicker" class="form-control" bsDatepicker>
+		</div>
+		<!-- <div class="dob flatpickr">
+			<input type="date" class="datepicker" [ngModel]="user.dob | date: 'yyyy-MM-dd'" (ngModelChange)="user.dob = $event" name="date" placeholder="Select Date...">
+			<a title="" class="arw_vz">
+				<svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M19.9394 7.51447L22.0607 9.63579L12 19.6964L1.93936 9.63579L4.06068 7.51447L12 15.4538L19.9394 7.51447Z" fill="#9494A0"></path>
+				</svg>
+			</a>
+		</div> -->
+		<div class="ch-pswd">
+			<button (click)="update_profile()"> Update</button>
+		</div>
+		<span *ngIf="profile_updated == true" class="text-success"> Profile updated successfully!</span>
+		<span *ngIf="profile_updated == false" class="text-danger"> There's an error while updating profile!</span>
+	</div>
+	<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>

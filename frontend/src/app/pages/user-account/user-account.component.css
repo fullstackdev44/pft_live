@@ -1,0 +1,28 @@
+#menu_for_user_account_mobile {
+  display: none;
+}
+
+@media screen and (max-width: 992px) {
+  #menu_for_user_account_mobile {
+    display: block;
+  }
+}
+
+#menu_for_user_account_desktop {
+  display: block;
+}
+
+@media screen and (max-width: 992px) {
+  #menu_for_user_account_desktop {
+    display: none;
+  }
+}
+
+.account_link_menu_active {
+  color: #e4a128 !important;
+  opacity: 1 !important;
+}
+
+.hover_no_opacity:hover {
+  opacity: 1 !important;
+}

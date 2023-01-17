@@ -1,0 +1,25 @@
+<div class="latest_vidz">
+	<div class="account-details">
+		<h2 class="hd-op">  New Message </h2>
+		<h4 class="slct-hd"> Send to </h4>
+		<div class="ch-pswd">
+			<!-- <ng-select [allowClear]="true" [(ngModel)]="new_receivers" [multiple]="true" (selected)="selected($event)" (removed)="removed($event)" [items]="contacts" name="blocked_user" placeholder="Selectionner le(s) contact(s)"></ng-select> -->
+			<!-- <input type="text" [(ngModel)]="new_message.receiver" name="receiver" placeholder="Message destination"> -->
+		</div>
+		<h4 class="slct-hd">Subject</h4>
+		<div class="ch-pswd">
+			<input type="text" [(ngModel)]="new_message.object" name="object" placeholder="Message Object">
+		</div>
+		<h4 class="slct-hd"> Content </h4>
+		<div class="ch-pswd">
+			<textarea type="text" style="padding: 10px 15px !important;" class="textarea-custom-class" [(ngModel)]="new_message.content" name="content" placeholder="Message content"></textarea>
+		</div>
+		<div class="ch-pswd">
+			<button (click)="send()"> Send Message </button>
+		</div>
+		<span *ngIf="message_info == true;" style="color: white;"> Your message have been sent successfully! </span>
+		<span *ngIf="message_info == false;" style="color: red;"> There was an error while sending message! </span>
+		<div class="clearfix"></div>
+	</div>
+	<div class="clearfix"></div>
+</div>

@@ -1,0 +1,34 @@
+@media (max-width: 768px) {
+  .button_alignment {
+    position: relative;
+    left: 500px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .button_alignment {
+    position: relative;
+    left: 10px !important;
+  }
+  .input-playlist-class {
+    width: calc(100% - 0.2em) !important;
+  }
+}
+
+.button_alignment {
+  position: relative;
+  left: 600px;
+}
+
+.input-playlist-class {
+  width: 395px; /* width: calc(100% - 0.2em); */
+  height: 35px !important;
+  background:#363643 !important;
+  border-radius: 30px !important;
+  color:#C3C3D2 !important;
+  font-weight: normal !important;
+  font-size: 16px !important;
+  line-height: 19px !important;
+  border: none !important;
+  padding: 10px 15px !important;
+}

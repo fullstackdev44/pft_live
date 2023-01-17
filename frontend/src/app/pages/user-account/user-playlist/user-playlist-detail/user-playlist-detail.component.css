@@ -1,0 +1,18 @@
+.activate_tab {
+  border-bottom: 1px solid #f2a92b;
+  color: #f2a92b;
+}
+
+.close_button {
+  color: #FFFFFF;
+  font-weight: bold;
+  font-size: 16px;
+  height: 36px;
+  line-height: 36px;
+  display: inline-block;
+  border-radius: 30px;
+  width: 159px;
+  text-align: center;
+  padding: 0 15px;
+  margin-left: 5px;
+}

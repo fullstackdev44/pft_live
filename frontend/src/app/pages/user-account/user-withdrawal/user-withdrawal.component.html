@@ -1,0 +1,102 @@
+<div class="payment-history-sec earningss">
+  <div class="payment-history-head">
+    <h3>Withdrawal</h3>
+    <div class="withdraw">
+      <a *ngIf="user_balance == 0" class="link_disabled" title="">Withdraw</a>
+      <a *ngIf="user_balance > 0" class="link" (click)="showConfirmationModal();" title="">Withdraw</a>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="tble-status">
+    <ul>
+      <li>
+        <h4>Your actual balance</h4>
+        <h3 class="pp">$ {{ user_balance ? (user_balance | number : '1.2-2') : 0 }} </h3> <span *ngIf="insufficient_funds_error == true" style="color: red;">Insufficient funds</span>
+      </li>
+    </ul>
+  </div>
+  <div class="table-content">
+    <table class="pyt-table style2">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Paypal email</th>
+          <th>Note</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Fees</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let withdrawal of withdrawals">
+          <td><span>{{ withdrawal.created | date: 'dd.MM.yyyy' }}</span></td>
+          <td><h4>{{ withdrawal.paypal_email }}</h4></td>
+          <td>
+            <h4>{{ withdrawal.note }}</h4>
+          </td>
+          <td>
+            <span>{{ withdrawal.amount ? ('$ ' + (withdrawal.amount | number : '1.2-2')) : '' }}</span>
+          </td>
+          <td>
+            <h4>{{ withdrawal.status }}</h4>
+          </td>
+          <td>
+            <h4> {{ withdrawal.fees }} </h4>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="nextt">
+    <a *ngIf="show_button[0] == true" class="link" style="margin-right: 25px; width: 113px; padding-left: 24px;" (click)="previous_list()" title="">Previous</a>
+    <a *ngIf="show_button[1] == true" class="link" (click)="next_list()" title="">Next</a>
+  </div>
+  <div class="clearfix"></div>
+</div>
+
+<div *ngIf="show_modal == true" class="popup-div">
+  <div class="pop-head">
+    <h3>Withdrawal</h3>
+  </div>
+  <form class="withdraw-form">
+    <div class="withdraw-form-content">
+      <div class="amount-info">
+        <h3>Amount</h3>
+        <ul>
+          <li>
+            <div class="frm-field m-0">
+              <input [(ngModel)]="withdrawal.amount" type="text" required style="text-align: left;" name="amount" placeholder="custom amount">
+            </div>
+          </li>
+          <li class="link">
+            <a class="btn-ok" (click)="withdrawal.amount = user_balance" style="background-color: #1FC64E !important; font-weight: bold;" title="">All earnings</a>
+          </li>
+        </ul>
+        <span *ngIf="amount_missing == true" class="text-danger"> Please, enter a valid amount! </span>
+        <div class="clearfix"></div>
+      </div>
+      <div class="frm-field m-0">
+        <label>Note to self</label>
+        <textarea [(ngModel)]="withdrawal.note" name="message" placeholder="Type here"></textarea>
+      </div>
+      <div class="paypal">
+        <img src="{{ '/assets/images/paypal.png' }}" alt="">
+      </div>
+      <div class="frm-field m-0">
+        <label>Email</label>
+        <input [(ngModel)]="withdrawal.paypal_email" type="text" required name="email" placeholder="Paypal Email address">
+        <span *ngIf="email_missing == true" class="text-danger"> Please, enter a valid mail! </span>
+      </div>
+    </div>
+    <div class="fields-fter">
+      <h3>Amount: $ {{ withdrawal.amount }}</h3>
+      <button (click)="createWithdrawal()">Submit</button>
+      <div class="clearfix"></div>
+    </div>
+  </form>
+  <a (click)="hideConfirmationModal()" title="" class="close-popup">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M11 22C4.92487 22 0 17.0751 0 11C0 4.92487 4.92487 0 11 0C17.0751 0 22 4.92487 22 11C22 17.0751 17.0751 22 11 22ZM11 20C15.9706 20 20 15.9706 20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20ZM7.70711 15.7071L11 12.4142L14.2929 15.7071L15.7071 14.2929L12.4142 11L15.7071 7.70711L14.2929 6.29289L11 9.58579L7.70711 6.29289L6.29289 7.70711L9.58579 11L6.29289 14.2929L7.70711 15.7071Z" fill="#9494A0"/>
+    </svg>
+  </a>
+</div>

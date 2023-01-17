@@ -1,0 +1,221 @@
+<section class="vds-main">
+	<div *ngIf="lives && lives.length" class="vidz-row">
+		<div class="container">
+			<div class="vidz_sec">
+				<h3>Live Now</h3>
+				<div class="vidz_list {{ show_hide_section[0] == true ? 'show_section' : 'hide_section' }}">
+					<div class="row">
+						<div *ngFor="let live of lives" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+							<div class="videoo">
+								<div class="vid_thumbainl video_small_thumbnail">
+									<a (click)="navigateTo(live, user)" title="Watch live" class="thumb">
+										<img *ngIf="live.live_info?.live_thumbnail" width="100%" [src]="live.live_info?.live_thumbnail" alt="">
+										<img *ngIf="!live.live_info?.live_thumbnail" width="100%" src="assets/images/upcomming_live.png" alt="">
+									</a>
+									<a (click)="navigateTo(live, user)">
+										<!-- <span class="vid-time">{{ live.duration | hrminsec }}</span> -->
+										<span *ngIf="live.price && live.price > 0" class="vid-price">${{ live.price | number : '1.2-2' }}</span>
+										<span class="vid-time live-mark">LIVE</span>
+									</a>
+									<a *ngIf="live.price && live.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(live)" title="" class="play_vid">
+										<img src="assets/images/info.svg" alt="">
+									</a>
+								</div>
+								<div class="video_info">
+									<h3><a (click)="navigateTo(live, user)" title="">{{ live.title | excerpt:50 }}</a></h3>
+									<h4>
+										<a routerLink="/channels/{{ live.channel_id?._id }}" title="">{{ live.channel_id?.title }}</a>
+										<span class="verify_ic">
+											<svg *ngIf="user && user.subscribed_channels && userIsSubscribedTo(live.channel_id?._id)" width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<g>
+													<path id="icon16" fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+												</g>
+											</svg>
+										</span>
+									</h4>
+									<span> {{ live.meta?.views | shortNumber }} viewers . <small class="posted_dt">{{ live.live_info?.start | dateAgo }}</small></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a (click)="show_hide_section[0] = !show_hide_section[0]" title="" class="rm_dv">
+					<svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 0.228882L13.7071 1.6431L7.00001 8.3502L0.292908 1.6431L1.70712 0.228882L7.00001 5.52178L12.2929 0.228882Z" fill="#9494A0" />
+					</svg>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="lives && popular_lives.length" class="vidz-row">
+		<div class="container">
+			<div class="vidz_sec">
+				<h3>Popular live</h3>
+				<div class="vidz_list {{ show_hide_section[1] == true ? 'show_section' : 'hide_section' }}">
+					<div class="row">
+						<div *ngFor="let live of popular_lives" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+							<div class="videoo">
+								<div class="vid_thumbainl video_small_thumbnail">
+									<a (click)="navigateTo(live, user)" title="Watch live" class="thumb">
+										<img *ngIf="live.live_info?.live_thumbnail" width="100%" [src]="live.live_info?.live_thumbnail" alt="">
+										<img *ngIf="!live.live_info?.live_thumbnail" width="100%" src="assets/images/upcomming_live.png" alt="">
+									</a>
+									<a (click)="navigateTo(live, user)">
+										<!-- <span class="vid-time">{{ live.duration | hrminsec }}</span> -->
+										<span *ngIf="live.price && live.price > 0" class="vid-price">${{ live.price | number : '1.2-2' }}</span>
+										<span *ngIf="live.live_info.status == 'LIVE'" class="vid-time live-mark">LIVE</span>
+									</a>
+									<a *ngIf="live.price && live.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(live)" title="" class="play_vid">
+										<img src="assets/images/info.svg" alt="">
+									</a>
+								</div>
+								<div class="video_info">
+									<h3><a (click)="navigateTo(live, user)" title="">{{ live.title | excerpt:50 }}</a></h3>
+									<h4>
+										<a routerLink="/channels/{{ live.channel_id?._id }}" title="">{{ live.channel_id?.title }}</a>
+										<span class="verify_ic">
+											<svg *ngIf="user && user.subscribed_channels && userIsSubscribedTo(live.channel_id?._id)" width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<g>
+													<path id="icon16" fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+												</g>
+											</svg>
+										</span>
+									</h4>
+									<span> {{ live.meta?.views | shortNumber }} viewers . <small class="posted_dt">{{ live.live_info?.start | dateAgo }}</small></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a (click)="show_hide_section[1] = !show_hide_section[1]" title="" class="rm_dv">
+					<svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 0.228882L13.7071 1.6431L7.00001 8.3502L0.292908 1.6431L1.70712 0.228882L7.00001 5.52178L12.2929 0.228882Z" fill="#9494A0" />
+					</svg>
+				</a>
+			</div>
+		</div>
+	</div>
+	<!-- Hidden for now as video live is no yet saved -->
+	<!-- <div *ngIf="lives && recent_lives.length" class="vidz-row">
+		<div class="container">
+			<div class="vidz_sec">
+				<h3>Recent Lives</h3>
+				<div class="vidz_list {{ show_hide_section[2] == true ? 'show_section' : 'hide_section' }}">
+					<div class="row">
+						<div *ngFor="let live of recent_lives" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+							<div class="videoo">
+								<div class="vid_thumbainl video_small_thumbnail">
+									<a [routerLink]="['/live', live._id]" title="Watch live" class="thumb">
+										<img *ngIf="live.live_info?.live_thumbnail" width="100%" [src]="live.live_info?.live_thumbnail" alt="">
+										<img *ngIf="!live.live_info?.live_thumbnail" width="100%" src="assets/images/upcomming_live.png" alt="">
+									</a>
+									<a [routerLink]="['/live', live._id]">
+										<span *ngIf="live.price && live.price > 0" class="vid-price">${{ live.price | number:0-0.0 }}</span>
+										<span class="vid-time">{{ live.duration | hrminsec }}</span>
+									</a>
+								</div>
+								<div class="video_info">
+									<h3><a routerLink="/live/{{ live._id }}" title="">{{ live.title }}</a></h3>
+									<h4>
+										<a routerLink="/channels/{{ live.channel_id?._id }}" title="">{{ live.channel_id?.title }}</a>
+										<span class="verify_ic">
+											<svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<g>
+													<path id="icon16" fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+												</g>
+											</svg>
+										</span>
+									</h4>
+									<span> {{ live.meta?.views | shortNumber }} views . <small class="posted_dt">{{ live.live_info?.end | dateAgo }}</small></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a (click)="show_hide_section[2] = !show_hide_section[2]" title="" class="rm_dv">
+					<svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 0.228882L13.7071 1.6431L7.00001 8.3502L0.292908 1.6431L1.70712 0.228882L7.00001 5.52178L12.2929 0.228882Z" fill="#9494A0" />
+					</svg>
+				</a>
+			</div>
+		</div>
+	</div> -->
+	<div *ngIf="lives && upcomming_lives.length" class="vidz-row">
+		<div class="container">
+			<div class="vidz_sec">
+				<h3>Upcoming Live</h3>
+				<div class="vidz_list {{ show_hide_section[3] == true ? 'show_section' : 'hide_section' }}">
+					<div class="row">
+						<div *ngFor="let live of upcomming_lives" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+							<div class="videoo">
+								<div class="vid_thumbainl video_small_thumbnail">
+									<a (click)="navigateTo(live, user)" title="Watch live" class="thumb">
+										<img *ngIf="live.live_info?.live_thumbnail" width="100%" [src]="live.live_info?.live_thumbnail" alt="">
+										<img *ngIf="!live.live_info?.live_thumbnail" width="100%" src="assets/images/upcomming_live.png" alt="">
+									</a>
+									<a (click)="navigateTo(live, user)">
+										<span *ngIf="live.price && live.price > 0" class="vid-price">${{ live.price | number : '1.2-2' }}</span>
+										<!-- <span class="vid-time">{{ live.duration | hrminsec }}</span> -->
+										<!-- <span class="vid-time live-mark">LIVE</span> -->
+									</a>
+									<a *ngIf="live.price && live.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(live)" title="" class="play_vid">
+										<img src="assets/images/info.svg" alt="">
+									</a>
+								</div>
+								<div class="video_info">
+									<h3><a (click)="navigateTo(live, user)" title="">{{ live.title | excerpt:50 }}</a></h3>
+									<h4>
+										<a routerLink="/channels/{{ live.channel_id?._id }}" title="">{{ live.channel_id?.title }}</a>
+										<span class="verify_ic">
+											<svg *ngIf="user && user.subscribed_channels && userIsSubscribedTo(live.channel_id?._id)" width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<g>
+													<path id="icon16" fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+												</g>
+											</svg>
+										</span>
+									</h4>
+									<span> Scheduled for: <small class="posted_dt">{{ live.live_info?.start | date:'MM-dd-yyyy, hh:mm a' }}</small></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a (click)="show_hide_section[3] = !show_hide_section[3]" title="" class="rm_dv">
+					<svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 0.228882L13.7071 1.6431L7.00001 8.3502L0.292908 1.6431L1.70712 0.228882L7.00001 5.52178L12.2929 0.228882Z" fill="#9494A0" />
+					</svg>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="video_info_modal" class="form_popup modal" style="height: 420px; top: -100px;">
+  <div class="video_info_form" id="video_info_form">
+    <div class="hd-lg">
+      <h2>
+				<span>Video Info</span>
+        <a style="position: absolute; left: 92%;" (click)="hideVideoInfoModal()" title="">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+        </svg>
+        </a>
+      </h2>
+		</div>
+		<div class="lg-in flag_content" style="text-align: unset; height: 280px;">
+			<h4 style="color: white;" style="margin-bottom: 0px !important">
+				<strong> Title: </strong> {{ video_info.title }}
+				<br>
+				<br>
+				<strong> Description: </strong>
+				<br>
+			</h4>
+			<p class="description_paragraph" style="color: white;">{{ video_info.description }}</p>
+		</div>
+		<div style="height: 50px !important; text-align: center; margin-top: 15px; margin-bottom: 10px; color: white;">
+			<a (click)="hideVideoInfoModal()" title="" class="close_button btn-cancel link">
+				Close
+			</a>
+		</div>
+	</div>
+</section>

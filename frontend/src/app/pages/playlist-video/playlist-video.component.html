@@ -1,0 +1,734 @@
+	<section class="mn-sec">
+		<div class="container">
+			<div class="video_main">
+				<div class="row">
+					<div class="col-lg-9">
+						<div class="vid-1">
+							<div class="vid-pr">
+								<!--
+								<iframe [src]="safe_url" id="vimeo_video"  frameborder='0' allow="autoplay; fullscreen" webkitAllowFullScreen mozallowfullscreen allowFullScreen  title="Project Fitness TV"></iframe>
+								-->
+								<div id="vimeo_video" [style.background-image]="'url(' + video.thumbnail + ')'" [style.background-size]="'cover'">
+									<!-- Vimeo iframe will go here -->
+								</div>
+								<a href="javascript:void(0)" (click)="playVideo()" title="" *ngIf="!hide_play_button"><svg width="22" height="28" viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M0.666626 2.00006V26.0001C0.666626 27.055 1.83362 27.6921 2.72097 27.1216L21.3876 15.1216C22.2041 14.5968 22.2041 13.4033 21.3876 12.8785L2.72097 0.878494C1.83362 0.308055 0.666626 0.945177 0.666626 2.00006ZM18.2009 14L3.33329 23.5578V4.44227L18.2009 14Z" fill="white" />
+									</svg>
+								</a>
+							</div>
+							<!--vid-pr end-->
+							<div class="vid-info">
+								<h3>{{ video.title | excerpt:50 }}</h3>
+								<div class="info-pr">
+									<span> <ng-container *ngIf="!video.price || video.price == 0"> {{ video?.meta?.views | number}} views . </ng-container> <small class="posted_dt">{{ video?.created | date:'longDate' }}</small></span>
+									<ul *ngIf="show_user_interaction_button == true" class="pr_links">
+										<li>
+											<a class="link" (click)="addToPlaylist()" title="">
+												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path fill-rule="evenodd" clip-rule="evenodd" d="M13 11H22V13H13V22H11V13H2V11H11V2H13V11Z" fill="#9494A0" />
+												</svg>
+											</a>
+										</li>
+										<li>
+											<a class="link" (click)="addOrRemoveFromFavorites()" title="">
+												<svg width="24" height="25" viewBox="0 0 24 25" xmlns="http://www.w3.org/2000/svg">
+													<path [attr.fill]="video.is_favorite ? '#D07735' : '#9494A0'" fill-rule="evenodd" clip-rule="evenodd" d="M16.5532 2.23171C15.1056 2.23169 14.1724 2.40415 13.1027 2.92776C12.7066 3.12162 12.335 3.35508 11.99 3.62745C11.6582 3.37035 11.3015 3.14761 10.9218 2.95982C9.83132 2.42046 8.85028 2.23169 7.45455 2.23169C3.71644 2.23169 1 5.32896 1 9.35156C1 12.3894 2.69383 15.324 5.84884 18.1616C7.50489 19.651 9.61932 21.125 11.1336 21.9092L12 22.3578L12.8664 21.9092C14.3807 21.125 16.4951 19.651 18.1512 18.1616C21.3062 15.324 23 12.3894 23 9.35156C23 5.37153 20.2579 2.24705 16.5532 2.23171ZM21 9.35156C21 11.7316 19.5862 14.181 16.8137 16.6745C15.3022 18.034 13.359 19.3926 12 20.1054C10.641 19.3926 8.69782 18.034 7.18628 16.6745C4.41382 14.181 3 11.7316 3 9.35156C3 6.3794 4.88364 4.23169 7.45455 4.23169C8.56428 4.23169 9.24813 4.36327 10.0351 4.75253C10.5 4.98246 10.9109 5.28606 11.2665 5.66546L12.0023 6.45039L12.7315 5.65924C13.0951 5.26464 13.512 4.95412 13.9819 4.72411C14.7459 4.35018 15.387 4.23169 16.5491 4.23169C19.0882 4.24222 21 6.42065 21 9.35156Z" />
+												</svg>
+											</a>
+										</li>
+										<li>
+											<a class="link" (click)="addOrRemoveFromWatchLater()" title="">
+												<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path [attr.fill]="video.is_to_watch_later ? '#D07735' : '#9494A0'" fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" />
+												</svg>
+											</a>
+										</li>
+										<li>
+											<a class="link" (click)="share()" title="">
+												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path fill-rule="evenodd" clip-rule="evenodd" d="M14 6C14 6.28742 14.0303 6.56777 14.0879 6.83801L9.01694 9.3735C8.28363 8.53189 7.20393 8 6 8C3.79086 8 2 9.79086 2 12C2 14.2091 3.79086 16 6 16C7.20393 16 8.28363 15.4681 9.01694 14.6265L14.0879 17.162C14.0303 17.4322 14 17.7126 14 18C14 20.2091 15.7909 22 18 22C20.2091 22 22 20.2091 22 18C22 15.7909 20.2091 14 18 14C16.7961 14 15.7164 14.5319 14.9831 15.3735L9.91208 12.838C9.96968 12.5678 10 12.2874 10 12C10 11.7126 9.96968 11.4322 9.91208 11.162L14.9831 8.6265C15.7164 9.46811 16.7961 10 18 10C20.2091 10 22 8.20914 22 6C22 3.79086 20.2091 2 18 2C15.7909 2 14 3.79086 14 6ZM8 12C8 13.1046 7.10457 14 6 14C4.89543 14 4 13.1046 4 12C4 10.8954 4.89543 10 6 10C7.10457 10 8 10.8954 8 12ZM18 8C19.1046 8 20 7.10457 20 6C20 4.89543 19.1046 4 18 4C16.8954 4 16 4.89543 16 6C16 7.10457 16.8954 8 18 8ZM20 18C20 19.1046 19.1046 20 18 20C16.8954 20 16 19.1046 16 18C16 16.8954 16.8954 16 18 16C19.1046 16 20 16.8954 20 18Z" fill="#9494A0" />
+												</svg>
+											</a>
+										</li>
+										<li>
+											<a class="link" (click)="flag()" title="">
+												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path fill-rule="evenodd" clip-rule="evenodd" d="M7 23H5H4V21H5V12V4V1H7V2H21.1247L18.126 7.99991L21.126 14H7V21H8V23H7ZM7 12V4H17.8893L15.89 8.00009L17.89 12H7Z" fill="#9494A0" />
+												</svg>
+											</a>
+										</li>
+										<li>
+											<a class="link" (click)="updateVideoLike(video, 'like')" title="">
+												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path [attr.fill]="video.is_liked ? '#D07735' : '#9494A0'" fill-rule="evenodd" clip-rule="evenodd" d="M22 11.9991C22 10.3166 20.8696 8.99908 19 8.99908H15.927L15.9548 8.92336C15.9826 8.84819 16.0609 8.64171 16.137 8.4412L16.1371 8.44092L16.1375 8.43999C16.2046 8.26297 16.2699 8.09081 16.2971 8.01799C16.4872 7.50764 16.626 7.09644 16.7382 6.68921C16.9079 6.07372 17 5.5192 17 4.99909C17 3.52708 16.0919 2.6128 14.7483 2.22157C14.1423 2.04511 13.6148 1.99899 13 1.99908H12.5205L12.2203 2.37297C11.8811 2.79532 11.215 3.5565 10.447 4.43405L10.447 4.43409C9.03026 6.053 7.2669 8.06799 6.57035 9.08248C6.38961 9.0288 6.19817 8.99998 6 8.99998H4C2.89543 8.99998 2 9.89541 2 11V20C2 21.1045 2.89543 22 4 22H6C6.68712 22 7.29331 21.6535 7.65337 21.1257C7.95674 21.3219 8.29522 21.4856 8.66312 21.6173C9.50544 21.9186 10.3408 22.0112 11.0344 21.9985L18 21.9991C20.7551 21.9991 22 17.9427 22 11.9991ZM9.33688 19.7342C8.45197 19.4176 8 18.9013 8 17.9991V11V10.9991C8 10.7589 8.04443 10.5462 8.14171 10.3191C8.31645 9.91108 9.90193 8.10222 11.4047 6.38776L11.4047 6.38772C12.1803 5.50289 12.9338 4.6432 13.46 4.01422C13.7114 4.03307 13.9484 4.07171 14.1891 4.14182C14.7622 4.30868 15 4.54811 15 4.99908C15 5.31567 14.9359 5.7014 14.8101 6.15769C14.7161 6.49866 14.5944 6.85945 14.4229 7.31975C14.3986 7.38508 14.3378 7.54518 14.2733 7.71541L14.2731 7.71586C14.1944 7.92312 14.1102 8.14528 14.079 8.22963C13.9489 8.58125 13.8633 8.84015 13.8047 9.0754C13.5555 10.0754 13.8055 10.9991 15 10.9991H19C19.6912 10.9991 20 11.359 20 11.9991C20 16.7898 19.0151 19.9991 18 19.9991H11L10.9631 19.9997C10.5254 20.0075 9.91062 19.9394 9.33688 19.7342ZM4 20V11H6V20H4Z" />
+												</svg>
+												<span>{{ (video?.meta?.likes) ? (video?.meta?.likes | shortNumber) : '0' }}</span>
+											</a>
+										</li>
+										<li>
+											<a class="link" (click)="updateVideoLike(video, 'dislike')" title="">
+												<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path [attr.fill]="video.is_disliked ? '#D07735' : '#9494A0'" fill-rule="evenodd" clip-rule="evenodd" d="M16.137 15.5579C16.0609 15.3574 15.9826 15.1509 15.9548 15.0757L15.927 15H19C20.8696 15 22 13.6825 22 12C22 6.05642 20.7551 1.99999 18 1.99999C18 1.99999 11.0231 2.00021 10.9989 1.9997C10.3408 1.9879 9.50544 2.08044 8.66312 2.38181C8.29505 2.5135 7.95642 2.67736 7.65294 2.87369C7.29284 2.34623 6.68686 1.99999 6 1.99999H4C2.89543 1.99999 2 2.89542 2 3.99999V13C2 14.1046 2.89543 15 4 15H6C6.19836 15 6.38997 14.9711 6.57086 14.9173C7.26776 15.9321 9.03061 17.9465 10.447 19.565L10.447 19.565C11.215 20.4426 11.8811 21.2038 12.2203 21.6261L12.5205 22H13.0077C13.6148 22.0001 14.1423 21.954 14.7483 21.7775C16.0919 21.3863 17 20.472 17 19C17 18.4799 16.9079 17.9254 16.7382 17.3099C16.626 16.9026 16.4872 16.4914 16.2971 15.9811C16.2699 15.9081 16.2043 15.7353 16.137 15.5579ZM8 13V5.99999C8 5.09776 8.45197 4.58152 9.33688 4.26491C9.91062 4.05963 10.5254 3.99153 10.9656 3.9994L16.5338 3.99997L18 3.99999C19.0151 3.99999 20 7.20924 20 12C20 12.6401 19.6912 13 19 13H15C13.8055 13 13.5555 13.9236 13.8047 14.9237C13.8633 15.1589 13.9489 15.4178 14.079 15.7694C14.1101 15.8538 14.1944 16.0759 14.273 16.2831L14.2732 16.2834L14.2733 16.2837L14.2733 16.2837C14.3378 16.4539 14.3986 16.614 14.4229 16.6793C14.5944 17.1396 14.7161 17.5004 14.8101 17.8414C14.9359 18.2977 15 18.6834 15 19C15 19.451 14.7622 19.6904 14.1891 19.8573C13.9484 19.9274 13.7114 19.966 13.46 19.9849C12.9338 19.3559 12.1803 18.4962 11.4047 17.6113C9.90194 15.8969 8.31645 14.088 8.14171 13.68C8.04443 13.4529 8 13.2402 8 13ZM4 13V3.99999H6V13H4Z" />
+												</svg>
+												<span>{{ (video?.meta?.dislikes) ? (video?.meta?.dislikes | shortNumber) : '0' }}</span>
+											</a>
+										</li>
+									</ul>
+									<div class="clearfix"></div>
+								</div>
+								<!--info-pr end-->
+							</div>
+							<!--vid-info end-->
+						</div>
+						<!--vid-1 end-->
+					</div>
+					<div class="col-lg-3 fl_wd">
+						<div class="playlist_view">
+							<div class="playlist_hd">
+								<h3>{{ playlist_detail.title }} - <span>{{ played_video_index + 1 }} / {{ playlist_detail.videos.length }}</span></h3>
+								<!-- Removed for now -->
+								<!-- is this really needed ??? -->
+								<!-- <ul>
+									<li>
+										<a title="">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path fill-rule="evenodd" clip-rule="evenodd" d="M11 9H20V11H11V20H9V11H0V9H9V0H11V9Z" fill="#9494A0"/>
+											</svg>
+										</a>
+									</li>
+									<li>
+										<a title="">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path fill-rule="evenodd" clip-rule="evenodd" d="M16.5532 2.23171C15.1056 2.23169 14.1724 2.40415 13.1027 2.92776C12.7066 3.12162 12.335 3.35508 11.99 3.62745C11.6582 3.37035 11.3015 3.14761 10.9218 2.95982C9.83132 2.42046 8.85028 2.23169 7.45455 2.23169C3.71644 2.23169 1 5.32896 1 9.35156C1 12.3894 2.69383 15.324 5.84884 18.1616C7.50489 19.651 9.61932 21.125 11.1336 21.9092L12 22.3578L12.8664 21.9092C14.3807 21.125 16.4951 19.651 18.1512 18.1616C21.3062 15.324 23 12.3894 23 9.35156C23 5.37153 20.2579 2.24705 16.5532 2.23171ZM21 9.35156C21 11.7316 19.5862 14.181 16.8137 16.6745C15.3022 18.034 13.359 19.3926 12 20.1054C10.641 19.3926 8.69782 18.034 7.18628 16.6745C4.41382 14.181 3 11.7316 3 9.35156C3 6.3794 4.88364 4.23169 7.45455 4.23169C8.56428 4.23169 9.24813 4.36327 10.0351 4.75253C10.5 4.98246 10.9109 5.28606 11.2665 5.66546L12.0023 6.45039L12.7315 5.65924C13.0951 5.26464 13.512 4.95412 13.9819 4.72411C14.7459 4.35018 15.387 4.23169 16.5491 4.23169C19.0882 4.24222 21 6.42065 21 9.35156Z" fill="#9494A0"></path>
+											</svg>
+										</a>
+									</li>
+								</ul> -->
+							</div><!--playlist_hd end-->
+							<div class="clearfix"></div>
+							<ul class="videos_lizt mCustomScrollbar scrollable-element playlist_list_ui_responsive" style="overflow-y: auto; height: 419px;" data-mcs-theme="dark">
+								<li *ngFor="let item of playlist_detail.videos; index as i">
+									<div (click)="createVideoPlayer(item.source_id)" class="vidz_row">
+										<span class="vid_num {{ item._id == video._id ? 'played_video' : '' }}">{{ i + 1 }}</span>
+										<div class="vidz_img">
+											<a title="">
+												<img width="100%" [src]="item.thumbnail" alt="">
+											</a>
+										</div><!--vidz_img end-->
+										<div class="video_info">
+											<h3><a class="{{ item._id == video._id ? 'played_video' : '' }}" title="">{{ item.title | excerpt:50 }}</a></h3>
+											<h4><a class="{{ item._id == video._id ? 'played_video' : '' }}" *ngIf="item.channel_id && item.channel_id._id" title="">{{ item.channel_id?.title }}</a><span *ngIf="userIsSubscribedTo(item.channel_id?._id)" class="verify_ic"> <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"> <g> <path fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black"></path> </g> </svg></span></h4>
+										</div>
+									</div><!--vidz_row end-->
+							</ul><!--videos_lizt end-->
+						</div><!--playlist_view end-->
+					</div>
+				</div>
+			</div><!--video_main end-->
+			<div class="row">
+				<div class="col-lg-9">
+					<div class="mn-vid-sc single_video">
+						<div class="abt-mk">
+							<div class="info-pr-sec">
+								<div class="vcp_inf cr">
+									<span class="vc_hd cr{{ video?.channel_id?.avatar_color }} pr">{{ video?.channel_id?.avatar_card }}</span>
+									<div class="vc_info pr">
+										<h4 (click)="getTime()">
+											<a routerLink="/channels/{{ video?.channel_id?._id }}">{{ video?.channel_id?.title }}</a>
+										</h4>
+										<span>{{ video?.channel_id?.meta?.subscribers | shortNumber }} subscribers</span>
+									</div>
+								</div>
+								<!--vcp_inf end-->
+								<ul class="chan_cantrz">
+									<!-- <li>
+										<a href="#" title="" class="hire">Hire</a>
+									</li> -->
+									<li>
+										<a routerLink="/payment/{{ video.source_id }}/donation" title="" class="donate">Donate</a>
+									</li>
+									<li>
+										<a *ngIf="!userIsSubscribedToChannel()" (click)="subscribe()" title="" class="subscribe link">Subscribe <strong>{{ video?.channel_id?.meta?.subscribers | shortNumber }}</strong></a>
+										<a *ngIf="userIsSubscribedToChannel()" (click)="unsubscribe()" title="" class="subscribe link">Unsubscribe <strong>{{ video?.channel_id?.meta?.subscribers | shortNumber }}</strong></a>
+									</li>
+								</ul>
+								<!--chan_cantrz end-->
+								<div class="clearfix"></div>
+							</div>
+							<div class="clearfix"></div>
+							<p *ngIf="show_more == false">{{ excerpt(video.description) }}</p>
+  	          <p *ngIf="show_more == true">{{ video.description }}</p>
+	            <ul *ngIf="show_more == true" class="mk-ct">
+								<li *ngIf="video.categories">
+									<h4>Category</h4>
+									<ul>
+										<li>
+											<a style="color: #C3C3D2; text-transform: capitalize;" *ngFor="let categorie of video.categories; let last_item = last;" title="">{{ categorie.title + (last_item ? "" : ", " ) }}</a>
+										</li>
+									</ul>
+								</li>
+								<li *ngIf="video.tags">
+									<h4>Tags</h4>
+									<ul>
+										<li>
+											<a *ngFor="let tag of video.tags.split(' '); let last = last;" routerLink="/tag/{{ tag }}" title="">{{ tag + (last ? "" : ", " ) }}</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<a class="link" (click)="show_more=!show_more" title="">show {{ show_more ? "less" : "more" }}</a>
+						</div>
+						<!--abt-mk end-->
+						<!-- <div class="amazon">
+							<div class="abt-amz">
+								<div class="amz-hd">
+									<h2>Products used in this video </h2>
+									<h3>Use CODE:<span> ScereBro26</span> 10% Discount</h3>
+								</div>
+								<div class="amz-lg">
+									<img src="assets/images/logo1.png" alt="">
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="amz-img-inf">
+								<div class="row">
+	
+									<div *ngFor="let product of video?.products; index as i;" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+										<div class="mg-inf">
+											<div class="img-sr">
+												<img src="{{product?.image}}" alt="">
+											</div>
+											<div class="info-sr">
+												<h3><a class="link" title="">{{ product?.name || "" }}</a></h3>
+                      							<span>$ {{ (product?.price || 0) | number : '1.2-2' }}</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div> -->
+						<div class="cmt-bx">
+							<ul class="cmt-pr">
+								<li>{{ comments.length }} Comment{{ comments.length > 1 ? "s" : "" }}</li>
+								<li>
+									<svg (click)="show_sort_options = !show_sort_options" class="link" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M2 6.37574L9 14.3757V22.943L15 20.693V14.3757L22 6.37574V4C22 2.89543 21.1046 2 20 2H4C2.89543 2 2 2.89543 2 4V6.37574ZM20 4V5H4V4H20ZM5.20377 7H18.7962L13.5462 13H10.4538L5.20377 7ZM11 15V20.057L13 19.307V15H11Z" fill="#9494A0" />
+									</svg>
+									<span><a class="link" (click)="show_sort_options = !show_sort_options" title="">SORT BY</a></span>
+									<ul *ngIf="show_sort_options" class="select_input">
+										<li class="link" (click)="sortCommentsByDate()">Last comments first</li>
+										<li class="link" (click)="sortCommentsByLikes()">Popular first</li>
+									</ul>
+								</li>
+							</ul>
+							<div class="clearfix"></div>
+							<div *ngIf="user && user._id" class="vcp_inf pc top">
+								<img *ngIf="user.avatar" [src]="user.avatar" class="vc_hd cr8">
+								<span *ngIf="!user.avatar" class="vc_hd cr{{ user?.avatar_color }} pr">{{ user.avatar_card }}</span>
+								<form>
+									<input type="text" name="comment-content" [(ngModel)]="new_comment.comment" placeholder="Add a public comment" autocomplete="off">
+									<button (click)="addComment(undefined)">Comment</button>
+								</form>
+								<div class="rt-cmt">
+									<a *ngIf="new_comment.comment" class="link" (click)="new_comment.comment = null" title="">
+										<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0" />
+										</svg>
+									</a>
+									<div class="clearfix"></div>
+								</div>
+								<!--vcp_inf end-->
+							</div>
+							<br>
+							<!--cmt-bx end-->
+							<ul class="cmn-lst">
+								<li *ngFor="let comment of comments; index as i;">
+									<div class="vcp_inf">
+										<!-- <span class="vc_hd cr8">GC</span> -->
+										<img *ngIf="(editCommentValue[i] == false || editCommentValue[i] == undefined) && (comment.user_id && comment.user_id.avatar)" src="{{ comment.user_id.avatar }}" class="vc_hd cr8">
+										<span *ngIf="(editCommentValue[i] == false || editCommentValue[i] == undefined) && (comment.user_id && !comment.user_id.avatar)" class="vc_hd cr{{ comment.user_id.avatar_color }} pr">{{ comment.user_id.avatar_card }}</span>
+										<svg *ngIf="!(editCommentValue[i] == true) && (comment.user_id._id == user._id || video.user_id == user._id)" class="link" (click)="showCommentControl[i] = !showCommentControl[i]" style="position: absolute; right: 24px;" width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path fill-rule="evenodd" clip-rule="evenodd" d="M0 2C0 3.10457 0.89543 4 2 4C3.10457 4 4 3.10457 4 2C4 0.89543 3.10457 0 2 0C0.89543 0 0 0.89543 0 2ZM2 11C0.89543 11 0 10.1046 0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11ZM2 18C0.89543 18 0 17.1046 0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18Z" fill="#9494A0"></path>
+										</svg>
+										<div *ngIf="showCommentControl[i] == true && (comment.user_id._id == user._id || video.user_id == user._id)" style="position: absolute; right: 24px; width: 100px; height: auto; background-color: #363643; color: #a4baae; margin-top: 22px">
+											<div *ngIf="comment.user_id._id == user._id" (click)="editCommentValue[i] = true; showCommentControl[i] = !showCommentControl[i]; getOldComment(comment.comment);" class="text-center link" style="height: 45px;border-bottom: 1px solid black;"><span style="line-height: 3">Edit</span></div>
+											<div (click)="deleteComment(i); showCommentControl[i] = !showCommentControl[i]" class="text-center link" style="height: 40px;"><span style="line-height: 3">Delete</span></div>
+										</div>
+										<!-- comment edit form begin -->
+										<div *ngIf="editCommentValue[i] == true" class="vcp_inf pc">
+											<img *ngIf="comment.user_id && comment.user_id.avatar" [src]="comment.user_id.avatar" class="vc_hd cr8">
+											<span *ngIf="!user.avatar" class="vc_hd cr{{ user?.avatar_color }} pr">{{ user.avatar_card }}</span>
+											<form>
+												<input type="text" name="comment-edit-content-{{i}}" [(ngModel)]="comments[i].comment" placeholder="edit the comment">
+												<button (click)="updateComment(comment, i)">Update</button>
+											</form>
+											<div class="rt-cmt">
+												<a class="link" *ngIf="comment.comment" (click)="editCommentValue[i] = false; restoreCommentValue(comment.comment, i)" title="">
+													<svg style="top: -25px;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0" />
+													</svg>
+												</a>
+												<div class="clearfix"></div>
+											</div>
+										</div>
+										<!-- comment edit form ends -->
+										<div class="coments">
+											<h2> {{comment.user_id.full_name}} . <small class="posted_dt"> {{ comment.created | dateAgo }} </small></h2>
+											<p style="color: white;" class="{{(comment.comment.length > 240 && read_more[comment._id] == true ) ? '' : (comment.comment.length < 240 ? 'no-read-more' : 'read-more') }}"> {{ comment.comment }}
+											</p>
+											<a style="margin-top: 0px;" (click)="read_more[comment._id] = !read_more[comment._id]">
+												<span *ngIf="read_more[comment._id] == true"> Read less </span>
+												<span *ngIf="comment.comment.length > 240 && read_more[comment._id] == false"> Read more </span>
+											</a>
+											<ul class="cmn-i">
+												<li>
+													<a (click)="updateCommentLike(comment, 'like', false, i)" title="">
+														<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<path fill-rule="evenodd" clip-rule="evenodd" d="M22 11.9991C22 10.3166 20.8696 8.99908 19 8.99908H15.927L15.9548 8.92336C15.9826 8.84819 16.0609 8.64171 16.137 8.4412L16.1371 8.44092L16.1375 8.43999C16.2046 8.26297 16.2699 8.09081 16.2971 8.01799C16.4872 7.50764 16.626 7.09644 16.7382 6.68921C16.9079 6.07372 17 5.5192 17 4.99909C17 3.52708 16.0919 2.6128 14.7483 2.22157C14.1423 2.04511 13.6148 1.99899 13 1.99908H12.5205L12.2203 2.37297C11.8811 2.79532 11.215 3.5565 10.447 4.43405L10.447 4.43409C9.03026 6.053 7.2669 8.06799 6.57035 9.08248C6.38961 9.0288 6.19817 8.99998 6 8.99998H4C2.89543 8.99998 2 9.89541 2 11V20C2 21.1045 2.89543 22 4 22H6C6.68712 22 7.29331 21.6535 7.65337 21.1257C7.95674 21.3219 8.29522 21.4856 8.66312 21.6173C9.50544 21.9186 10.3408 22.0112 11.0344 21.9985L18 21.9991C20.7551 21.9991 22 17.9427 22 11.9991ZM9.33688 19.7342C8.45197 19.4176 8 18.9013 8 17.9991V11V10.9991C8 10.7589 8.04443 10.5462 8.14171 10.3191C8.31645 9.91108 9.90193 8.10222 11.4047 6.38776L11.4047 6.38772C12.1803 5.50289 12.9338 4.6432 13.46 4.01422C13.7114 4.03307 13.9484 4.07171 14.1891 4.14182C14.7622 4.30868 15 4.54811 15 4.99908C15 5.31567 14.9359 5.7014 14.8101 6.15769C14.7161 6.49866 14.5944 6.85945 14.4229 7.31975C14.3986 7.38508 14.3378 7.54518 14.2733 7.71541L14.2731 7.71586C14.1944 7.92312 14.1102 8.14528 14.079 8.22963C13.9489 8.58125 13.8633 8.84015 13.8047 9.0754C13.5555 10.0754 13.8055 10.9991 15 10.9991H19C19.6912 10.9991 20 11.359 20 11.9991C20 16.7898 19.0151 19.9991 18 19.9991H11L10.9631 19.9997C10.5254 20.0075 9.91062 19.9394 9.33688 19.7342ZM4 20V11H6V20H4Z" fill="#9494A0"></path>
+														</svg>
+													</a>
+													<span>{{ (comment.meta.likes.length) ? (comment.meta.likes.length) : '0' }}</span>
+												</li>
+												<li>
+													<a (click)="updateCommentLike(comment, 'dislike', false, i)" title="">
+														<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<path fill-rule="evenodd" clip-rule="evenodd" d="M16.137 15.5579C16.0609 15.3574 15.9826 15.1509 15.9548 15.0757L15.927 15H19C20.8696 15 22 13.6825 22 12C22 6.05642 20.7551 1.99999 18 1.99999C18 1.99999 11.0231 2.00021 10.9989 1.9997C10.3408 1.9879 9.50544 2.08044 8.66312 2.38181C8.29505 2.5135 7.95642 2.67736 7.65294 2.87369C7.29284 2.34623 6.68686 1.99999 6 1.99999H4C2.89543 1.99999 2 2.89542 2 3.99999V13C2 14.1046 2.89543 15 4 15H6C6.19836 15 6.38997 14.9711 6.57086 14.9173C7.26776 15.9321 9.03061 17.9465 10.447 19.565L10.447 19.565C11.215 20.4426 11.8811 21.2038 12.2203 21.6261L12.5205 22H13.0077C13.6148 22.0001 14.1423 21.954 14.7483 21.7775C16.0919 21.3863 17 20.472 17 19C17 18.4799 16.9079 17.9254 16.7382 17.3099C16.626 16.9026 16.4872 16.4914 16.2971 15.9811C16.2699 15.9081 16.2043 15.7353 16.137 15.5579ZM8 13V5.99999C8 5.09776 8.45197 4.58152 9.33688 4.26491C9.91062 4.05963 10.5254 3.99153 10.9656 3.9994L16.5338 3.99997L18 3.99999C19.0151 3.99999 20 7.20924 20 12C20 12.6401 19.6912 13 19 13H15C13.8055 13 13.5555 13.9236 13.8047 14.9237C13.8633 15.1589 13.9489 15.4178 14.079 15.7694C14.1101 15.8538 14.1944 16.0759 14.273 16.2831L14.2732 16.2834L14.2733 16.2837L14.2733 16.2837C14.3378 16.4539 14.3986 16.614 14.4229 16.6793C14.5944 17.1396 14.7161 17.5004 14.8101 17.8414C14.9359 18.2977 15 18.6834 15 19C15 19.451 14.7622 19.6904 14.1891 19.8573C13.9484 19.9274 13.7114 19.966 13.46 19.9849C12.9338 19.3559 12.1803 18.4962 11.4047 17.6113C9.90194 15.8969 8.31645 14.088 8.14171 13.68C8.04443 13.4529 8 13.2402 8 13ZM4 13V3.99999H6V13H4Z" fill="#9494A0"></path>
+														</svg>
+													</a>
+													<span>{{ (comment.meta.dislikes.length) ? (comment.meta.dislikes.length) : '0' }}</span>
+												</li>
+												<li *ngIf="user && user._id">
+													<a class="link" (click)="subCommentInput[comment._id] = true">
+														REPLY
+													</a>
+												</li>
+											</ul>
+											<a class="link" *ngIf="!showReplies[comment._id] && subComments[comment._id].length" (click)="showReplies[comment._id] = true">
+												<span>View {{ subComments[comment._id].length }} replies</span>
+												<svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path fill-rule="evenodd" clip-rule="evenodd" d="M19.9394 7.51447L22.0607 9.63579L12 19.6964L1.93936 9.63579L4.06068 7.51447L12 15.4538L19.9394 7.51447Z" fill="#9494A0"></path>
+												</svg>
+											</a>
+											<a class="link" *ngIf="showReplies[comment._id] " (click)="showReplies[comment._id] = false">
+												<span>Hide replies</span>
+												<img src="{{ '/assets/images/up-chevron.svg' }}" style="height: 13px; margin-left: 2px;">
+											</a>
+											<br>
+											<div *ngIf="subCommentInput[comment._id]" class="vcp_inf pc">
+												<img *ngIf="user.avatar" [src]="user.avatar" class="vc_hd cr8">
+                      <span *ngIf="!user.avatar" class="vc_hd cr{{ user?.avatar_color }} pr">{{ user.avatar_card }}</span>
+                      <form>
+                        <input type="text" name="subComment-content-{{i}}" [(ngModel)]="new_subComment[comment._id].comment" placeholder="Add a public comment">
+													<button (click)="addComment(comment)">Comment</button>
+												</form>
+												<div class="rt-cmt">
+													<!-- <a class="link"  (click)="subCommentInput[comment._id] = false; new_subComment[comment._id].comment = null" title=""> -->
+													<a class="link" *ngIf="new_subComment[comment._id].comment" (click)="subCommentInput[comment._id] = false; new_subComment[comment._id].comment = null" title="">
+														<svg class="custom_svg" style="top: -40px;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0" />
+														</svg>
+													</a>
+													<div class="clearfix"></div>
+												</div>
+											</div>
+											<br>
+											<ul *ngIf="showReplies[comment._id]" class="cmn-lst">
+												<li *ngFor="let subComment of subComments[comment._id]; index as j;">
+													<div class="vcp_inf" style="position: relative !important;">
+														<!-- <span class="vc_hd cr8">GC</span> -->
+														<img *ngIf="(editSubCommentValue[i][j] == false || editSubCommentValue[i][j] == undefined) && (subComment.user_id && subComment.user_id.avatar)" src="{{ subComment.user_id.avatar }}" class="vc_hd cr8">
+														<span *ngIf="(editSubCommentValue[i][j] == false || editSubCommentValue[i][j] == undefined) && (subComment.user_id && !subComment.user_id.avatar)" class="vc_hd cr{{ subComment.user_id.avatar_color }} pr">{{ subComment.user_id.avatar_card }}</span>
+                          <!-- (click) showSubCommentControl[i] = {j : true} ; -->
+                          <svg *ngIf="!(editSubCommentValue[i][j] == true) && (subComment.user_id._id == user._id || video.user_id == user._id)" class="link" (click)="showSubCommentControl[i][j] = !showSubCommentControl[i][j];" style="position: absolute; right: 0px;" width="4" height="18" viewBox="0 0 4 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M0 2C0 3.10457 0.89543 4 2 4C3.10457 4 4 3.10457 4 2C4 0.89543 3.10457 0 2 0C0.89543 0 0 0.89543 0 2ZM2 11C0.89543 11 0 10.1046 0 9C0 7.89543 0.89543 7 2 7C3.10457 7 4 7.89543 4 9C4 10.1046 3.10457 11 2 11ZM2 18C0.89543 18 0 17.1046 0 16C0 14.8954 0.89543 14 2 14C3.10457 14 4 14.8954 4 16C4 17.1046 3.10457 18 2 18Z" fill="#9494A0"></path>
+                          </svg>
+                          <div *ngIf="showSubCommentControl[i][j] == true && (subComment.user_id._id == user._id || video.user_id == user._id)" style="position: absolute; right: 8px; width: 100px; height: auto; background-color: #363643; color: #a4baae; margin-top: 32px">
+                            <div *ngIf="subComment.user_id._id == user._id" (click)="editSubCommentValue[i][j] = true; showSubCommentControl[i][j] = !showSubCommentControl[i][j]; getOldSubComment(subComment.comment)" class="text-center link" style="height: 45px;border-bottom: 1px solid black;"><span style="line-height: 3">Edit</span></div>
+                            <div (click)="deleteSubComment(comment._id, j); showSubCommentControl[i][j] = !showSubCommentControl[i][j]" class="text-center link" style="height: 40px;"><span style="line-height: 3">Delete</span></div>
+                          </div>
+                          <!-- comment edit form begin -->
+                          <div *ngIf="editSubCommentValue[i][j] == true" class="vcp_inf pc">
+                            <img *ngIf="subComment.user_id && subComment.user_id.avatar" [src]="subComment.user_id.avatar" class="vc_hd cr8">
+                            <!-- <span *ngIf="comment.user_id && !comment.user_id.avatar" class="vc_hd cr{{ comment.user_id?.avatar_color }} pr">{{ comment.user_id.avatar_card }}</span> -->
+                            <span *ngIf="!user.avatar" class="vc_hd cr{{ user?.avatar_color }} pr">{{ user.avatar_card }}</span>
+                            <form>
+                              <input type="text" name="subComment-edit-content-{{j}}" [(ngModel)]="subComment.comment" placeholder="edit the comment">
+                              <button (click)="updateSubComment(comment._id, subComment, i, j)">Update</button>
+                            </form>
+                            <div class="rt-cmt">
+                              <a class="link" *ngIf="subComment.comment" (click)="editSubCommentValue[i][j] = false; restoreSubCommentValue(comment._id, subComment.comment, j)" title="">
+                                <svg class="custom_svg" style="top: -40px;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0" />
+                                </svg>
+                              </a>
+                              <div class="clearfix"></div>
+                            </div>
+                          </div>
+                          <!-- comment edit form ends -->
+														<div class="coments">
+															<h2>
+																{{subComment.user_id.full_name}} . <small class="posted_dt"> {{ subComment.created | dateAgo }} </small>
+															</h2>
+															<p style="color: white;" class="{{(subComment.comment.length > 240 && read_more_subComment[subComment._id] == true ) ? '' : (subComment.comment.length < 240 ? 'no-read-more' : 'read-more') }}"> {{ subComment.comment }}
+															</p>
+															<a style="margin-top: 0px;" (click)="read_more_subComment[subComment._id] = !read_more_subComment[subComment._id]">
+																<span *ngIf="read_more_subComment[subComment._id] == true"> Read less </span>
+																<span *ngIf="subComment.comment.length > 240 && read_more_subComment[subComment._id] == false"> Read more </span>
+															</a>
+															<ul class="cmn-i">
+																<li>
+																	<a (click)="updateCommentLike(subComment, 'like', true, j)" title="">
+																		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																			<path fill-rule="evenodd" clip-rule="evenodd" d="M22 11.9991C22 10.3166 20.8696 8.99908 19 8.99908H15.927L15.9548 8.92336C15.9826 8.84819 16.0609 8.64171 16.137 8.4412L16.1371 8.44092L16.1375 8.43999C16.2046 8.26297 16.2699 8.09081 16.2971 8.01799C16.4872 7.50764 16.626 7.09644 16.7382 6.68921C16.9079 6.07372 17 5.5192 17 4.99909C17 3.52708 16.0919 2.6128 14.7483 2.22157C14.1423 2.04511 13.6148 1.99899 13 1.99908H12.5205L12.2203 2.37297C11.8811 2.79532 11.215 3.5565 10.447 4.43405L10.447 4.43409C9.03026 6.053 7.2669 8.06799 6.57035 9.08248C6.38961 9.0288 6.19817 8.99998 6 8.99998H4C2.89543 8.99998 2 9.89541 2 11V20C2 21.1045 2.89543 22 4 22H6C6.68712 22 7.29331 21.6535 7.65337 21.1257C7.95674 21.3219 8.29522 21.4856 8.66312 21.6173C9.50544 21.9186 10.3408 22.0112 11.0344 21.9985L18 21.9991C20.7551 21.9991 22 17.9427 22 11.9991ZM9.33688 19.7342C8.45197 19.4176 8 18.9013 8 17.9991V11V10.9991C8 10.7589 8.04443 10.5462 8.14171 10.3191C8.31645 9.91108 9.90193 8.10222 11.4047 6.38776L11.4047 6.38772C12.1803 5.50289 12.9338 4.6432 13.46 4.01422C13.7114 4.03307 13.9484 4.07171 14.1891 4.14182C14.7622 4.30868 15 4.54811 15 4.99908C15 5.31567 14.9359 5.7014 14.8101 6.15769C14.7161 6.49866 14.5944 6.85945 14.4229 7.31975C14.3986 7.38508 14.3378 7.54518 14.2733 7.71541L14.2731 7.71586C14.1944 7.92312 14.1102 8.14528 14.079 8.22963C13.9489 8.58125 13.8633 8.84015 13.8047 9.0754C13.5555 10.0754 13.8055 10.9991 15 10.9991H19C19.6912 10.9991 20 11.359 20 11.9991C20 16.7898 19.0151 19.9991 18 19.9991H11L10.9631 19.9997C10.5254 20.0075 9.91062 19.9394 9.33688 19.7342ZM4 20V11H6V20H4Z" fill="#9494A0"></path>
+																		</svg>
+																	</a>
+																	<span>{{ (subComment.meta.likes.length) ? (subComment.meta.likes.length) : '0' }}</span>
+																</li>
+																<li>
+																	<a (click)="updateCommentLike(subComment, 'dislike', true, j)" title="">
+																		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+																			<path fill-rule="evenodd" clip-rule="evenodd" d="M16.137 15.5579C16.0609 15.3574 15.9826 15.1509 15.9548 15.0757L15.927 15H19C20.8696 15 22 13.6825 22 12C22 6.05642 20.7551 1.99999 18 1.99999C18 1.99999 11.0231 2.00021 10.9989 1.9997C10.3408 1.9879 9.50544 2.08044 8.66312 2.38181C8.29505 2.5135 7.95642 2.67736 7.65294 2.87369C7.29284 2.34623 6.68686 1.99999 6 1.99999H4C2.89543 1.99999 2 2.89542 2 3.99999V13C2 14.1046 2.89543 15 4 15H6C6.19836 15 6.38997 14.9711 6.57086 14.9173C7.26776 15.9321 9.03061 17.9465 10.447 19.565L10.447 19.565C11.215 20.4426 11.8811 21.2038 12.2203 21.6261L12.5205 22H13.0077C13.6148 22.0001 14.1423 21.954 14.7483 21.7775C16.0919 21.3863 17 20.472 17 19C17 18.4799 16.9079 17.9254 16.7382 17.3099C16.626 16.9026 16.4872 16.4914 16.2971 15.9811C16.2699 15.9081 16.2043 15.7353 16.137 15.5579ZM8 13V5.99999C8 5.09776 8.45197 4.58152 9.33688 4.26491C9.91062 4.05963 10.5254 3.99153 10.9656 3.9994L16.5338 3.99997L18 3.99999C19.0151 3.99999 20 7.20924 20 12C20 12.6401 19.6912 13 19 13H15C13.8055 13 13.5555 13.9236 13.8047 14.9237C13.8633 15.1589 13.9489 15.4178 14.079 15.7694C14.1101 15.8538 14.1944 16.0759 14.273 16.2831L14.2732 16.2834L14.2733 16.2837L14.2733 16.2837C14.3378 16.4539 14.3986 16.614 14.4229 16.6793C14.5944 17.1396 14.7161 17.5004 14.8101 17.8414C14.9359 18.2977 15 18.6834 15 19C15 19.451 14.7622 19.6904 14.1891 19.8573C13.9484 19.9274 13.7114 19.966 13.46 19.9849C12.9338 19.3559 12.1803 18.4962 11.4047 17.6113C9.90194 15.8969 8.31645 14.088 8.14171 13.68C8.04443 13.4529 8 13.2402 8 13ZM4 13V3.99999H6V13H4Z" fill="#9494A0"></path>
+																		</svg>
+																	</a>
+																	<span>{{ (subComment.meta.dislikes.length) ? (subComment.meta.dislikes.length) : '0' }}</span>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					<!--mn-vid-sc end--->
+					</div>
+				</div>
+				<!---col-lg-9 end-->
+				<div class="col-lg-3">
+					<div class="sidebar mgt-50">
+						<div class="vidz-prt">
+							<h2 class="sm-vidz">Similar Videos</h2>
+							<svg id="show_hide_similar_videos" (click)="show_hide_similar_video = !show_hide_similar_video" style="position: relative; left: 30px; top: 5px;" width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 0.228882L13.7071 1.6431L7.00001 8.3502L0.292908 1.6431L1.70712 0.228882L7.00001 5.52178L12.2929 0.228882Z" fill="#9494A0" />
+							</svg>
+							<h3 class="aut-vid">
+								<a title="">Autoplay
+									<svg class="link" (click)="autoplay_mode = !autoplay_mode" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path *ngIf="!autoplay_mode" fill-rule="venodd" clip-rule="evenodd" d="M 16.999999,5.0000008 H 7.0000001 C 3.1340101,5.0000008 0,8.1340108 0,12 c 0,3.866 3.1340101,7 7.0000001,7 h 9.9999989 c 3.866,0 7,-3.134 7,-7 0,-3.8659892 -3.134,-6.9999992 -7,-6.9999992 z M 2.0000001,12 c 0,-2.7614192 2.23858,-4.9999992 5,-4.9999992 h 9.9999989 c 2.7614,0 5,2.23858 5,4.9999992 0,2.7614 -2.2386,5 -5,5 H 7.0000001 c -2.76142,0 -5,-2.2386 -5,-5 z m 5,4 c -2.2091,0 -4,-1.7909 -4,-4 0,-2.2091392 1.7909,-3.9999992 4,-3.9999992 2.2091,0 3.9999989,1.79086 3.9999989,3.9999992 0,2.2091 -1.7908989,4 -3.9999989,4 z m 2,-4 c 0,1.1046 -0.8954,2 -2,2 -1.1046,0 -2,-0.8954 -2,-2 0,-1.1046 0.8954,-1.999999 2,-1.999999 1.1046,0 2,0.895399 2,1.999999 z" fill="#9494A0" />
+										<path *ngIf="autoplay_mode" fill-rule="evenodd" clip-rule="evenodd" d="M17 5H7C3.13401 5 0 8.13401 0 12C0 15.866 3.13401 19 7 19H17C20.866 19 24 15.866 24 12C24 8.13401 20.866 5 17 5ZM2 12C2 9.23858 4.23858 7 7 7H17C19.7614 7 22 9.23858 22 12C22 14.7614 19.7614 17 17 17H7C4.23858 17 2 14.7614 2 12ZM17 16C14.7909 16 13 14.2091 13 12C13 9.79086 14.7909 8 17 8C19.2091 8 21 9.79086 21 12C21 14.2091 19.2091 16 17 16ZM19 12C19 13.1046 18.1046 14 17 14C15.8954 14 15 13.1046 15 12C15 10.8954 15.8954 10 17 10C18.1046 10 19 10.8954 19 12Z" fill="#D07735" />
+									</svg>
+								</a>
+							</h3>
+							<div class="clearfix"></div>
+						</div>
+						<!--vidz-prt end-->
+						<div class="videoo-list-ab">
+							<div *ngFor="let item of similar_videos" class="videoo-list {{ show_hide_similar_video == true ? 'show_section' : 'hide_section' }}">
+								<div class="videoo">
+									<div class="vid_thumbainl">
+										<a [routerLink]="['/video', item.source_id]" title="Watch video">
+											<img width="100%" [src]="item.thumbnail" alt="">
+											<!--
+											<video width="100%" height="100%">
+												<source [src]="video.safe_video_url" [type]="video.type">
+											</video>
+											-->
+											<span class="vid-time">{{ item.duration | hrminsec}}</span>
+											<span *ngIf="item.price && item.price > 0 && !isInPurchasedVideo(item._id)" class="vid-price">${{ item.price | number : '1.2-2' }}</span>
+										</a>
+										<a *ngIf="!isInWatchLater(item._id)" (click)="addToWatchLater(item)" title="" class="play_vid">
+											<svg width="17" height="17" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0" />
+											</svg>
+										</a>
+										<a *ngIf="isInWatchLater(item._id)" (click)="removeFromWatchLater(item)" title="" class="play_vid">
+											<img src="assets/images/checked.svg" alt="">
+										</a>
+										<a *ngIf="item.price && item.price > 0" style="left: 0;width: 25px;" (click)="showVideoInfoModal(item)" title="" class="play_vid">
+											<img src="assets/images/info.svg" alt="">
+										</a>
+									</div>
+									<!--vid_thumbnail end-->
+									<div class="video_info">
+										<h3>{{ item.title | excerpt:50 }}</h3>
+										<h4>
+											<a *ngIf="item.channel_id && item?.channel_id?._id" [routerLink]="['/channels', item?.channel_id?._id]" title="">{{ item?.channel_id?.title}}</a>
+											<span class="verify_ic">
+												<svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<g>
+														<path fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+													</g>
+												</svg>
+											</span>
+										</h4>
+										<span> <ng-container *ngIf="!item.price || item.price == 0"> {{ item.meta.views | shortNumber }} views .</ng-container> <small class="posted_dt">{{ item?.created | dateAgo }}</small></span>
+									</div>
+								</div>
+							</div>
+							<!--videoo-list end-->
+						</div>
+						<!--videoo-list-ab end-->
+					</div>
+					<!--side-bar end-->
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section id="add_to_playlist_modal" class="form_popup modal">
+		<div class="add_to_playlist_form" id="add_to_playlist_form">
+			<div class="hd-lg">
+				<h2>
+					<span>Add to playlist</span>
+					<a style="position: absolute; left: 92%;" (click)="hideAddToPlaylistModal()" title="">
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0" />
+						</svg>
+					</a>
+				</h2>
+			</div>
+	
+			<div class="operation_notify">
+				<div *ngIf="playlist_add_progress > 0" class="operation_progress" [ngStyle]="{'width': playlist_add_progress + '%'}" ></div>
+				<br>
+	
+				<div class="operation_result">
+					<label class="text-success">{{ playlist_success_message }}</label>
+					<label class="text-warning">{{ playlist_warning_message }}</label>
+					<label class="text-danger">{{ playlist_error_message }}</label>
+				</div>
+			</div>
+			<!--hd-lg end-->
+			<div class="lg-in">
+
+				<h4>Add to new playlist</h4>
+				<br>
+				<input placeholder="Playlist name" class="input-custom-class" style="width: 320px !important;" [(ngModel)]="new_playlist.title" type="text" name="new_playlist_name">
+				&nbsp;&nbsp;
+				<button (click)="createAndAdd()" class="button-custom-class">Create & Add</button>
+	
+				<br>
+				<br>
+				<h4>Add to existing playlist</h4>
+	
+				<ul class="playlist_list">
+					<li *ngFor="let playlist of user_playlists">
+						<div class="row">
+							<div class="col-md-2 playlist_icon_container">
+								<img class="playlist_icon" src="/assets/images/playlist.svg">
+							</div>
+							<div class="col-md-10">
+								<h3>{{ playlist.title }}</h3>
+								<h4>({{ playlist.videos.length }} videos)</h4><br>
+							</div>
+							<div class="col-md-12">
+								<button (click)="addToExisting(playlist, playlist._id)" class="button-custom-class">Add</button>
+							</div>
+						</div>
+						<hr class="playlist_separator">
+					</li>
+				</ul>
+	
+			</div>
+			<!--fr-ps end-->
+		</div>
+		<!--login end--->
+	</section>
+	
+	<section id="add_share_modal" class="form_popup modal">
+		<div class="add_share_form" id="add_share_form">
+			<div class="hd-lg">
+				<h2>
+					<span>Share video</span>
+					<a style="position: absolute; left: 92%;" (click)="hideShareModal()" title="">
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0" />
+						</svg>
+					</a>
+				</h2>
+			</div>
+	
+			<!--hd-lg end-->
+			<div class="lg-in share_content">
+	
+				<ul>
+					<li>
+						<a href="https://www.facebook.com/sharer/sharer.php?u={{ video_url }}&t={{ video.title | excerpt:50 }}" class="share-button facebook" target="_blank">Share on Facebook</a>
+					</li>
+	
+					<li>
+						<a href="https://www.twitter.com/intent/tweet?url={{ video_url }}&text={{ video.title | excerpt:50 }}" class="share-button twitter" target="_blank">Tweet Me!</a>
+					</li>
+				</ul>
+	
+				<br>
+	
+			</div>
+			<!--fr-ps end-->
+		</div>
+		<!--login end--->
+	</section>
+	
+	<section id="add_flag_modal" class="form_popup modal">
+		<div class="add_flag_form" id="add_flag_form">
+			<div class="hd-lg">
+				<h2>
+					<span>Flag the video</span>
+					<a style="position: absolute; left: 92%;" (click)="hideFlagModal()" title="">
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0" />
+						</svg>
+					</a>
+				</h2>
+			</div>
+
+			<div class="operation_notify">
+				<div *ngIf="flag_add_progress > 0" class="operation_progress" [ngStyle]="{'width': flag_add_progress + '%'}" ></div>
+				<!-- <br> -->
+	
+				<div class="operation_result">
+					<label class="text-success">{{ flag_success_message }}</label>
+					<label class="text-warning">{{ flag_warning_message }}</label>
+					<label class="text-danger">{{ flag_error_message }}</label>
+				</div>
+			</div>
+
+			<!--hd-lg end-->
+			<div class="lg-in flag_content">
+	
+				<ul>
+					<li>
+						<div class="chekbox-lg">
+							<label>
+							<input [(ngModel)]="video_flags.inappropriate" type="checkbox" name="inapropriate">
+							<b class="checkmark"></b>
+							<b style="position: relative; left: 30px;">Inappropriate</b>
+							<p>
+								This video does not complain with FitnessTV Terms of use policy for the section "Inapropriate contents", "Social line of conduit"
+							</p>
+							</label>
+						</div>
+					</li>
+	
+					<li>
+							<div class="chekbox-lg">
+								<label>
+								<input [(ngModel)]="video_flags.copyrighted" type="checkbox" name="copyright">
+								<b class="checkmark"></b>
+								<b style="position: relative; left: 30px;">Copyrighted</b>
+								<p>
+									This video is copyrighted by his owner and does not complain with FitnessTV Terms of use policy for the section "Authors rights & copyrights"
+								</p>
+							</label>
+						</div>
+					</li>
+	
+					<li>
+						<b style="position: relative; left: 30px;">Comments</b>
+						<textarea placeholder="Any comments" style="padding: 10px 15px !important; width: 100% !important; height: 100px !important;" class="textarea-custom-class" [(ngModel)]="video_flags.comment"></textarea>
+					</li>
+				</ul>
+	
+				<button (click)="flagVideo()" class="button-custom-class">
+					Flag the content
+				</button>
+	
+			</div>
+			<!--fr-ps end-->
+		</div>
+		<!--login end--->
+	</section>
+
+	<section id="sub_comment_confirmation_modal" class="form_popup">
+		<div class="sub_comment_confirmation_form" id="sub_comment_confirmation_form">
+			<div class="hd-lg">
+				<h2>
+					<span>Are you sure ?</span>
+					<a style="position: absolute; left: 92%;" (click)="hideSubCommentConfirmationModal()" title="">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+					</svg>
+					</a>
+				</h2>
+			</div>
+			<div class="lg-in">
+				<ul>
+					<li class="link">
+						<a (click)="removeSubComment()" title="" class="btn-ok">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+							</svg> OK
+						</a>
+					</li>
+					<li class="link">
+						<a (click)="hideSubCommentConfirmationModal()" title="" class="btn-cancel">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+							</svg> Cancel
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</section>
+	
+	<section id="comment_confirmation_modal" class="form_popup">
+		<div class="comment_confirmation_form" id="comment_confirmation_form">
+			<div class="hd-lg">
+				<h2>
+					<span>Are you sure ?</span>
+					<a style="position: absolute; left: 92%;" (click)="hideCommentConfirmationModal()" title="">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+					</svg>
+					</a>
+				</h2>
+			</div>
+			<div class="lg-in">
+				<ul>
+					<li class="link">
+						<a (click)="removeComment()" title="" class="btn-ok">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+							</svg> OK
+						</a>
+					</li>
+					<li class="link">
+						<a (click)="hideCommentConfirmationModal()" title="" class="btn-cancel">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+							</svg> Cancel
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</section>	
+	
+	<section id="video_info_modal" class="form_popup modal" style="height: 420px; top: -100px;">
+		<div class="video_info_form" id="video_info_form">
+			<div class="hd-lg">
+				<h2>
+					<span>Video Info</span>
+					<a style="position: absolute; left: 92%;" (click)="hideVideoInfoModal()" title="">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+					</svg>
+					</a>
+				</h2>
+			</div>
+			<div class="lg-in flag_content" style="text-align: unset; height: 280px;">
+				<h4 style="color: white;" style="margin-bottom: 0px !important">
+					<strong> Title: </strong> {{ video_info.title }}
+					<br>
+					<br>
+					<strong> Description: </strong>
+					<br>
+				</h4>
+				<p class="description_paragraph" style="color: white;">{{ video_info.description }}</p>
+			</div>
+			<div style="height: 50px !important; text-align: center; margin-top: 15px; margin-bottom: 10px; color: white;">
+				<a (click)="hideVideoInfoModal()" title="" class="close_button btn-cancel link">
+					Close
+				</a>
+			</div>
+		</div>
+	</section>

@@ -1,0 +1,13 @@
+<h2 style="text-transform: capitalize;">Hi{{ user_full_name ? ' ' + user_full_name : ''}},</h2>
+
+<p> Our Project Fitness TV support team is available around the clock to assist you. Please allow for 24 hours to receive a response.</p>
+
+<p> Please describe your issue or question in as much detail as possible.</p>
+
+<form>
+  <textarea [(ngModel)]="message_content" class="text_area_for_mobile" name="message" placeholder="Description"></textarea>
+  <br>
+  <br>
+  <button (click)="sendMessage()" class="button-custom-class" name="submit">Submit</button> <span *ngIf="status"> {{ status }} </span>
+  <div class="clearfix"></div>
+</form>

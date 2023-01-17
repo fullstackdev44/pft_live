@@ -1,0 +1,190 @@
+<div class="latest-vid-option">
+	<h2 class="hd-op"> Playlists 
+		<button class="button-custom-class button_alignment" (click)="showConfirmationModal();"> Add new playlist </button>
+	</h2>
+	<a title="" class="op-1">Playlist Details</a>
+	<a title="" class="op-2"> Options</a>
+	<div class="clearfix"></div>
+</div>
+<div class="vidz_list" *ngFor="let playlist of playlists; index as i">
+	<div class="tb-pr">
+		<div class="row">
+			<div class="col-lg-8 col-md-8 col-sm-12">
+				<div class="tab-history acct_page">
+					<div class="videoo">
+						<div class="vid_thumbainl ms br">
+              <!-- waiting playing playlist functionality -->
+              <!-- <a [routerLink]="['/playlist', playlist._id]" title=""> -->
+              <a routerLink="{{ playlist.videos.length > 0 ? ('/playlist/' + playlist._id) : ('/user-account/playlist-detail/' + playlist._id) }}" title="">
+								<img src="{{ playlist.videos.length > 0 ? ( playlist.videos[0]?.thumbnail ) : ( 'assets/images/grey.png' ) }}" alt="">
+								<!-- <span class="vid-time">{{ video.duration | hrminsec }}</span> -->
+							</a>
+							<a routerLink="{{ playlist.videos.length > 0 ? ('/playlist/' + playlist._id) : ('/user-account/playlist-detail/' + playlist._id) }}" title="" style="width: 40%; height: 82%; right: 10px;" class="vid-time">
+								<img src="assets/images/playlist.svg" style="width: 80px; height: 80px; margin-top: 30%;" alt="">
+							</a>
+							<!-- <a *ngIf="!isInWatchLater(video._id)" (click)="addToWatchLater(video)" title="" class="play_vid">
+								<svg width="17" height="17" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0"/>
+								</svg>
+							</a>
+							<a *ngIf="isInWatchLater(video._id)" (click)="removeFromWatchLater(video)" title="" class="play_vid">
+								<img src="assets/images/checked.svg" alt="">
+							</a> -->
+						</div>
+						<div class="video_info ms br">
+							<h3>
+                <!-- waiting playing playlist functionality -->
+                <!-- <a [routerLink]="['/playlist', playlist._id]" title="">{{ playlist.title }}</a> -->
+                <a routerLink="{{ playlist.videos.length > 0 ? ('/playlist/' + playlist._id) : ('/user-account/playlist-detail/' + playlist._id) }}" title="">{{ playlist.title }}</a>
+								<p>({{(playlist.videos && playlist.videos.length > 0) ? (playlist.videos.length) : 'No' }} video{{ (playlist.videos && playlist.videos.length > 0) ? 's' : '' }})</p>
+							</h3>
+							<!-- <h4>
+								<a routerLink="/channels/{{ video.channel_id?._id }}" title="">{{ video.channel_id?.title }}</a>
+								<span class="verify_ic">
+									<svg *ngIf="userIsSubscribedTo(video.channel_id?._id)" width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<g>
+											<path fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black" />
+										</g>
+									</svg>
+								</span>
+							</h4>
+							<span>{{ (video.meta.views | shortNumber) ? (video.meta.views | shortNumber) : '0' }} views</span> -->
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-12">
+				<div class="icon-list">
+					<ul>
+						<li>
+              <!-- waiting playing playlist functionality -->
+              <!-- <a [routerLink]="['/playlist', playlist._id]" title=""> -->
+              <a routerLink="{{ playlist.videos.length > 0 ? ('/playlist/' + playlist._id) : ('/user-account/playlist-detail/' + playlist._id) }}" title="">
+								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M5 2.99932V20.9993C5 21.7905 5.87525 22.2683 6.54076 21.8405L20.5408 12.8405C21.1531 12.4469 21.1531 11.5518 20.5408 11.1581L6.54076 2.15814C5.87525 1.73031 5 2.20815 5 2.99932ZM18.1507 12L7 19.1683V4.83166L18.1507 12Z" fill="#9494A0"/>
+								</svg>
+							</a>
+            </li>
+            <li>
+              <a routerLink="/user-account/playlist-detail/{{ playlist._id }}" title="">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M16.4374 2C17.0921 2 17.7197 2.26142 18.1781 2.72342L21.279 5.82432C21.7407 6.286 22.0001 6.91217 22.0001 7.56508C22.0001 8.21799 21.7407 8.84416 21.279 9.30584L9.95751 20.6238C9.25902 21.4295 8.2689 21.9245 7.1346 22.0023H2V21.0023L2.00325 16.7873C2.08844 15.7328 2.57867 14.7523 3.3265 14.0934L14.6954 2.72463C15.1564 2.26083 15.7834 2 16.4374 2ZM7.06398 20.0048C7.59821 19.967 8.09549 19.7184 8.49479 19.2616L16.0567 11.6997L12.3023 7.94519L4.6961 15.5496C4.29095 15.9079 4.04031 16.4092 4 16.8678V20.0029L7.06398 20.0048ZM13.7167 6.53115L17.4709 10.2855L19.8648 7.89162C19.9514 7.80502 20.0001 7.68756 20.0001 7.56508C20.0001 7.4426 19.9514 7.32514 19.8648 7.23854L16.7611 4.13486C16.6755 4.04855 16.5589 4 16.4374 4C16.3158 4 16.1992 4.04855 16.1136 4.13486L13.7167 6.53115Z" fill="#9494A0"/>
+                </svg>
+              </a>
+            </li>
+						<li>
+							<a (click)="showDeleteModal(i)" title="">
+								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+								</svg>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<section class="form_popup" id="playlist_modal">
+  <div class="login_form" id="login_form">
+    <div class="hd-lg">
+      <h2>
+				<span>Create new playlist</span>
+        <a style="position: absolute; left: 92%;" (click)="hideConfirmationModal();" title="">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+        </svg>
+        </a>
+      </h2>
+		</div>
+
+		<div class="lg-in">
+
+      <div class="lg-in-content" style="margin-bottom: 25px">
+        <h4 class="slct-hd"> Playlist name <span style="color: red;" *ngIf="submit_form == true && !new_playlist.title">(Please, enter the playlist name)</span></h4>
+        <input type="text" [(ngModel)]="new_playlist.title" class="input-playlist-class" style="margin-bottom: 25px;" name="new_playlist" placeholder="Enter playlist name">
+
+        <h4 class="slct-hd">
+          <input type="radio" [value]="false" name="publish_playlist" [(ngModel)]="publish_playlist">
+          Add to User's playlist
+        </h4>
+
+        <h4 *ngIf="channels[0] && channels[0].active == true && user.account_type == 'COACH'" class="slct-hd">
+          <input type="radio" [value]="true" name="publish_playlist" [(ngModel)]="publish_playlist">
+          Publish to channel
+        </h4>
+
+        <select *ngIf="publish_playlist" class="select-custom-class" [(ngModel)]="new_playlist.channel" style="margin-bottom: 25px;margin-left: 15px; width: 395px;">
+          <option [value]="channel._id" *ngFor="let channel of channels">{{ channel.title }}</option>
+        </select>
+        <a *ngIf="publish_playlist" title="choose playlist name" class="svg-custom-position">
+          <svg style="width: 15px; height: 15px;" width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M19.9394 7.51447L22.0607 9.63579L12 19.6964L1.93936 9.63579L4.06068 7.51447L12 15.4538L19.9394 7.51447Z" fill="#9494A0"></path>
+          </svg>
+        </a>
+
+      </div>
+
+			<ul>
+				<li class="link">
+					<a (click)="savePlaylist();" title="" class="btn-ok">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						</svg>Create
+					</a>
+				</li>
+
+				<li class="link">
+					<a (click)="hideConfirmationModal();" title="" class="btn-cancel">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						</svg>Cancel
+					</a>
+				</li>
+			</ul>
+		</div>
+  </div>
+</section>
+
+<section class="form_popup" id="delete_modal">
+  <div class="login_form" id="delete_form">
+    <div class="hd-lg">
+      <h2>
+				<span>Are you sure ?</span>
+        <a style="position: absolute; left: 92%;" (click)="hideDeleteModal()" title="">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+        </svg>
+        </a>
+      </h2>
+		</div>
+		<div class="user-account-pr">
+			<h4 *ngIf="loading" style="margin-bottom: 0px !important">Deleting... Please wait...</h4>
+		</div>
+    <div class="lg-in">
+      <ul>
+        <li class="link">
+          <a *ngIf="!loading" (click)="removePlaylist()" title="" class="btn-ok">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg> OK
+					</a>
+					<a *ngIf="loading" title="" class="link_disabled">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg>Delete
+          </a>
+        </li>
+        <li class="link">
+          <a *ngIf="!loading" (click)="hideConfirmationModal()" title="" class="btn-cancel">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg> Cancel
+					</a>
+					<a *ngIf="loading" title="" class="link_disabled">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg> Cancel
+					</a>
+        </li>
+      </ul>
+		</div>
+
+  </div>
+</section>

@@ -1,0 +1,67 @@
+<section class="upload-videooz">
+	<div class="row">
+		<!-- <div class="col-lg-6"> restore this div while uncommenting youtube video import -->
+		<div class="col-lg-12" pftDnd (fileDropped)="prepareDroppedFile($event)">
+			<div class="video-file">
+				<svg (click)="file_upload.click()" width="36" height="41" viewBox="0 0 36 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M20.0001 29.0001V7.82848L26.5859 14.4143L29.4143 11.5858L18.0001 0.171631L6.58586 11.5858L9.41429 14.4143L16.0001 7.82848V29.0001H20.0001ZM36 37V19H32V37H4V19H0V37C0 39.2092 1.79086 41 4 41H32C34.2091 41 36 39.2092 36 37Z" fill="#9494A0"/>
+				</svg>
+				<h3 *ngIf="!selected_file">Click on the icon above to select video file</h3>
+				<h3 *ngIf="selected_file">{{ selected_file.name }}</h3>
+				<!--
+				<div class="progress-bar progress-bar-striped progress-bar-animated"
+					 role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': upload_percent + '%'}">
+					<span *ngIf="upload_percent > 5">
+						{{ upload_percent }}
+					</span>
+				</div>
+				-->
+				<!-- <span>or drag & drop video files</span> -->
+				<form>
+					<label [ngClass]="{'disabled': !selected_file}" (click)="upload()" class="custom-file-upload btn">
+					    <i *ngIf="upload_status==3" class="fa fa-refresh fa-spin"></i>Upload Video
+					</label>
+					<input #file_upload id="file-upload" type="file" accept="video/mp4,video/x-m4v,video/*" (change)="prepareFile($event)"/>
+				</form>
+			</div><!--video-file end-->
+		</div>
+		<!-- <div class="col-lg-6">
+			<div class="youtube-dwn">
+				<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M32.5859 18.5858L26.0001 25.1716V4H22.0001V25.1716L15.4143 18.5858L12.5859 21.4142L24.0001 32.8284L35.4143 21.4142L32.5859 18.5858ZM44 40V32H40V40H8V32H4V40C4 42.2091 5.79086 44 8 44H40C42.2091 44 44 42.2091 44 40Z" fill="#9494A0"/>
+				</svg>
+				<h3>Import videos from YouTube </h3>
+				<span>Copy / Paste your video link here</span>
+				<form>
+					<input type="text" name="import_video" placeholder="Paste link here">
+					<button type="submit">Import Video</button>
+				</form>
+			</div>
+		</div> -->
+
+	</div>
+</section><!--upload-videooz end-->
+
+<section class="suggestions">
+  <div class="container">
+    <div class="sgst_content">
+      <h3>Help & Suggestions</h3>
+      <p>By submitting your videos to ProjectFitnessTV, you acknowledge that you agree to ProjectFitnessTV’s<a routerLink="/page/terms_of_service" title="Terms of service"> Terms of Service</a>and<a routerLink="/page/community_rules" title="Community rules">Community Guidelines</a>. Please be sure not to violate others’ copyright or
+        privacy rights.<a routerLink="/page/privacy_notice" title="Learn more"> Learn more</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="abt-vidz">
+  <ul>
+    <li>
+      <a routerLink="/page/upload_instruction">Upload Instructions </a>
+    </li>
+    <li>
+      <a routerLink="/page/troubleshooting">Troubleshooting </a>
+    </li>
+    <li>
+      <a routerLink="/page/mobile_upload">Mobile Upload </a>
+    </li>
+  </ul>
+</section>

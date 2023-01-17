@@ -1,0 +1,38 @@
+.live_form{
+  text-align: center;
+}
+
+.live_marker{
+
+  display: inline-block;
+
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  background-color: green;
+
+  margin: 1em;
+  margin-top: 0;
+}
+
+.custom-live-end{
+  background-color: red;
+}
+
+.message_container{
+  padding: 1em;
+  text-align: center;
+}
+
+p.error{
+  color: red;
+}
+
+.live_timer{
+  font-size: 3em;
+  text-align: center;
+}
+
+.scrollable-element {
+  scrollbar-color: #0D0D10 #1C1C23;
+}

@@ -1,0 +1,25 @@
+<div class="video-details">
+	<div class="blocked-pr mange_sub">
+		<div class="manage-sub">
+			<h2 class="hd-op"> Manage Notifications </h2>
+			<ul class="optz_list">
+				<li><a title="">Notify</a></li>
+				<li><a title="">Status</a></li>
+			</ul><!--optz_list end-->
+			<div class="clearfix"></div>
+		</div><!--Manage-Sub end-->
+		<div class="blckd_list">
+			<div class="blocked-vcp" *ngFor="let notification of user.notifications; index as i">
+				<div class="vcp_inf mobile_alignment_text_to_left">
+					<span style="color: white; text-transform: capitalize;"> {{ notification.name }} </span>
+				</div><!--vcp_inf end-->
+				<a class="play_ms link show_in_mobile" (click)="update_notification(i)">
+					<span class="active-mb {{ notification.status ? 'pr' : 'mr' }}" style="margin-top: -11px;">
+						{{ notification.status ? 'Active' : 'Inactive' }}
+					</span>
+				</a>
+				<div class="clearfix"></div>
+			</div><!--blocked-vcp-->
+		</div>
+	</div><!--blocked-pr end-->
+</div><!--video-details end-->

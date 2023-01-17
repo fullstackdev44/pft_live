@@ -1,0 +1,130 @@
+.embed-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  }
+
+  .embed-container iframe, .embed-container object, .embed-container embed {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  }
+
+.read-more {
+  height: 50px;
+  overflow: hidden;
+}
+
+.no-read-more {
+  margin-bottom: -15px;
+}
+
+#vimeo_video{
+  /* this property caused a bug for mobile view while activated*/
+  /*min-height: 464px;*/
+}
+
+.playlist_list li{
+  display: list-item;
+  text-align: left;
+  padding: 1em;
+  padding-top: 0;
+}
+
+.playlist_list li h3{
+  color: #C3C3D2;
+  font-size: 22px;
+}
+
+.flag_content, .share_content{
+  padding: 1em;
+}
+
+.flag_content ul li, .share_content ul li{
+  color: #fff;
+  width: 100%;
+  text-align: left;
+  margin-top: 1em;
+}
+
+.flag_content ul li b, .share_content ul li b{
+  margin-left: 1em;
+  font-size: 1.5em;
+}
+
+.share_content ul li a{
+  width: 100%;
+  text-align: center;
+}
+
+.select_input{
+  position: absolute;
+  z-index: 2;
+  background: #0f0f0f;
+}
+
+.select_input li{
+  display: list-item;
+  padding: 1em;
+  margin-right: 0;
+}
+
+.select_input li:hover{
+  background: #1f1f1f;
+}
+
+#show_hide_similar_videos {
+  display: none;
+}
+
+@media screen and (max-width: 992px) {
+  #show_hide_similar_videos {
+    display: block;
+  }
+}
+
+.custom_svg {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+.lg-in{
+  padding-top: 1em;
+}
+
+/*notifier*/
+.operation_notify{
+
+}
+
+.operation_progress{
+  background-color: #066010;
+  height: 5px;
+  transition: width .5s;
+}
+
+.operation_result{
+  text-align: center;
+}
+
+.playlist_separator{
+  margin: 0;
+  margin-top: 1em;
+  border-top: solid 1px #777;
+}
+
+.playlist_icon_container{
+  text-align: center;
+}
+
+.playlist_icon{
+  width: 2em;
+}
+
+.scrollable-element {
+  scrollbar-color: #0D0D10 #1C1C23;
+}
+
+.played_video {
+  color: #e4a128 !important;
+}

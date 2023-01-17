@@ -1,0 +1,82 @@
+<div class="latest_vidz">
+	<div class="latest-vid-option" style="border-bottom: 0px !important;">
+		<div class="">
+			<h2 class="hd-op">My channel</h2><br>
+			<div class="row">
+				<div *ngFor="let channel of user_channels" class="col-lg-3 col-md-4 col-sm-6">
+					<div class="img-info-ch">
+						<div class="img-ch channel_thumbnail">
+							<a routerLink="/channels/{{ channel._id }}" title="">
+								<img *ngIf="channel.profile_image" style="height: 170px;" src="{{ channel.profile_image }}" alt="">
+								<span *ngIf="!channel.profile_image" class="vc_hd cr{{ channel.avatar_color }} pr" style="width: 100% !important; height: 168px !important; margin-bottom: 22px !important; margin-top: -12px !important;"><label style="line-height: 170px; font-size: 60px;">{{ channel.avatar_card }}</label></span>
+							</a>
+						</div><!--img-ch end-->
+						<div class="video_info pr">
+							<a routerLink="/channels/{{ channel._id }}" title="">
+								<span class="vc_hd cr{{ channel.avatar_color }} pr">
+									{{ channel.avatar_card }}
+								</span>
+							</a>
+							<h4>
+								<a routerLink="/channels/{{ channel._id }}" title="">{{ channel.title }}</a>
+							</h4>
+							<p>{{ channel.meta?.subscribers | shortNumber }} subscribers. <span class="videos_cnt">{{ channel.meta?.videos | shortNumber }} videos</span></p>
+							<span>{{ channel.meta?.views | shortNumber }} views</span>
+						</div><!--video_info pr-->
+					</div><!--img-info-ch end-->
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<!-- <div class="latest-vid-option">
+		<h2 class="hd-op">Subscriptions</h2>
+		<ul class="optz_list">
+			<li><a href="#" title="" class="op-1">Channels</a></li>
+			<li><a href="#" title="" class="op-2">Options</a></li>
+		</ul>
+		<div class="clearfix"></div>
+	</div>
+	<div class="vidz_list" *ngFor="let channel of subscribed_channels; index as i">
+		<div class="tb-pr">
+			<div class="row">
+				<div class="col-lg-8 col-md-8 col-sm-12">
+					<div class="tab-history acct_page">
+						<div class="videoo">
+							<div class="vid_thumbainl br ms">
+								<a href="#" title="">
+									<img src="{{ channel.profile_image }}" alt="">
+								</a>
+							</div>
+							<div class="video_info ms br">
+								<h3><a title="">{{ channel.title }}</a></h3>
+								<span>{{ (channel.subscribers?.length | shortNumber) ? (channel.subscribers.length | shortNumber) : '0' }} Subsribers</span>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-4 col-sm-12">
+					<div class="icon-list">
+						<ul>
+							<li>
+								<a [routerLink]="['/channels/', channel._id ]" title="">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M16.4374 2C17.0921 2 17.7197 2.26142 18.1781 2.72342L21.279 5.82432C21.7407 6.286 22.0001 6.91217 22.0001 7.56508C22.0001 8.21799 21.7407 8.84416 21.279 9.30584L9.95751 20.6238C9.25902 21.4295 8.2689 21.9245 7.1346 22.0023H2V21.0023L2.00325 16.7873C2.08844 15.7328 2.57867 14.7523 3.3265 14.0934L14.6954 2.72463C15.1564 2.26083 15.7834 2 16.4374 2ZM7.06398 20.0048C7.59821 19.967 8.09549 19.7184 8.49479 19.2616L16.0567 11.6997L12.3023 7.94519L4.6961 15.5496C4.29095 15.9079 4.04031 16.4092 4 16.8678V20.0029L7.06398 20.0048ZM13.7167 6.53115L17.4709 10.2855L19.8648 7.89162C19.9514 7.80502 20.0001 7.68756 20.0001 7.56508C20.0001 7.4426 19.9514 7.32514 19.8648 7.23854L16.7611 4.13486C16.6755 4.04855 16.5589 4 16.4374 4C16.3158 4 16.1992 4.04855 16.1136 4.13486L13.7167 6.53115Z" fill="#9494A0"/>
+									</svg>
+								</a>
+							</li>
+							<li>
+								<a title="">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z" fill="#9494A0"/>
+									</svg>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+</div>

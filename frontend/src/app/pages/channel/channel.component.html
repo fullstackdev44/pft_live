@@ -1,0 +1,174 @@
+<section class="abt-channel">
+	<div class="vidz-row">
+		<div class="container">
+			<div *ngIf="popular_channels.length > 0" class="videso_catgs_sec popular_vidz">
+				<h2 class="title-hd">Most Popular</h2>
+				<div class="row">
+					<div *ngFor="let channel of popular_channels" class="col-lg-3 col-md-4 col-sm-6">
+						<div class="img-info-ch">
+							<div class="img-ch channel_thumbnail">
+								<a routerLink="/channels/{{ channel._id }}" title="">
+									<img *ngIf="channel.profile_image" style="height: 170px;" src="{{ channel.profile_image }}" alt="">
+									<span *ngIf="!channel.profile_image" class="vc_hd cr{{ channel.avatar_color }} pr" style="width: 100% !important; height: 168px !important; margin-bottom: 22px !important; margin-top: -12px !important;"><label style="line-height: 170px; font-size: 60px;">{{ channel.avatar_card }}</label></span>
+								</a>
+							</div><!--img-ch end-->
+							<div class="video_info pr">
+								<a routerLink="/channels/{{ channel._id }}" title="">
+									<span class="vc_hd cr{{ channel.avatar_color }} pr">
+										{{ channel.avatar_card }}
+									</span>
+								</a>
+								<h4>
+									<a routerLink="/channels/{{ channel._id }}" title="">{{ channel.title }}</a>
+									<span *ngIf="userIsSubscribedTo(channel._id)" class="verify_ic">
+										<svg width="24" height="24" viewBox="2 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"> <g> <path id="iconq4" fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black"></path> </g> </svg>
+									</span>
+								</h4>
+								<p>{{ channel.meta?.subscribers | shortNumber }} subscribers. <span class="videos_cnt">{{ channel.meta?.videos | shortNumber }} videos</span></p>
+								<span>{{ channel.meta?.views | shortNumber }} views</span>
+							</div><!--video_info pr-->
+						</div><!--img-info-ch end-->
+					</div>
+				</div>
+			</div><!--videso_catgs_sec end-->
+			<!-- <section *ngIf="show_arrow[0] == true" class="more_items_sec text-center">
+				<div class="container">
+					<a (click)="show_more_popular_channel()" title="">
+						<svg width="19" height="24" viewBox="0 0 19 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M18.1618 24.0001H0.838235C0.374412 24.0001 0 23.6261 0 23.1628V5.86052C0 5.39727 0.374412 5.02332 0.838235 5.02332H18.1618C18.6256 5.02332 19 5.39727 19 5.86052V23.1628C19 23.6261 18.6256 24.0001 18.1618 24.0001ZM1.67647 22.3256H17.3235V6.69773H1.67647V22.3256Z" fill="#9494A0"></path>
+							<g opacity="0.25">
+							<path opacity="0.25" d="M13.1324 4.18605C12.6685 4.18605 12.2941 3.81209 12.2941 3.34884V1.67442H6.70589V3.34884C6.70589 3.81209 6.33148 4.18605 5.86765 4.18605C5.40383 4.18605 5.02942 3.81209 5.02942 3.34884V0.83721C5.02942 0.373954 5.40383 0 5.86765 0H13.1324C13.5962 0 13.9706 0.373954 13.9706 0.83721V3.34884C13.9706 3.81209 13.5962 4.18605 13.1324 4.18605Z" fill="#9494A0"></path>
+							</g>
+							<path d="M9.50001 19.3479C9.28487 19.3479 9.06972 19.267 8.90766 19.1024L5.92634 16.1275C5.59942 15.801 5.59942 15.2707 5.92634 14.9442C6.25325 14.6177 6.78413 14.6177 7.11104 14.9442L9.50001 17.3275L11.8862 14.9442C12.2131 14.6177 12.744 14.6177 13.0709 14.9442C13.3978 15.2707 13.3978 15.801 13.0709 16.1275L10.0924 19.1024C9.93031 19.267 9.71516 19.3479 9.50001 19.3479Z" fill="#9494A0"></path>
+							<path d="M9.49999 18.4186C9.03617 18.4186 8.66176 18.0447 8.66176 17.5814V10.3256C8.66176 9.86236 9.03617 9.4884 9.49999 9.4884C9.96382 9.4884 10.3382 9.86236 10.3382 10.3256V17.5814C10.3382 18.0447 9.96382 18.4186 9.49999 18.4186Z" fill="#9494A0"></path>
+							<g opacity="0.5">
+							<path opacity="0.5" d="M15.6471 6.69764C15.1832 6.69764 14.8088 6.32369 14.8088 5.86043V4.18601H4.19118V5.86043C4.19118 6.32369 3.81677 6.69764 3.35294 6.69764C2.88912 6.69764 2.51471 6.32369 2.51471 5.86043V3.34881C2.51471 2.88555 2.88912 2.5116 3.35294 2.5116H15.6471C16.1109 2.5116 16.4853 2.88555 16.4853 3.34881V5.86043C16.4853 6.32369 16.1109 6.69764 15.6471 6.69764Z" fill="#9494A0"></path>
+							</g>
+						</svg>
+					</a>
+				</div>
+			</section> -->
+		</div>
+	</div>
+	<div class="vidz-row">
+		<div class="container">
+			<div *ngIf="trending_channels.length > 0" class="videso_catgs_sec trending_vidz">
+				<h2 class="title-hd">Trending</h2>
+				<div class="row">
+					<div *ngFor="let channel of trending_channels" class="col-lg-3 col-md-4 col-sm-6">
+						<div class="img-info-ch">
+							<div class="img-ch channel_thumbnail">
+								<a routerLink="/channels/{{ channel._id }}" title="">
+									<img *ngIf="channel.profile_image" style="height: 170px;" src="{{ channel.profile_image }}" alt="">
+									<span *ngIf="!channel.profile_image" class="vc_hd cr{{ channel.avatar_color }} pr" style="width: 100% !important; height: 168px !important; margin-bottom: 22px !important; margin-top: -12px !important;"><label style="line-height: 170px; font-size: 60px;">{{ channel.avatar_card }}</label></span>
+								</a>
+							</div><!--img-ch end-->
+							<div class="video_info pr">
+								<a routerLink="/channels/{{ channel._id }}" title="">
+									<span class="vc_hd cr{{ channel.avatar_color }} pr">
+										{{ channel.avatar_card }}
+									</span>
+								</a>
+								<h4>
+									<a routerLink="/channels/{{ channel._id }}" title="">{{ channel.title }}</a>
+									<span *ngIf="userIsSubscribedTo(channel._id)" class="verify_ic">
+										<svg width="24" height="24" viewBox="2 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"> <g> <path id="icodsdn4" fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black"></path> </g> </svg>
+									</span>
+								</h4>
+								<p>{{ channel.meta?.subscribers | shortNumber }} subscribers. <span class="videos_cnt">{{ channel.meta?.videos | shortNumber }} videos</span></p>
+								<span>{{ channel.meta?.views | shortNumber }} views</span>
+							</div><!--video_info pr-->
+						</div><!--img-info-ch end-->
+					</div>
+				</div>
+			</div><!--videso_catgs_sec end-->
+			<!-- <section *ngIf="show_arrow[1] == true" class="more_items_sec text-center">
+				<div class="container">
+					<a (click)="show_more_trending_channel()" title="">
+						<svg width="19" height="24" viewBox="0 0 19 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M18.1618 24.0001H0.838235C0.374412 24.0001 0 23.6261 0 23.1628V5.86052C0 5.39727 0.374412 5.02332 0.838235 5.02332H18.1618C18.6256 5.02332 19 5.39727 19 5.86052V23.1628C19 23.6261 18.6256 24.0001 18.1618 24.0001ZM1.67647 22.3256H17.3235V6.69773H1.67647V22.3256Z" fill="#9494A0"></path>
+							<g opacity="0.25">
+							<path opacity="0.25" d="M13.1324 4.18605C12.6685 4.18605 12.2941 3.81209 12.2941 3.34884V1.67442H6.70589V3.34884C6.70589 3.81209 6.33148 4.18605 5.86765 4.18605C5.40383 4.18605 5.02942 3.81209 5.02942 3.34884V0.83721C5.02942 0.373954 5.40383 0 5.86765 0H13.1324C13.5962 0 13.9706 0.373954 13.9706 0.83721V3.34884C13.9706 3.81209 13.5962 4.18605 13.1324 4.18605Z" fill="#9494A0"></path>
+							</g>
+							<path d="M9.50001 19.3479C9.28487 19.3479 9.06972 19.267 8.90766 19.1024L5.92634 16.1275C5.59942 15.801 5.59942 15.2707 5.92634 14.9442C6.25325 14.6177 6.78413 14.6177 7.11104 14.9442L9.50001 17.3275L11.8862 14.9442C12.2131 14.6177 12.744 14.6177 13.0709 14.9442C13.3978 15.2707 13.3978 15.801 13.0709 16.1275L10.0924 19.1024C9.93031 19.267 9.71516 19.3479 9.50001 19.3479Z" fill="#9494A0"></path>
+							<path d="M9.49999 18.4186C9.03617 18.4186 8.66176 18.0447 8.66176 17.5814V10.3256C8.66176 9.86236 9.03617 9.4884 9.49999 9.4884C9.96382 9.4884 10.3382 9.86236 10.3382 10.3256V17.5814C10.3382 18.0447 9.96382 18.4186 9.49999 18.4186Z" fill="#9494A0"></path>
+							<g opacity="0.5">
+							<path opacity="0.5" d="M15.6471 6.69764C15.1832 6.69764 14.8088 6.32369 14.8088 5.86043V4.18601H4.19118V5.86043C4.19118 6.32369 3.81677 6.69764 3.35294 6.69764C2.88912 6.69764 2.51471 6.32369 2.51471 5.86043V3.34881C2.51471 2.88555 2.88912 2.5116 3.35294 2.5116H15.6471C16.1109 2.5116 16.4853 2.88555 16.4853 3.34881V5.86043C16.4853 6.32369 16.1109 6.69764 15.6471 6.69764Z" fill="#9494A0"></path>
+							</g>
+						</svg>
+					</a>
+				</div>
+			</section> -->
+		</div>
+	</div>
+	<div class="vidz-row" style="border-bottom: none;">
+		<div class="container">
+			<div *ngIf="recent_channels.length > 0" class="videso_catgs_sec recent_vidz">
+				<h2 class="title-hd">Most Recent</h2>
+				<div class="row">
+					<div *ngFor="let channel of recent_channels" class="col-lg-3 col-md-4 col-sm-6">
+						<div class="img-info-ch">
+							<div class="img-ch channel_thumbnail">
+								<a routerLink="/channels/{{ channel._id }}" title="">
+									<img *ngIf="channel.profile_image" style="height: 170px;" src="{{ channel.profile_image }}" alt="">
+									<span *ngIf="!channel.profile_image" class="vc_hd cr{{ channel.avatar_color }} pr" style="width: 100% !important; height: 168px !important; margin-bottom: 22px !important; margin-top: -12px !important;"><label style="line-height: 170px; font-size: 60px;">{{ channel.avatar_card }}</label></span>
+								</a>
+							</div><!--img-ch end-->
+							<div class="video_info pr">
+								<a routerLink="/channels/{{ channel._id }}" title="">
+									<span class="vc_hd cr{{ channel.avatar_color }} pr">
+										{{ channel.avatar_card }}
+									</span>
+								</a>
+								<h4>
+									<a routerLink="/channels/{{ channel._id }}" title="">{{ channel.title }}</a>
+									<span *ngIf="userIsSubscribedTo(channel._id)" class="verify_ic">
+										<svg width="24" height="24" viewBox="2 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"> <g> <path id="sreicon4" fill-rule="evenodd" clip-rule="evenodd" d="M9.70711 14.2929L19 5L20.4142 6.41421L9.70711 17.1213L4 11.4142L5.41421 10L9.70711 14.2929Z" fill="black"></path> </g> </svg>
+									</span>
+								</h4>
+								<p>{{ channel.meta?.subscribers | shortNumber }} subscribers. <span class="videos_cnt">{{ channel.meta?.videos | shortNumber }} videos</span></p>
+								<span>{{ channel.meta?.views | shortNumber }} views</span>
+							</div><!--video_info pr-->
+						</div><!--img-info-ch end-->
+					</div>
+				</div>
+			</div><!--videso_catgs_sec end-->
+		</div>
+	</div>
+</section>
+
+<!-- <section *ngIf="show_arrow[2] == true" class="more_items_sec text-center">
+	<div class="container">
+		<a (click)="show_more_recent_channel()" title="">
+			<svg width="19" height="24" viewBox="0 0 19 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M18.1618 24.0001H0.838235C0.374412 24.0001 0 23.6261 0 23.1628V5.86052C0 5.39727 0.374412 5.02332 0.838235 5.02332H18.1618C18.6256 5.02332 19 5.39727 19 5.86052V23.1628C19 23.6261 18.6256 24.0001 18.1618 24.0001ZM1.67647 22.3256H17.3235V6.69773H1.67647V22.3256Z" fill="#9494A0"></path>
+				<g opacity="0.25">
+				<path opacity="0.25" d="M13.1324 4.18605C12.6685 4.18605 12.2941 3.81209 12.2941 3.34884V1.67442H6.70589V3.34884C6.70589 3.81209 6.33148 4.18605 5.86765 4.18605C5.40383 4.18605 5.02942 3.81209 5.02942 3.34884V0.83721C5.02942 0.373954 5.40383 0 5.86765 0H13.1324C13.5962 0 13.9706 0.373954 13.9706 0.83721V3.34884C13.9706 3.81209 13.5962 4.18605 13.1324 4.18605Z" fill="#9494A0"></path>
+				</g>
+				<path d="M9.50001 19.3479C9.28487 19.3479 9.06972 19.267 8.90766 19.1024L5.92634 16.1275C5.59942 15.801 5.59942 15.2707 5.92634 14.9442C6.25325 14.6177 6.78413 14.6177 7.11104 14.9442L9.50001 17.3275L11.8862 14.9442C12.2131 14.6177 12.744 14.6177 13.0709 14.9442C13.3978 15.2707 13.3978 15.801 13.0709 16.1275L10.0924 19.1024C9.93031 19.267 9.71516 19.3479 9.50001 19.3479Z" fill="#9494A0"></path>
+				<path d="M9.49999 18.4186C9.03617 18.4186 8.66176 18.0447 8.66176 17.5814V10.3256C8.66176 9.86236 9.03617 9.4884 9.49999 9.4884C9.96382 9.4884 10.3382 9.86236 10.3382 10.3256V17.5814C10.3382 18.0447 9.96382 18.4186 9.49999 18.4186Z" fill="#9494A0"></path>
+				<g opacity="0.5">
+				<path opacity="0.5" d="M15.6471 6.69764C15.1832 6.69764 14.8088 6.32369 14.8088 5.86043V4.18601H4.19118V5.86043C4.19118 6.32369 3.81677 6.69764 3.35294 6.69764C2.88912 6.69764 2.51471 6.32369 2.51471 5.86043V3.34881C2.51471 2.88555 2.88912 2.5116 3.35294 2.5116H15.6471C16.1109 2.5116 16.4853 2.88555 16.4853 3.34881V5.86043C16.4853 6.32369 16.1109 6.69764 15.6471 6.69764Z" fill="#9494A0"></path>
+				</g>
+			</svg>
+		</a>
+	</div>
+</section> -->
+
+<!-- <section class="more_items_sec text-center">
+	<div class="container">
+		<a title="" class="link">
+			<svg width="19" height="24" viewBox="0 0 19 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path d="M18.1618 24.0001H0.838235C0.374412 24.0001 0 23.6261 0 23.1628V5.86052C0 5.39727 0.374412 5.02332 0.838235 5.02332H18.1618C18.6256 5.02332 19 5.39727 19 5.86052V23.1628C19 23.6261 18.6256 24.0001 18.1618 24.0001ZM1.67647 22.3256H17.3235V6.69773H1.67647V22.3256Z" fill="#9494A0"></path>
+				<g opacity="0.25">
+				<path opacity="0.25" d="M13.1324 4.18605C12.6685 4.18605 12.2941 3.81209 12.2941 3.34884V1.67442H6.70589V3.34884C6.70589 3.81209 6.33148 4.18605 5.86765 4.18605C5.40383 4.18605 5.02942 3.81209 5.02942 3.34884V0.83721C5.02942 0.373954 5.40383 0 5.86765 0H13.1324C13.5962 0 13.9706 0.373954 13.9706 0.83721V3.34884C13.9706 3.81209 13.5962 4.18605 13.1324 4.18605Z" fill="#9494A0"></path>
+				</g>
+				<path d="M9.50001 19.3479C9.28487 19.3479 9.06972 19.267 8.90766 19.1024L5.92634 16.1275C5.59942 15.801 5.59942 15.2707 5.92634 14.9442C6.25325 14.6177 6.78413 14.6177 7.11104 14.9442L9.50001 17.3275L11.8862 14.9442C12.2131 14.6177 12.744 14.6177 13.0709 14.9442C13.3978 15.2707 13.3978 15.801 13.0709 16.1275L10.0924 19.1024C9.93031 19.267 9.71516 19.3479 9.50001 19.3479Z" fill="#9494A0"></path>
+				<path d="M9.49999 18.4186C9.03617 18.4186 8.66176 18.0447 8.66176 17.5814V10.3256C8.66176 9.86236 9.03617 9.4884 9.49999 9.4884C9.96382 9.4884 10.3382 9.86236 10.3382 10.3256V17.5814C10.3382 18.0447 9.96382 18.4186 9.49999 18.4186Z" fill="#9494A0"></path>
+				<g opacity="0.5">
+				<path opacity="0.5" d="M15.6471 6.69764C15.1832 6.69764 14.8088 6.32369 14.8088 5.86043V4.18601H4.19118V5.86043C4.19118 6.32369 3.81677 6.69764 3.35294 6.69764C2.88912 6.69764 2.51471 6.32369 2.51471 5.86043V3.34881C2.51471 2.88555 2.88912 2.5116 3.35294 2.5116H15.6471C16.1109 2.5116 16.4853 2.88555 16.4853 3.34881V5.86043C16.4853 6.32369 16.1109 6.69764 15.6471 6.69764Z" fill="#9494A0"></path>
+				</g>
+			</svg>
+		</a>
+	</div>
+</section> -->

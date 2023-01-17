@@ -1,0 +1,8 @@
+@media (max-width: 480px) {
+  .show_in_mobile {
+    display: block;
+  }
+  .mobile_alignment_text_to_left {
+    text-align: left;
+  }
+}

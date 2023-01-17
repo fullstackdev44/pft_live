@@ -1,0 +1,820 @@
+<header>
+  <div class="top_bar" id="top_bar">
+    <div class="container">
+      <div class="top_header_content">
+        <div class="menu_logo" [ngClass]="{'user_offline_menu_logo_position': !tokenService.user, 'user_online_menu_logo_position': tokenService.user}">
+          <a href="#" title="" class="menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M22 7V5H2V7H22ZM22 11V13H2V11H22ZM22 17V19H2V17H22Z" fill="#9494A0" />
+            </svg>
+          </a>
+          <a [routerLink]="['']" title="" class="logo">
+            <img src="/assets/images/logo.png" alt="">
+          </a>
+        </div>
+        <!--menu_logo end-->
+        <div class="search_form" [ngClass]="{'user_offline_search_form_position': !tokenService.user, 'user_online_search_form_position': tokenService.user}">
+          <form>
+            <input type="text" [(ngModel)]="search_term" name="search" placeholder="Search">
+            <button (click)="search(search_term)" type="submit">
+              <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M10 18.1221C5.58172 18.1221 2 14.5403 2 10.1221C2 5.70379 5.58172 2.12207 10 2.12207C14.4183 2.12207 18 5.70379 18 10.1221C18 11.9708 17.3729 13.673 16.3199 15.0277L21.7071 20.415L20.2929 21.8292L14.9056 16.4419C13.551 17.495 11.8487 18.1221 10 18.1221ZM16 10.1221C16 13.4358 13.3137 16.1221 10 16.1221C6.68629 16.1221 4 13.4358 4 10.1221C4 6.80836 6.68629 4.12207 10 4.12207C13.3137 4.12207 16 6.80836 16 10.1221Z"
+                  fill="#9494A0" />
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <div class="side_links">
+          <ul>
+            <li *ngIf="!tokenService.user" class="user_form">
+              <a (click)="goToSignup()" class="login_form_show" style="background-color: #1FC64E !important;" title="">Free to join</a>
+            </li>
+            <li *ngIf="!tokenService.user" class="user_form">
+              <a title="" (click)="goToLogin()" class="login_form_show">Sign in</a>
+            </li>
+
+            
+            <li *ngIf="tokenService.user" class="msg">
+              <a class="link" (click)="toggleMessageBox($event)" title="">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6 21.8042L12.0868 18H20C21.1046 18 22 17.1046 22 16V4C22 2.89543 21.1046 2 20 2H4C2.89543 2 2 2.89543 2 4V16C2 17.1046 2.89543 18 4 18H6V21.8042ZM11.5132 16L8 18.1958V16H4V4H20V16H11.5132Z"
+                      fill="#9494A0" />
+                  </g>
+                </svg>
+                <div *ngIf="unread_messages.length > 0" class="unread_notification_class_number">
+                  {{ unread_messages.length }}
+                </div>
+              </a>
+             
+              <!-- message notification -->
+              
+              <div class="notification-box message">
+                <div class="notification-head">
+                  <span (click)="markAllMessagesAsRead()" *ngIf="unread_messages.length > 0" class="tick-check" title="Mark all as read">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g id="24 / basic / check-marks">
+                      <path id="icon" fill-rule="evenodd" clip-rule="evenodd" d="M14.6192 6L6.54588 14.1999L3.35443 10.95L1.97363 12.35L6.54588 17L16 7.40006L14.6192 6ZM10.6664 15.0943L12.5459 17L22 7.40006L20.6192 6L12.5459 14.1999L12.0462 13.6932L10.6664 15.0943Z" fill="#9494A0"/>
+                      </g>
+                    </svg>
+                  </span>
+                  <h3> Messages </h3>
+                  <a (click)="closeMessageNotification()" title="close" class="closee">
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M11 22C4.92487 22 0 17.0751 0 11C0 4.92487 4.92487 0 11 0C17.0751 0 22 4.92487 22 11C22 17.0751 17.0751 22 11 22ZM11 20C15.9706 20 20 15.9706 20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20ZM7.70711 15.7071L11 12.4142L14.2929 15.7071L15.7071 14.2929L12.4142 11L15.7071 7.70711L14.2929 6.29289L11 9.58579L7.70711 6.29289L6.29289 7.70711L9.58579 11L6.29289 14.2929L7.70711 15.7071Z" fill="#9494A0"/>
+                    </svg>
+                  </a>
+                </div>
+                <div class="nots-list">
+                  <ul>
+                    <li *ngFor="let message of unread_messages" class="link" (click)="view_message_detail(message._id)">
+                      <div class="vcp_inf">
+                        <span class="vc_hd cr{{ message.sender.avatar_color ? message.sender.avatar_color : message.sender_avatar_color }}">{{ message.sender.avatar_card ? message.sender.avatar_card : message.sender_avatar_card }}</span>
+                        <div class="vc_info">
+                          <h4 style="font-weight: bold;"><a>{{ message.object }}</a></h4>
+                          <h4 style="height: 50px; overflow: hidden;"><a>{{ message.content }}</a></h4>
+                          <span>{{ message.created | dateAgo }}</span>
+                          <h4 style="text-align: right; margin-top: -20px;"><a>View detail</a></h4>
+                        </div>
+                      </div>
+                    </li>
+                    <li *ngIf="unread_messages.length == 0">
+                      <h4 style="text-align: center; color: #e4e4f6"> No unread message! </h4>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+           
+
+            <li *ngIf="tokenService.user" class="notification">
+              <a (click)="toggleNotificationBox($event)" class="link" title="">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g>
+                  <path id="icon2" fill-rule="evenodd" clip-rule="evenodd" d="M19 10C19 5.94082 16.7616 3.1235 13.8654 2.27771C13.7605 2.00636 13.5948 1.7541 13.3695 1.54243C12.5997 0.81919 11.4003 0.81919 10.6305 1.54243C10.4057 1.75364 10.2402 2.00525 10.1353 2.27592C7.23535 3.11803 5 5.92919 5 10C5 12.6339 4.46898 14.1098 3.48596 15.1793C3.32161 15.3582 2.87632 15.7678 2.57468 16.0453L2.57465 16.0453L2.57465 16.0453L2.5745 16.0454C2.43187 16.1766 2.32138 16.2783 2.28796 16.3119L2 16.604V20.0141H8.08798C8.29384 21.0761 8.87009 21.7867 9.9122 22.4226C11.1941 23.2049 12.8059 23.2049 14.0878 22.4226C15.0075 21.8614 15.6241 20.9989 15.8743 20.0141H22V16.604L21.712 16.3119C21.6817 16.2812 21.5757 16.1834 21.437 16.0555C21.1363 15.7781 20.6823 15.3592 20.5154 15.1769C19.5317 14.1024 19 12.6246 19 10ZM13.7367 20.0141H10.1786C10.3199 20.2769 10.5607 20.4754 10.954 20.7154C11.5963 21.1073 12.4037 21.1073 13.046 20.7154C13.3434 20.5339 13.5758 20.2937 13.7367 20.0141ZM19.0402 16.5274C19.2506 16.7573 19.7016 17.1774 20 17.4519V18.0141H4V17.4524C4.29607 17.1811 4.74843 16.7613 4.95849 16.5327C6.29422 15.0794 7 13.1178 7 10C7 6.21989 9.33277 4.01238 12 4.01238C14.6597 4.01238 17 6.23129 17 10C17 13.1078 17.706 15.07 19.0402 16.5274Z" fill="#9494A0"/>
+                  </g>
+                </svg>
+                <div *ngIf="unread_notifications.length > 0" class="unread_notification_class_number">
+                  {{ unread_notifications.length }}
+                </div>
+              </a>
+              <!-- notification -->
+              <div class="notification-box notification">
+                <div class="notification-head">
+                  <span (click)="markAllNotificationsAsRead()" *ngIf="unread_notifications.length > 0" class="tick-check" title="Mark all as read">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <g id="24 / basic / check-marks">
+                      <path id="icon" fill-rule="evenodd" clip-rule="evenodd" d="M14.6192 6L6.54588 14.1999L3.35443 10.95L1.97363 12.35L6.54588 17L16 7.40006L14.6192 6ZM10.6664 15.0943L12.5459 17L22 7.40006L20.6192 6L12.5459 14.1999L12.0462 13.6932L10.6664 15.0943Z" fill="#9494A0"/>
+                      </g>
+                    </svg>
+                  </span>
+                  <!-- <h3>Notifications {{ total_notification_unread_count ? '('+ total_notification_unread_count +')' : '' }} </h3> -->
+                  <h3>Notifications</h3>
+                  <a (click)="closeNotification()" title="close" class="closee">
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M11 22C4.92487 22 0 17.0751 0 11C0 4.92487 4.92487 0 11 0C17.0751 0 22 4.92487 22 11C22 17.0751 17.0751 22 11 22ZM11 20C15.9706 20 20 15.9706 20 11C20 6.02944 15.9706 2 11 2C6.02944 2 2 6.02944 2 11C2 15.9706 6.02944 20 11 20ZM7.70711 15.7071L11 12.4142L14.2929 15.7071L15.7071 14.2929L12.4142 11L15.7071 7.70711L14.2929 6.29289L11 9.58579L7.70711 6.29289L6.29289 7.70711L9.58579 11L6.29289 14.2929L7.70711 15.7071Z" fill="#9494A0"/>
+                    </svg>
+                  </a>
+                </div>
+                <div class="nots-list">
+                  <ul>
+                    <li *ngFor="let notification of unread_notifications; index as i">
+                      <!-- <div *ngIf="notification.type == 'NEW_VIDEO_PUBLISHED'" class="vcp_inf">
+                        <span class="vc_hd clr8">MK</span>
+                        <div class="vc_info">
+                          <h4><a href="#" title="">Mike Change published a new video</a></h4>
+                          <span>3 days ago</span>
+                        </div>
+                      </div>
+                      <div *ngIf="notification.type == 'NEW_VIDEO_PUBLISHED'" class="post-watched">
+                        <div class="post-watch-thumb">
+                          <img src="assets/images/img1.jpg" alt="">
+                        </div>
+                        <div class="post-watch-info">
+                          <h4><a href="#" title="">Post Malone - Psycho ft. Ty Dolla $ign </a></h4>
+                        </div>
+                      </div>
+
+                      <div *ngIf="notification.type == 'SUBSCRIPTION_EXPIRATION'" class="vcp_inf">
+                        <span class="vc_hd clr8">MK</span>
+                        <div class="vc_info">
+                          <h4><a href="#" title="">Your subscription to Mike Chane channel is expiring soon.</a></h4>
+                          <span>4 days ago</span>
+                        </div>
+                      </div>
+
+                      <div *ngIf="notification.type == 'LIVE_REQUEST'" class="vcp_inf">
+                        <span class="vc_hd clr2">MK</span>
+                        <div class="vc_info">
+                          <h4><a href="#" title="">David Channel just went LIVE,Check it out</a></h4>
+                          <span>3 days ago</span>
+                        </div>
+                      </div>
+
+                      <div *ngIf="notification.type == 'LIKED_VIDEO'" class="vcp_inf">
+                        <span class="vc_hd clr4">EM</span>
+                        <div class="vc_info">
+                          <h4><a href="#" title="">Elias Murphy liked your <span>video</span></a></h4>
+                          <span>4 days ago</span>
+                        </div>
+                      </div> -->
+
+                      <!-- <div *ngIf="notification.type == 'SUBSCRIPTION'" (click)="markAsRead(notification._id, i); seeNotification('channels', notification.sender_channel); closeNotification();" class="vcp_inf"> -->
+                      <div *ngIf="notification.type == 'SUBSCRIPTION'" class="vcp_inf">
+                        <span (click)="markAsRead(notification._id, i); closeNotification();" class="vc_hd cr{{ notification.sender.avatar_color ? notification.sender.avatar_color : notification.sender_avatar_color }}">{{ notification.sender.avatar_card ? notification.sender.avatar_card : notification.sender_avatar_card }}</span>
+                        <div (click)="markAsRead(notification._id, i); closeNotification();" class="vc_info">
+                          <h4><a title="">{{ notification.sender.full_name ? notification.sender.full_name : notification.sender_full_name }} subscribed to your channel</a></h4>
+                          <span>{{ notification.created | dateAgo }}</span>
+                          <!-- <h4 class="link" (click)="unread_notifications.splice(i, 1);" style="text-align: right; margin-top: -20px;"><a>Remove</a></h4> -->
+                        </div>
+                        <h4 class="link" (click)="markAsRead(notification._id, i); unread_notifications.splice(i, 1);" style="position: relative; bottom: -25px; color: white;"><a>Remove</a></h4>
+                      </div>
+
+                      <!-- <div *ngIf="notification.type == 'COMMENT'" (click)="markAsRead(notification._id, i); seeNotification('video', notification.comment.video_id.source_id); closeNotification();" class="vcp_inf"> -->
+                      <div *ngIf="notification.type == 'COMMENT'" class="vcp_inf">
+                        <span (click)="markAsRead(notification._id, i); closeNotification();" class="vc_hd cr{{ notification.sender.avatar_color ? notification.sender.avatar_color : notification.sender_avatar_color }}">{{ notification.sender.avatar_card ? notification.sender.avatar_card : notification.sender_avatar_card }}</span>
+                        <div (click)="markAsRead(notification._id, i); closeNotification();" class="vc_info">
+                          <h4><a title="">{{ notification.sender.full_name ? notification.sender.full_name : notification.sender_full_name }} commented on your video: {{ notification.comment && notification.comment.video_id ? notification.comment.video_id?.title : ( notification.video_name ? notification.video_name : 'unavailable video') }}</a></h4>
+                          <span>{{ notification.created | dateAgo }}</span>
+                          <!-- <h4 class="link" (click)="unread_notifications.splice(i, 1);" style="text-align: right; margin-top: -20px;"><a>Remove</a></h4> -->
+                        </div>
+                        <h4 class="link" (click)="markAsRead(notification._id, i); unread_notifications.splice(i, 1);" style="position: relative; bottom: -35px; color: white;"><a>Remove</a></h4>
+                      </div>
+
+                      <!-- <div *ngIf="notification.type == 'DONATION'" (click)="markAsRead(notification._id, i); closeNotification();" class="vcp_inf"> -->
+                      <div *ngIf="notification.type == 'DONATION'" class="vcp_inf">
+                        <span (click)="markAsRead(notification._id, i); closeNotification();" class="vc_hd cr{{ notification.sender.avatar_color ? notification.sender.avatar_color : notification.sender_avatar_color }}">{{ notification.sender.avatar_card ? notification.sender.avatar_card : notification.sender_avatar_card }}</span>
+                        <div (click)="markAsRead(notification._id, i); closeNotification();" class="vc_info">
+                          <h4>
+                            <a *ngIf="notification.sender.full_name">{{ notification.sender.full_name }} given you a donation</a>
+                            <a *ngIf="notification.sender_full_name && !notification.sender.full_name">{{ notification.sender_full_name }} given you a donation</a>
+                            <a *ngIf="notification.donation_message"> <br/> {{ notification.donation_message }} </a>
+                          </h4>
+                          <span>{{ notification.created | dateAgo }}</span>
+                          <!-- <h4 class="link" (click)="unread_notifications.splice(i, 1);" style="text-align: right; margin-top: -20px;"><a>Remove</a></h4> -->
+                        </div>
+                        <h4 class="link" (click)="markAsRead(notification._id, i); unread_notifications.splice(i, 1);" style="position: relative; bottom: -25px; color: white;"><a>Remove</a>
+                        </h4>
+                      </div>
+                    </li>
+                    <li *ngIf="unread_notifications.length == 0">
+                      <h4 style="text-align: center; color: #e4e4f6"> No unread notification! </h4>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li *ngIf="tokenService.user" class="user_contrl link">
+              <img *ngIf="user?.avatar" class="vc_hd" [src]="user?.avatar">
+              <span *ngIf="!user || !user.avatar" (click)="dropDownUserMenu($event)" class="vc_hd cr{{ user?.avatar_color }} pr">{{ tokenService.user.avatar_card }}</span>
+              <a (click)="dropDownUserMenu($event)" class="dp_menu">
+                <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12.2929 0.228882L13.7071 1.6431L7.00001 8.3502L0.292908 1.6431L1.70712 0.228882L7.00001 5.52178L12.2929 0.228882Z" fill="#9494A0" />
+                </svg>
+              </a>
+              <div class="dp_down">
+                <ul class="dp_ul">
+                  <li>
+                    <h3>{{ tokenService.user.full_name }}</h3>
+                    <span *ngIf="tokenService.user.pro" class="act_status">PRO</span>
+                  </li>
+                  <li>
+                    <span>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM19.3995 17.1246C20.4086 15.6703 21 13.9042 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.9042 3.59138 15.6703 4.6005 17.1246C5.72595 15.6381 8.3706 15 12 15C15.6294 15 18.274 15.6381 19.3995 17.1246ZM17.9647 18.7398C17.672 17.6874 15.5694 17 12 17C8.43062 17 6.328 17.6874 6.03532 18.7398C7.6233 20.1462 9.71194 21 12 21C14.2881 21 16.3767 20.1462 17.9647 18.7398ZM12 15C9.76086 15 8 13.4274 8 10C8 7.75576 9.5791 6 12 6C14.4142 6 16 7.92158 16 10.2C16 13.4796 14.2181 15 12 15ZM10 10C10 12.2693 10.8182 13 12 13C13.1777 13 14 12.2984 14 10.2C14 8.95042 13.2157 8 12 8C10.7337 8 10 8.81582 10 10Z"
+                          fill="#9494A0" />
+                      </svg>
+                    </span>
+                    <a routerLink="/user-account" title="">My Account</a>
+                  </li>
+                  <li *ngIf="user_channel.active == true && user.account_type == 'COACH'">
+                    <span>
+                      <img style="height: 24px" src="assets/images/tv_grey.svg" alt="">
+                    </span>
+                    <a routerLink="/channels/{{user_channel?._id}}" style="padding-left: 25px !important" title="">My Channel</a>
+                  </li>
+                  <!--
+                  <li>
+                    <span>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4506 0.402662C14.5126 0.0992137 15.6196 0.714198 15.923 1.77627C15.9741 1.95495 16 2.13988 16 2.32571V3.99998H18C19.1046 3.99998 20 4.89541 20 5.99998V18C20 19.1045 19.1046 20 18 20H2C0.89543 20 0 19.1045 0 18H0.0267034C0.00895177 17.8924 0 17.7835 0 17.6742V5.75428C0 4.86132 0.591955 4.07655 1.45056 3.83123L13.4506 0.402662ZM8.14005 18H18V9.99998H16V14.2457C16 15.1386 15.408 15.9234 14.5494 16.1687L8.14005 18ZM18 5.99998V7.99998H16V5.99998H18ZM2 5.75426V17.6742L14 14.2457V2.32568L2 5.75426ZM12 7.99998C12 8.55227 11.5523 8.99998 11 8.99998C10.4477 8.99998 10 8.55227 10 7.99998C10 7.4477 10.4477 6.99998 11 6.99998C11.5523 6.99998 12 7.4477 12 7.99998Z"
+                          fill="#9494A0" />
+                      </svg>
+                    </span>
+                    <a routerLink="/user-account/subscriptions" title="">Paid Subscriptions</a>
+                  </li>
+                  -->
+                  <li>
+                    <span>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M18.6562 20.897L20.8733 18.6798L20.0925 15.843L20.4327 15.0305L23 13.5818V10.4464L20.44 8.99173L20.1055 8.18067L20.8961 5.34235L18.6774 3.12683L15.8403 3.90748L15.0296 3.56758L13.5808 1H10.4454L8.99072 3.56004L8.17985 3.89446L5.34198 3.10281L3.1267 5.31809L3.90748 8.15567L3.56758 8.96634L1 10.4151V13.5496L3.55774 15.0076L3.89252 15.8193L3.10197 18.6572L5.31809 20.8733L8.15567 20.0925L8.96644 20.4325L10.4153 22.999H13.5498L15.0067 20.4412L15.8183 20.1065L18.6562 20.897ZM18.8527 13.6256L17.9809 15.7078L18.6362 18.0886L18.0678 18.657L15.692 17.9951L13.609 18.8542L12.3873 20.999H11.5829L10.3714 18.8529L8.29155 17.9808L5.90947 18.6362L5.34203 18.0688L6.00385 15.693L5.14482 13.6101L3 12.3876V11.583L5.1471 10.3715L6.0192 8.29155L5.36375 5.90947L5.93001 5.34321L8.30576 6.00595L10.3895 5.14655L11.6093 3H12.4129L13.6245 5.1471L15.7044 6.0192L18.087 5.36362L18.6558 5.93166L17.9941 8.30696L18.8534 10.3906L21 11.6103V12.4139L18.8527 13.6256ZM12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12C16 14.2091 14.2091 16 12 16ZM14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z"
+                          fill="#9494A0" />
+                      </svg>
+                    </span>
+                    <a routerLink="/user-account/profile" title="">Settings</a>
+                  </li>
+                  <li>
+                    <span>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99985 13L18.5856 13L15.2927 16.2929L16.707 17.7071L22.4141 12L16.707 6.29289L15.2927 7.70711L18.5856 11L7.99985 11L7.99985 13ZM3.99985 21L12.9998 21L12.9998 19L3.99985 19L3.99985 5L12.9998 5L12.9998 3L3.99985 3C2.89528 3 1.99985 3.89543 1.99985 5L1.99985 19C1.99985 20.1046 2.89528 21 3.99985 21Z"
+                          fill="#9494A0" />
+                      </svg>
+                    </span>
+                    <a *ngIf="tokenService.user" class="link" (click)="signOut()" title="">Sign out</a>
+                  </li>
+                </ul>
+                <!--dp_ul end-->
+                <!-- <ul class="dp_ul">
+                  <li>
+                    <span>
+                      <svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0)">
+                          <path d="M22.8995 22.55C22.6883 22.5481 22.482 22.4859 22.3048 22.3708C22.1277 22.2556 21.9871 22.0923 21.8995 21.9L17.2595 12L12.6195 22C12.5606 22.135 12.4747 22.2564 12.3671 22.3569C12.2595 22.4574 12.1326 22.5349 11.9939 22.5845C11.8553 22.6342 11.708 22.6549 11.5611 22.6456C11.4142 22.6362 11.2707 22.5969 11.1395 22.53C10.8718 22.3762 10.6724 22.1266 10.5815 21.8315C10.4905 21.5365 10.5148 21.2179 10.6495 20.94L16.2795 8.78004C16.3567 8.57732 16.4937 8.40284 16.6723 8.27973C16.8508 8.15662 17.0626 8.0907 17.2795 8.0907C17.4964 8.0907 17.7082 8.15662 17.8868 8.27973C18.0654 8.40284 18.2024 8.57732 18.2795 8.78004L23.9095 20.84C24.0442 21.1179 24.0686 21.4365 23.9776 21.7315C23.8867 22.0266 23.6873 22.2762 23.4195 22.43C23.2585 22.5117 23.0801 22.5529 22.8995 22.55Z"
+                            fill="#9494A0" />
+                          <path d="M20.9402 18.49H13.5902C13.2772 18.49 12.9771 18.3657 12.7558 18.1444C12.5345 17.9231 12.4102 17.623 12.4102 17.31C12.4102 16.997 12.5345 16.6969 12.7558 16.4756C12.9771 16.2543 13.2772 16.13 13.5902 16.13H20.9402C21.2531 16.13 21.5532 16.2543 21.7745 16.4756C21.9958 16.6969 22.1202 16.997 22.1202 17.31C22.1202 17.623 21.9958 17.9231 21.7745 18.1444C21.5532 18.3657 21.2531 18.49 20.9402 18.49Z"
+                            fill="#9494A0" />
+                          <path d="M11.0007 6.29005H1.10073C0.95099 6.28489 0.80374 6.25027 0.667396 6.18815C0.531052 6.12604 0.408289 6.03766 0.306127 5.92807C0.203965 5.81848 0.124408 5.68982 0.0720044 5.54946C0.0196012 5.4091 -0.00461999 5.25978 0.000725968 5.11005C-0.00461999 4.96032 0.0196012 4.81101 0.0720044 4.67065C0.124408 4.53029 0.203965 4.40163 0.306127 4.29204C0.408289 4.18245 0.531052 4.09407 0.667396 4.03195C0.80374 3.96984 0.95099 3.93522 1.10073 3.93005H11.0007C11.1505 3.93522 11.2977 3.96984 11.4341 4.03195C11.5704 4.09407 11.6932 4.18245 11.7953 4.29204C11.8975 4.40163 11.977 4.53029 12.0294 4.67065C12.0819 4.81101 12.1061 4.96032 12.1007 5.11005C12.1061 5.25978 12.0819 5.4091 12.0294 5.54946C11.977 5.68982 11.8975 5.81848 11.7953 5.92807C11.6932 6.03766 11.5704 6.12604 11.4341 6.18815C11.2977 6.25027 11.1505 6.28489 11.0007 6.29005Z"
+                            fill="#9494A0" />
+                          <path d="M5.51088 5.9C5.36115 5.89484 5.2139 5.86021 5.07755 5.7981C4.94121 5.73599 4.81845 5.64761 4.71628 5.53802C4.61412 5.42842 4.53456 5.29977 4.48216 5.15941C4.42976 5.01904 4.40554 4.86973 4.41088 4.72V1.18C4.40554 1.03027 4.42976 0.880955 4.48216 0.740594C4.53456 0.600232 4.61412 0.471576 4.71628 0.361984C4.81845 0.252392 4.94121 0.164013 5.07755 0.101901C5.2139 0.0397886 5.36115 0.00516161 5.51088 0C5.66062 0.00516161 5.80787 0.0397886 5.94421 0.101901C6.08056 0.164013 6.20332 0.252392 6.30548 0.361984C6.40764 0.471576 6.4872 0.600232 6.5396 0.740594C6.59201 0.880955 6.61623 1.03027 6.61088 1.18V4.72C6.61623 4.86973 6.59201 5.01904 6.5396 5.15941C6.4872 5.29977 6.40764 5.42842 6.30548 5.53802C6.20332 5.64761 6.08056 5.73599 5.94421 5.7981C5.80787 5.86021 5.66062 5.89484 5.51088 5.9Z"
+                            fill="#9494A0" />
+                          <path d="M1.46953 16.52C1.25854 16.5169 1.05274 16.4542 0.875814 16.3392C0.698893 16.2242 0.558058 16.0616 0.469532 15.87C0.341049 15.5886 0.324315 15.2688 0.422716 14.9754C0.521117 14.6821 0.727302 14.4371 0.999532 14.29C2.72514 13.4108 4.22739 12.1494 5.39191 10.6019C6.55642 9.05444 7.3525 7.26165 7.71953 5.36005C7.73014 5.2065 7.77256 5.05683 7.84411 4.92055C7.91566 4.78428 8.01477 4.66437 8.13514 4.56845C8.25551 4.47253 8.39451 4.40269 8.54332 4.36337C8.69213 4.32405 8.84749 4.31611 8.99953 4.34005C9.1515 4.35972 9.29806 4.40932 9.43075 4.48596C9.56345 4.5626 9.67964 4.66478 9.77262 4.78658C9.8656 4.90839 9.93352 5.04741 9.97247 5.19561C10.0114 5.34381 10.0206 5.49827 9.99953 5.65005C9.59066 7.93942 8.65508 10.1024 7.26667 11.968C5.87827 13.8337 4.07508 15.351 1.99953 16.4C1.83614 16.485 1.65358 16.5263 1.46953 16.52Z"
+                            fill="#9494A0" />
+                          <path d="M8.07812 16.52C7.93177 16.5197 7.78704 16.4894 7.65287 16.4309C7.51871 16.3724 7.39797 16.287 7.29812 16.18L1.78812 10.28C1.58013 10.0517 1.46484 9.7539 1.46484 9.44502C1.46484 9.13613 1.58013 8.83837 1.78812 8.61002C1.88658 8.50076 2.00689 8.41342 2.14126 8.35363C2.27562 8.29384 2.42105 8.26294 2.56812 8.26294C2.71519 8.26294 2.86062 8.29384 2.99499 8.35363C3.12936 8.41342 3.24967 8.50076 3.34812 8.61002L8.85812 14.51C9.06612 14.7384 9.1814 15.0361 9.1814 15.345C9.1814 15.6539 9.06612 15.9517 8.85812 16.18C8.75904 16.288 8.63844 16.374 8.50411 16.4326C8.36977 16.4911 8.22467 16.5209 8.07812 16.52Z"
+                            fill="#9494A0" />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0">
+                            <rect width="24" height="22.55" fill="white" />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                    </span>
+                    <a routerLink="/settings/laguage" title="">Language</a>
+                  </li>
+                  <li>
+                    <span>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0868 18L6 21.8042V18H4C2.89543 18 2 17.1046 2 16V4C2 2.89543 2.89543 2 4 2H20C21.1046 2 22 2.89543 22 4V16C22 17.1046 21.1046 18 20 18H12.0868ZM8 18.1958L11.5132 16H20V4H4V16H8V18.1958ZM15.2929 6.29289L11 10.5858L8.70711 8.29289L7.29289 9.70711L11 13.4142L16.7071 7.70711L15.2929 6.29289Z"
+                          fill="#9494A0" />
+                      </svg>
+                    </span>
+                    <a routerLink="/feedback" title="">Send Feedback</a>
+                  </li>
+                  <li class="language_slct">
+                    <span>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.3276L12.6577 22.7533C18.1887 17.9237 21 13.7068 21 10C21 4.75066 16.9029 1 12 1C7.09705 1 3 4.75066 3 10C3 13.7068 5.81131 17.9237 11.3423 22.7533L12 23.3276ZM12 20.6634C7.30661 16.4335 5 12.8492 5 10C5 5.8966 8.16411 3 12 3C15.8359 3 19 5.8966 19 10C19 12.8492 16.6934 16.4335 12 20.6634ZM12 5C14.7614 5 17 7.23858 17 10C17 12.7614 14.7614 15 12 15C9.23858 15 7 12.7614 7 10C7 7.23858 9.23858 5 12 5ZM9 10C9 8.34315 10.3431 7 12 7C13.6569 7 15 8.34315 15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10Z"
+                          fill="#9494A0" />
+                      </svg>
+                    </span>
+                    <a routerLink="/united_state" title="">United States</a>
+                    <small class="lang_optz">
+                      <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.58586 6.99995L0.292969 1.70706L1.70718 0.292847L8.41429 6.99995L1.70718 13.7071L0.292969 12.2928L5.58586 6.99995Z" fill="#9494A0" />
+                      </svg>
+                    </small>
+                  </li>
+                </ul> -->
+                <!--dp_ul end-->
+                <!-- <div class="mode_optz">
+                  <h4>Restricted Mode</h4>
+                  <a href="#" title="" class="mode_ch">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H7C3.13401 5 0 8.13401 0 12C0 15.866 3.13401 19 7 19H17C20.866 19 24 15.866 24 12C24 8.13401 20.866 5 17 5ZM2 12C2 9.23858 4.23858 7 7 7H17C19.7614 7 22 9.23858 22 12C22 14.7614 19.7614 17 17 17H7C4.23858 17 2 14.7614 2 12ZM17 16C14.7909 16 13 14.2091 13 12C13 9.79086 14.7909 8 17 8C19.2091 8 21 9.79086 21 12C21 14.2091 19.2091 16 17 16ZM19 12C19 13.1046 18.1046 14 17 14C15.8954 14 15 13.1046 15 12C15 10.8954 15.8954 10 17 10C18.1046 10 19 10.8954 19 12Z"
+                        fill="#9494A0" />
+                    </svg>
+                  </a>
+                  <div class="clearfix"></div>
+                </div> -->
+              </div>
+              <!--dp_down end-->
+            </li>
+            <li *ngIf="tokenService.user && user_channel.active == true && user.account_type == 'COACH'" class="mg-15">
+              <a routerLink="/live/event" class="vc_hd cv clr2 link" title="">
+                <svg width="25" height="26" viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0w)">
+                    <path d="M12.5 17.0747C9.95896 17.0747 7.91187 14.1295 7.91187 11.6898C7.91187 9.23144 9.9694 7.22961 12.5 7.22961C15.0289 7.22961 17.0882 9.22974 17.0882 11.6898C17.0882 14.1278 15.0411 17.0747 12.5 17.0747ZM12.5 8.75127C10.8338 8.75127 9.47719 10.0683 9.47719 11.6898C9.47719 13.3923 10.8999 15.5531 12.5 15.5531C14.0984 15.5531 15.5228 13.3923 15.5228 11.6898C15.5228 10.07 14.168 8.75127 12.5 8.75127Z"
+                      fill="white" />
+                    <path d="M12.5591 26C12.5209 26 12.4826 25.9967 12.4443 25.9916C8.5658 25.437 4.38116 23.9965 4.20376 23.934C3.85243 23.8122 3.6385 23.4656 3.69242 23.1072C3.89939 21.7309 4.33073 19.3217 4.88381 18.664C5.04904 18.4678 5.26297 18.2785 5.52037 18.0993C7.08222 17.0172 9.27716 16.3544 9.37108 16.3274C9.78502 16.204 10.2216 16.4305 10.3485 16.8312C10.4755 17.2336 10.2424 17.658 9.83024 17.7814C9.79372 17.7915 7.77618 18.4053 6.43174 19.3369C6.28912 19.4366 6.17259 19.5381 6.09607 19.6277C5.90301 19.91 5.57603 21.3387 5.34297 22.7048C6.64219 23.1224 9.79372 24.076 12.6722 24.4868C13.1 24.5477 13.3957 24.9349 13.3331 25.3508C13.2757 25.7278 12.9418 25.9983 12.5591 26Z"
+                      fill="white" />
+                    <path d="M12.5574 26C12.1765 26 11.8408 25.7278 11.7834 25.3491C11.7208 24.9332 12.0165 24.546 12.4444 24.4851C15.3263 24.0726 18.4761 23.1207 19.7753 22.7031C19.5422 21.337 19.2135 19.9067 19.0118 19.6125C18.9457 19.5364 18.8292 19.4349 18.6848 19.3335C17.3369 18.3985 15.3072 17.7848 15.288 17.7797C14.8758 17.6563 14.6428 17.2302 14.7697 16.8295C14.8967 16.4271 15.3333 16.2023 15.7472 16.3257C15.8394 16.3527 18.0361 17.0155 19.5962 18.0976C19.8571 18.2785 20.0692 18.4678 20.2327 18.6623C20.7858 19.3233 21.2171 21.7309 21.4259 23.1072C21.4798 23.4656 21.2658 23.8122 20.9145 23.934C20.7389 23.9948 16.5525 25.437 12.6739 25.9916C12.6339 25.9966 12.5957 26 12.5574 26Z"
+                      fill="white" />
+                    <path d="M5.13254 15.1641C4.7673 15.1641 4.42814 14.9393 4.30813 14.5842C4.01594 13.7304 3.8681 12.8411 3.8681 11.9416C3.8681 7.31579 7.73968 3.55054 12.5 3.55054C17.2603 3.55054 21.1319 7.31579 21.1319 11.9416C21.1319 12.8411 20.9841 13.7304 20.6919 14.5842C20.5406 15.0272 20.0484 15.2673 19.5927 15.1202C19.137 14.9731 18.89 14.4946 19.0413 14.0516C19.2744 13.3686 19.3927 12.6585 19.3927 11.9416C19.3944 8.24738 16.302 5.24126 12.5 5.24126C8.69975 5.24126 5.60736 8.24738 5.60736 11.9416C5.60736 12.6602 5.72562 13.3703 5.95868 14.0516C6.11 14.4946 5.86302 14.9731 5.40734 15.1202C5.31516 15.1506 5.22298 15.1641 5.13254 15.1641Z"
+                      fill="white" />
+                    <path d="M2.49756 18.7637C2.20015 18.7637 1.91144 18.6166 1.74969 18.3495C0.60526 16.4795 0 14.3357 0 12.1513C0 5.4509 5.60735 0 12.5 0C19.3927 0 25 5.4509 25 12.1513C25 14.3357 24.3947 16.4778 23.2503 18.3495C23.0051 18.7502 22.4711 18.8837 22.0589 18.6436C21.6467 18.4053 21.5111 17.8862 21.7563 17.4855C22.7407 15.8759 23.2607 14.0297 23.2607 12.1513C23.2607 6.3825 18.4326 1.69073 12.5 1.69073C6.56741 1.69073 1.73925 6.38419 1.73925 12.1513C1.73925 14.0313 2.25929 15.8759 3.2437 17.4855C3.48894 17.8862 3.35328 18.4053 2.94107 18.6436C2.80193 18.7265 2.64888 18.7637 2.49756 18.7637Z"
+                      fill="white" />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0w">
+                      <rect width="25" height="26" fill="white" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </a>
+            </li>
+            <li *ngIf="tokenService.user && user_channel.active == true && user.account_type == 'COACH'" class="for_access_from_css_only">
+              <a routerLink="/upload-video" class="vc_hd cv clr3" title="">
+                <svg width="26" height="23" viewBox="0 0 26 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21.0795 14.978C21.0795 14.1314 21.6896 13.129 22.4345 12.7501L24.2698 11.8181C25.0151 11.4393 25.6249 11.8224 25.6249 12.669V18.8263C25.6249 19.6728 25.0151 20.0561 24.2698 19.6772L22.4345 18.7452C21.6896 18.3663 21.0795 17.3639 21.0795 16.5175V14.978Z"
+                    fill="white" />
+                  <path d="M6.0109 5.23112C5.54872 5.93544 5.8522 6.51177 6.68554 6.51177H12.746C13.5794 6.51177 13.8829 5.93544 13.4209 5.23112L10.5563 0.865522C10.0941 0.1612 9.33749 0.1612 8.87549 0.865522L6.0109 5.23112Z" fill="white" />
+                  <path d="M10.5999 6.51172V15.7584C10.5999 16.2541 10.2041 16.6563 9.716 16.6563C9.22788 16.6563 8.83215 16.2541 8.83215 15.7584V6.51172" fill="white" />
+                  <path d="M16.2817 8.82068H12.115V15.7478C12.115 17.0938 11.0409 18.1849 9.716 18.1849C8.39089 18.1849 7.31688 17.0938 7.31688 15.7478V8.82068H3.15029C1.75574 8.82068 0.625 9.96945 0.625 11.3862V20.1091C0.625 21.5261 1.75574 22.6746 3.15029 22.6746H16.2817C17.6763 22.6746 18.807 21.5261 18.807 20.1091V11.3862C18.8068 9.96945 17.6761 8.82068 16.2817 8.82068Z"
+                    fill="white" />
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!--side_links end-->
+        <div class="clearfix"></div>
+      </div>
+      <!--top_header_content end-->
+    </div>
+  </div>
+  <!--header_content end-->
+  <div class="btm_bar" [ngClass]="{'user_online_btm_bar_mobile_view': tokenService.user}">
+    <div class="container" [ngClass]="{'user_online_container_mobile_view': tokenService.user}">
+      <div class="btm_bar_content">
+        <nav>
+          <ul>
+            <li><a routerLinkActive="menu_active" routerLink="/popular" title="">Popular</a></li>
+            <li><a routerLinkActive="menu_active" routerLink="/categories" title="">Categories</a></li>
+            <li><a routerLinkActive="menu_active" class="" routerLink="/channels" [routerLinkActiveOptions]="{exact: true}" title="">Channels</a></li>
+            <li><a routerLinkActive="menu_active" routerLink="/trending" title="">Trending</a></li>
+            <li><a routerLinkActive="menu_active" routerLink="/live" title="">LIVE</a></li>
+            <!-- <li><a routerLinkActive="menu_active" routerLink="/movie" title="">Movies</a></li> -->
+            <!-- <li><a routerLinkActive="menu_active" routerLink="/channels/{{user_channel?._id}}" [routerLinkActiveOptions]="{exact: true}" *ngIf="tokenService.user" title="">My Channel</a></li> -->
+            <!-- I already make the upload-video icon works in the upper right side -->
+            <!-- <li><a routerLink="/upload-video" title="">(Upload)</a></li> -->
+          </ul>
+        </nav>
+        <ul *ngIf="tokenService.user" class="shr_links">
+          <li>
+            <h3>Go to:</h3>
+          </li>
+          <li>
+            <a routerLinkActive="menu_active" class="link" routerLink="/user-account/favorites" title="">
+              <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5532 2.23171C15.1056 2.23169 14.1724 2.40415 13.1027 2.92776C12.7066 3.12162 12.335 3.35508 11.99 3.62745C11.6582 3.37035 11.3015 3.14761 10.9218 2.95982C9.83132 2.42046 8.85028 2.23169 7.45455 2.23169C3.71644 2.23169 1 5.32896 1 9.35156C1 12.3894 2.69383 15.324 5.84884 18.1616C7.50489 19.651 9.61932 21.125 11.1336 21.9092L12 22.3578L12.8664 21.9092C14.3807 21.125 16.4951 19.651 18.1512 18.1616C21.3062 15.324 23 12.3894 23 9.35156C23 5.37153 20.2579 2.24705 16.5532 2.23171ZM21 9.35156C21 11.7316 19.5862 14.181 16.8137 16.6745C15.3022 18.034 13.359 19.3926 12 20.1054C10.641 19.3926 8.69782 18.034 7.18628 16.6745C4.41382 14.181 3 11.7316 3 9.35156C3 6.3794 4.88364 4.23169 7.45455 4.23169C8.56428 4.23169 9.24813 4.36327 10.0351 4.75253C10.5 4.98246 10.9109 5.28606 11.2665 5.66546L12.0023 6.45039L12.7315 5.65924C13.0951 5.26464 13.512 4.95412 13.9819 4.72411C14.7459 4.35018 15.387 4.23169 16.5491 4.23169C19.0882 4.24222 21 6.42065 21 9.35156Z" fill="#9494A0" />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a routerLinkActive="menu_active" class="link" routerLink="/user-account/watch-later" title="">
+              <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317ZM12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317ZM17 11.2317H13V6.2317H11V13.2317H17V11.2317Z" fill="#9494A0" />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a routerLinkActive="menu_active" class="link" routerLink="/user-account/playlist" title="">
+              <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317ZM3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317ZM8 17.2317V7.2317C8 6.44626 8.86395 5.96742 9.53 6.3837L17.53 11.3837C18.1567 11.7754 18.1567 12.688 17.53 13.0797L9.53 18.0797C8.86395 18.496 8 18.0171 8 17.2317ZM10 9.03593L15.1132 12.2317L10 15.4274V9.03593Z" fill="#9494A0" />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a routerLinkActive="menu_active" class="link" routerLink="/user-account/history" title="">
+              <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 6.23169H5.11409C7.04466 4.02306 9.15921 3.23169 12 3.23169C16.9706 3.23169 21 7.26113 21 12.2317C21 17.2023 16.9706 21.2317 12 21.2317C7.02944 21.2317 3 17.2023 3 12.2317H1C1 18.3068 5.92487 23.2317 12 23.2317C18.0751 23.2317 23 18.3068 23 12.2317C23 6.15656 18.0751 1.23169 12 1.23169C8.78663 1.23169 6.23708 2.14225 4 4.48814V2.2229H2V8.23169H8V6.23169ZM17 11.2317H13V6.23168H11V13.2317H17V11.2317Z" fill="#9494A0" />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a routerLinkActive="menu_active" class="link" class="link" routerLink="/user-account/purchased" title="">
+              <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M6.17025 15.1259L4.79403 23.1499L12 19.3615L19.206 23.1499L17.8298 15.1259L23.6595 9.44331L15.603 8.27263L12 0.972168L8.39702 8.27263L0.340485 9.44331L6.17025 15.1259ZM15.6808 14.4277L16.5497 19.4939L12 17.1019L7.45029 19.4939L8.31921 14.4277L4.63841 10.8398L9.72515 10.1006L12 5.49127L14.2749 10.1006L19.3616 10.8398L15.6808 14.4277Z" fill="#9494A0" />
+              </svg>
+            </a>
+          </li>
+        </ul>
+        <!--shr_links end-->
+        <div *ngIf="tokenService.user && userService.paused_video && userService.paused_video._id" class="vid_status">
+          <a routerLink="/video/{{ userService.paused_video.source_id }}" [queryParams]="{ t: userService.paused_video.current_time }" title="">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g>
+                <path id="icon3" fill-rule="evenodd" clip-rule="evenodd" d="M5 2.99932V20.9993C5 21.7905 5.87525 22.2683 6.54076 21.8405L20.5408 12.8405C21.1531 12.4469 21.1531 11.5518 20.5408 11.1581L6.54076 2.15814C5.87525 1.73031 5 2.20815 5 2.99932ZM18.1507 12L7 19.1683V4.83166L18.1507 12Z"
+                  fill="#9494A0" />
+              </g>
+            </svg>
+            Resume: {{ excerpt(userService.paused_video.title) }}
+          </a>
+        </div>
+        <!--vid_status end-->
+        <div class="clearfix"></div>
+      </div>
+      <!--btm_bar_content end-->
+    </div>
+  </div>
+  <!--btm_bar end-->
+</header>
+<!--header end-->
+
+<div class="side_menu" style="height: calc(100% - 66px)">
+  <div *ngIf="!tokenService.user" class="form_dvv">
+    <a (click)="goToSignup()" class="login_form_show" style="background-color: #1FC64E !important;">Free to join</a>
+  </div>
+  <div *ngIf="!tokenService.user" class="form_dvv">
+    <a (click)="goToLogin()" title="" class="login_form_show">Sign in</a>
+  </div>
+  <div *ngIf="tokenService.user" class="dp_down">
+    <ul class="dp_ul">
+      <li>
+        <b class="vc_hd cr{{ tokenService.user.avatar_color }} pr">{{ tokenService.user.avatar_card }}</b>
+        <h3>{{ tokenService.user.full_name }}</h3>
+        <span *ngIf="tokenService.user.pro" class="act_status">PRO</span>
+      </li>
+      <li *ngIf="user_channel.active == true && user.account_type == 'COACH'" class="live_dv">
+        <a routerLink="/live/event" title="Create live event" class="go_live">
+          <svg width="25" height="26" viewBox="0 0 25 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#cliwep0)">
+              <path d="M12.5 17.0747C9.95896 17.0747 7.91187 14.1295 7.91187 11.6898C7.91187 9.23144 9.9694 7.22961 12.5 7.22961C15.0289 7.22961 17.0882 9.22974 17.0882 11.6898C17.0882 14.1278 15.0411 17.0747 12.5 17.0747ZM12.5 8.75127C10.8338 8.75127 9.47719 10.0683 9.47719 11.6898C9.47719 13.3923 10.8999 15.5531 12.5 15.5531C14.0984 15.5531 15.5228 13.3923 15.5228 11.6898C15.5228 10.07 14.168 8.75127 12.5 8.75127Z"
+                fill="white" />
+              <path d="M12.5591 26C12.5209 26 12.4826 25.9967 12.4443 25.9916C8.5658 25.437 4.38116 23.9965 4.20376 23.934C3.85243 23.8122 3.6385 23.4656 3.69242 23.1072C3.89939 21.7309 4.33073 19.3217 4.88381 18.664C5.04904 18.4678 5.26297 18.2785 5.52037 18.0993C7.08222 17.0172 9.27716 16.3544 9.37108 16.3274C9.78502 16.204 10.2216 16.4305 10.3485 16.8312C10.4755 17.2336 10.2424 17.658 9.83024 17.7814C9.79372 17.7915 7.77618 18.4053 6.43174 19.3369C6.28912 19.4366 6.17259 19.5381 6.09607 19.6277C5.90301 19.91 5.57603 21.3387 5.34297 22.7048C6.64219 23.1224 9.79372 24.076 12.6722 24.4868C13.1 24.5477 13.3957 24.9349 13.3331 25.3508C13.2757 25.7278 12.9418 25.9983 12.5591 26Z"
+                fill="white" />
+              <path d="M12.5574 26C12.1765 26 11.8408 25.7278 11.7834 25.3491C11.7208 24.9332 12.0165 24.546 12.4444 24.4851C15.3263 24.0726 18.4761 23.1207 19.7753 22.7031C19.5422 21.337 19.2135 19.9067 19.0118 19.6125C18.9457 19.5364 18.8292 19.4349 18.6848 19.3335C17.3369 18.3985 15.3072 17.7848 15.288 17.7797C14.8758 17.6563 14.6428 17.2302 14.7697 16.8295C14.8967 16.4271 15.3333 16.2023 15.7472 16.3257C15.8394 16.3527 18.0361 17.0155 19.5962 18.0976C19.8571 18.2785 20.0692 18.4678 20.2327 18.6623C20.7858 19.3233 21.2171 21.7309 21.4259 23.1072C21.4798 23.4656 21.2658 23.8122 20.9145 23.934C20.7389 23.9948 16.5525 25.437 12.6739 25.9916C12.6339 25.9966 12.5957 26 12.5574 26Z"
+                fill="white" />
+              <path d="M5.13254 15.1641C4.7673 15.1641 4.42814 14.9393 4.30813 14.5842C4.01594 13.7304 3.8681 12.8411 3.8681 11.9416C3.8681 7.31579 7.73968 3.55054 12.5 3.55054C17.2603 3.55054 21.1319 7.31579 21.1319 11.9416C21.1319 12.8411 20.9841 13.7304 20.6919 14.5842C20.5406 15.0272 20.0484 15.2673 19.5927 15.1202C19.137 14.9731 18.89 14.4946 19.0413 14.0516C19.2744 13.3686 19.3927 12.6585 19.3927 11.9416C19.3944 8.24738 16.302 5.24126 12.5 5.24126C8.69975 5.24126 5.60736 8.24738 5.60736 11.9416C5.60736 12.6602 5.72562 13.3703 5.95868 14.0516C6.11 14.4946 5.86302 14.9731 5.40734 15.1202C5.31516 15.1506 5.22298 15.1641 5.13254 15.1641Z"
+                fill="white" />
+              <path d="M2.49756 18.7637C2.20015 18.7637 1.91144 18.6166 1.74969 18.3495C0.60526 16.4795 0 14.3357 0 12.1513C0 5.4509 5.60735 0 12.5 0C19.3927 0 25 5.4509 25 12.1513C25 14.3357 24.3947 16.4778 23.2503 18.3495C23.0051 18.7502 22.4711 18.8837 22.0589 18.6436C21.6467 18.4053 21.5111 17.8862 21.7563 17.4855C22.7407 15.8759 23.2607 14.0297 23.2607 12.1513C23.2607 6.3825 18.4326 1.69073 12.5 1.69073C6.56741 1.69073 1.73925 6.38419 1.73925 12.1513C1.73925 14.0313 2.25929 15.8759 3.2437 17.4855C3.48894 17.8862 3.35328 18.4053 2.94107 18.6436C2.80193 18.7265 2.64888 18.7637 2.49756 18.7637Z"
+                fill="white" />
+            </g>
+            <defs>
+              <clipPath id="cliwep0">
+                <rect width="25" height="26" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+          <b>Go Live</b>
+        </a>
+        <br><br>
+        <a routerLink="/upload-video" title="Upload video" class="upld">
+          <svg width="26" height="23" viewBox="0 0 26 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21.0795 14.978C21.0795 14.1314 21.6896 13.129 22.4345 12.7501L24.2698 11.8181C25.0151 11.4393 25.6249 11.8224 25.6249 12.669V18.8263C25.6249 19.6728 25.0151 20.0561 24.2698 19.6772L22.4345 18.7452C21.6896 18.3663 21.0795 17.3639 21.0795 16.5175V14.978Z"
+              fill="white" />
+            <path d="M6.0109 5.23112C5.54872 5.93544 5.8522 6.51177 6.68554 6.51177H12.746C13.5794 6.51177 13.8829 5.93544 13.4209 5.23112L10.5563 0.865522C10.0941 0.1612 9.33749 0.1612 8.87549 0.865522L6.0109 5.23112Z" fill="white" />
+            <path d="M10.5999 6.51172V15.7584C10.5999 16.2541 10.2041 16.6563 9.716 16.6563C9.22788 16.6563 8.83215 16.2541 8.83215 15.7584V6.51172" fill="white" />
+            <path d="M16.2817 8.82068H12.115V15.7478C12.115 17.0938 11.0409 18.1849 9.716 18.1849C8.39089 18.1849 7.31688 17.0938 7.31688 15.7478V8.82068H3.15029C1.75574 8.82068 0.625 9.96945 0.625 11.3862V20.1091C0.625 21.5261 1.75574 22.6746 3.15029 22.6746H16.2817C17.6763 22.6746 18.807 21.5261 18.807 20.1091V11.3862C18.8068 9.96945 17.6761 8.82068 16.2817 8.82068Z"
+              fill="white" />
+          </svg>
+          Upload
+        </a>
+      </li>
+      <li>
+        <span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM19.3995 17.1246C20.4086 15.6703 21 13.9042 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 13.9042 3.59138 15.6703 4.6005 17.1246C5.72595 15.6381 8.3706 15 12 15C15.6294 15 18.274 15.6381 19.3995 17.1246ZM17.9647 18.7398C17.672 17.6874 15.5694 17 12 17C8.43062 17 6.328 17.6874 6.03532 18.7398C7.6233 20.1462 9.71194 21 12 21C14.2881 21 16.3767 20.1462 17.9647 18.7398ZM12 15C9.76086 15 8 13.4274 8 10C8 7.75576 9.5791 6 12 6C14.4142 6 16 7.92158 16 10.2C16 13.4796 14.2181 15 12 15ZM10 10C10 12.2693 10.8182 13 12 13C13.1777 13 14 12.2984 14 10.2C14 8.95042 13.2157 8 12 8C10.7337 8 10 8.81582 10 10Z"
+              fill="#9494A0"></path>
+          </svg>
+        </span>
+        <a routerLinkActive="menu_active" routerLink="/user-account" [routerLinkActiveOptions]="{exact: true}" title="">My Account</a>
+      </li>
+      <li *ngIf="user_channel.active == true && user.account_type == 'COACH'">
+        <span>
+          <img style="height: 24px" src="assets/images/tv_grey.svg" alt="">
+        </span>
+        <a routerLinkActive="menu_active" routerLink="/channels/{{user_channel?._id}}" style="padding-left: 25px !important" title="">My Channel</a>
+      </li>
+      <!--
+      <li>
+        <span>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4506 0.402662C14.5126 0.0992137 15.6196 0.714198 15.923 1.77627C15.9741 1.95495 16 2.13988 16 2.32571V3.99998H18C19.1046 3.99998 20 4.89541 20 5.99998V18C20 19.1045 19.1046 20 18 20H2C0.89543 20 0 19.1045 0 18H0.0267034C0.00895177 17.8924 0 17.7835 0 17.6742V5.75428C0 4.86132 0.591955 4.07655 1.45056 3.83123L13.4506 0.402662ZM8.14005 18H18V9.99998H16V14.2457C16 15.1386 15.408 15.9234 14.5494 16.1687L8.14005 18ZM18 5.99998V7.99998H16V5.99998H18ZM2 5.75426V17.6742L14 14.2457V2.32568L2 5.75426ZM12 7.99998C12 8.55227 11.5523 8.99998 11 8.99998C10.4477 8.99998 10 8.55227 10 7.99998C10 7.4477 10.4477 6.99998 11 6.99998C11.5523 6.99998 12 7.4477 12 7.99998Z"
+              fill="#9494A0"></path>
+          </svg>
+        </span>
+        <a routerLinkActive="menu_active" routerLink="/user-account/subscriptions" title="">Paid Subscriptions</a>
+      </li>
+      -->
+      <li>
+        <span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M18.6562 20.897L20.8733 18.6798L20.0925 15.843L20.4327 15.0305L23 13.5818V10.4464L20.44 8.99173L20.1055 8.18067L20.8961 5.34235L18.6774 3.12683L15.8403 3.90748L15.0296 3.56758L13.5808 1H10.4454L8.99072 3.56004L8.17985 3.89446L5.34198 3.10281L3.1267 5.31809L3.90748 8.15567L3.56758 8.96634L1 10.4151V13.5496L3.55774 15.0076L3.89252 15.8193L3.10197 18.6572L5.31809 20.8733L8.15567 20.0925L8.96644 20.4325L10.4153 22.999H13.5498L15.0067 20.4412L15.8183 20.1065L18.6562 20.897ZM18.8527 13.6256L17.9809 15.7078L18.6362 18.0886L18.0678 18.657L15.692 17.9951L13.609 18.8542L12.3873 20.999H11.5829L10.3714 18.8529L8.29155 17.9808L5.90947 18.6362L5.34203 18.0688L6.00385 15.693L5.14482 13.6101L3 12.3876V11.583L5.1471 10.3715L6.0192 8.29155L5.36375 5.90947L5.93001 5.34321L8.30576 6.00595L10.3895 5.14655L11.6093 3H12.4129L13.6245 5.1471L15.7044 6.0192L18.087 5.36362L18.6558 5.93166L17.9941 8.30696L18.8534 10.3906L21 11.6103V12.4139L18.8527 13.6256ZM12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12C16 14.2091 14.2091 16 12 16ZM14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z"
+              fill="#9494A0"></path>
+          </svg>
+        </span>
+        <a routerLinkActive="menu_active" routerLink="/user-account/profile" title="">Settings</a>
+      </li>
+      <li>
+        <span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99985 13L18.5856 13L15.2927 16.2929L16.707 17.7071L22.4141 12L16.707 6.29289L15.2927 7.70711L18.5856 11L7.99985 11L7.99985 13ZM3.99985 21L12.9998 21L12.9998 19L3.99985 19L3.99985 5L12.9998 5L12.9998 3L3.99985 3C2.89528 3 1.99985 3.89543 1.99985 5L1.99985 19C1.99985 20.1046 2.89528 21 3.99985 21Z"
+              fill="#9494A0"></path>
+          </svg>
+        </span>
+        <a *ngIf="tokenService.user" class="link" (click)="signOut()" title="">Sign out</a>
+      </li>
+    </ul>
+    <!--dp_ul end-->
+    <!-- <ul class="dp_ul">
+      <li>
+        <span>
+          <svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0)">
+              <path d="M22.8995 22.55C22.6883 22.5481 22.482 22.4859 22.3048 22.3708C22.1277 22.2556 21.9871 22.0923 21.8995 21.9L17.2595 12L12.6195 22C12.5606 22.135 12.4747 22.2564 12.3671 22.3569C12.2595 22.4574 12.1326 22.5349 11.9939 22.5845C11.8553 22.6342 11.708 22.6549 11.5611 22.6456C11.4142 22.6362 11.2707 22.5969 11.1395 22.53C10.8718 22.3762 10.6724 22.1266 10.5815 21.8315C10.4905 21.5365 10.5148 21.2179 10.6495 20.94L16.2795 8.78004C16.3567 8.57732 16.4937 8.40284 16.6723 8.27973C16.8508 8.15662 17.0626 8.0907 17.2795 8.0907C17.4964 8.0907 17.7082 8.15662 17.8868 8.27973C18.0654 8.40284 18.2024 8.57732 18.2795 8.78004L23.9095 20.84C24.0442 21.1179 24.0686 21.4365 23.9776 21.7315C23.8867 22.0266 23.6873 22.2762 23.4195 22.43C23.2585 22.5117 23.0801 22.5529 22.8995 22.55Z"
+                fill="#9494A0"></path>
+              <path d="M20.9402 18.49H13.5902C13.2772 18.49 12.9771 18.3657 12.7558 18.1444C12.5345 17.9231 12.4102 17.623 12.4102 17.31C12.4102 16.997 12.5345 16.6969 12.7558 16.4756C12.9771 16.2543 13.2772 16.13 13.5902 16.13H20.9402C21.2531 16.13 21.5532 16.2543 21.7745 16.4756C21.9958 16.6969 22.1202 16.997 22.1202 17.31C22.1202 17.623 21.9958 17.9231 21.7745 18.1444C21.5532 18.3657 21.2531 18.49 20.9402 18.49Z"
+                fill="#9494A0"></path>
+              <path d="M11.0007 6.29005H1.10073C0.95099 6.28489 0.80374 6.25027 0.667396 6.18815C0.531052 6.12604 0.408289 6.03766 0.306127 5.92807C0.203965 5.81848 0.124408 5.68982 0.0720044 5.54946C0.0196012 5.4091 -0.00461999 5.25978 0.000725968 5.11005C-0.00461999 4.96032 0.0196012 4.81101 0.0720044 4.67065C0.124408 4.53029 0.203965 4.40163 0.306127 4.29204C0.408289 4.18245 0.531052 4.09407 0.667396 4.03195C0.80374 3.96984 0.95099 3.93522 1.10073 3.93005H11.0007C11.1505 3.93522 11.2977 3.96984 11.4341 4.03195C11.5704 4.09407 11.6932 4.18245 11.7953 4.29204C11.8975 4.40163 11.977 4.53029 12.0294 4.67065C12.0819 4.81101 12.1061 4.96032 12.1007 5.11005C12.1061 5.25978 12.0819 5.4091 12.0294 5.54946C11.977 5.68982 11.8975 5.81848 11.7953 5.92807C11.6932 6.03766 11.5704 6.12604 11.4341 6.18815C11.2977 6.25027 11.1505 6.28489 11.0007 6.29005Z"
+                fill="#9494A0"></path>
+              <path d="M5.51088 5.9C5.36115 5.89484 5.2139 5.86021 5.07755 5.7981C4.94121 5.73599 4.81845 5.64761 4.71628 5.53802C4.61412 5.42842 4.53456 5.29977 4.48216 5.15941C4.42976 5.01904 4.40554 4.86973 4.41088 4.72V1.18C4.40554 1.03027 4.42976 0.880955 4.48216 0.740594C4.53456 0.600232 4.61412 0.471576 4.71628 0.361984C4.81845 0.252392 4.94121 0.164013 5.07755 0.101901C5.2139 0.0397886 5.36115 0.00516161 5.51088 0C5.66062 0.00516161 5.80787 0.0397886 5.94421 0.101901C6.08056 0.164013 6.20332 0.252392 6.30548 0.361984C6.40764 0.471576 6.4872 0.600232 6.5396 0.740594C6.59201 0.880955 6.61623 1.03027 6.61088 1.18V4.72C6.61623 4.86973 6.59201 5.01904 6.5396 5.15941C6.4872 5.29977 6.40764 5.42842 6.30548 5.53802C6.20332 5.64761 6.08056 5.73599 5.94421 5.7981C5.80787 5.86021 5.66062 5.89484 5.51088 5.9Z"
+                fill="#9494A0"></path>
+              <path d="M1.46953 16.52C1.25854 16.5169 1.05274 16.4542 0.875814 16.3392C0.698893 16.2242 0.558058 16.0616 0.469532 15.87C0.341049 15.5886 0.324315 15.2688 0.422716 14.9754C0.521117 14.6821 0.727302 14.4371 0.999532 14.29C2.72514 13.4108 4.22739 12.1494 5.39191 10.6019C6.55642 9.05444 7.3525 7.26165 7.71953 5.36005C7.73014 5.2065 7.77256 5.05683 7.84411 4.92055C7.91566 4.78428 8.01477 4.66437 8.13514 4.56845C8.25551 4.47253 8.39451 4.40269 8.54332 4.36337C8.69213 4.32405 8.84749 4.31611 8.99953 4.34005C9.1515 4.35972 9.29806 4.40932 9.43075 4.48596C9.56345 4.5626 9.67964 4.66478 9.77262 4.78658C9.8656 4.90839 9.93352 5.04741 9.97247 5.19561C10.0114 5.34381 10.0206 5.49827 9.99953 5.65005C9.59066 7.93942 8.65508 10.1024 7.26667 11.968C5.87827 13.8337 4.07508 15.351 1.99953 16.4C1.83614 16.485 1.65358 16.5263 1.46953 16.52Z"
+                fill="#9494A0"></path>
+              <path d="M8.07812 16.52C7.93177 16.5197 7.78704 16.4894 7.65287 16.4309C7.51871 16.3724 7.39797 16.287 7.29812 16.18L1.78812 10.28C1.58013 10.0517 1.46484 9.7539 1.46484 9.44502C1.46484 9.13613 1.58013 8.83837 1.78812 8.61002C1.88658 8.50076 2.00689 8.41342 2.14126 8.35363C2.27562 8.29384 2.42105 8.26294 2.56812 8.26294C2.71519 8.26294 2.86062 8.29384 2.99499 8.35363C3.12936 8.41342 3.24967 8.50076 3.34812 8.61002L8.85812 14.51C9.06612 14.7384 9.1814 15.0361 9.1814 15.345C9.1814 15.6539 9.06612 15.9517 8.85812 16.18C8.75904 16.288 8.63844 16.374 8.50411 16.4326C8.36977 16.4911 8.22467 16.5209 8.07812 16.52Z"
+                fill="#9494A0"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0">
+                <rect width="24" height="22.55" fill="white"></rect>
+              </clipPath>
+            </defs>
+          </svg>
+        </span>
+        <a routerLink="/language" title="">Language</a>
+      </li>
+      <li>
+        <span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0868 18L6 21.8042V18H4C2.89543 18 2 17.1046 2 16V4C2 2.89543 2.89543 2 4 2H20C21.1046 2 22 2.89543 22 4V16C22 17.1046 21.1046 18 20 18H12.0868ZM8 18.1958L11.5132 16H20V4H4V16H8V18.1958ZM15.2929 6.29289L11 10.5858L8.70711 8.29289L7.29289 9.70711L11 13.4142L16.7071 7.70711L15.2929 6.29289Z"
+              fill="#9494A0"></path>
+          </svg>
+        </span>
+        <a routerLink="/feedback" title="">Send Feedback</a>
+      </li>
+      <li class="language_slct">
+        <span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23.3276L12.6577 22.7533C18.1887 17.9237 21 13.7068 21 10C21 4.75066 16.9029 1 12 1C7.09705 1 3 4.75066 3 10C3 13.7068 5.81131 17.9237 11.3423 22.7533L12 23.3276ZM12 20.6634C7.30661 16.4335 5 12.8492 5 10C5 5.8966 8.16411 3 12 3C15.8359 3 19 5.8966 19 10C19 12.8492 16.6934 16.4335 12 20.6634ZM12 5C14.7614 5 17 7.23858 17 10C17 12.7614 14.7614 15 12 15C9.23858 15 7 12.7614 7 10C7 7.23858 9.23858 5 12 5ZM9 10C9 8.34315 10.3431 7 12 7C13.6569 7 15 8.34315 15 10C15 11.6569 13.6569 13 12 13C10.3431 13 9 11.6569 9 10Z"
+              fill="#9494A0"></path>
+          </svg>
+        </span>
+        <a routerLink="/united_state" title="">United States</a>
+        <small class="lang_optz">
+          <svg width="9" height="14" viewBox="0 0 9 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.58586 6.99995L0.292969 1.70706L1.70718 0.292847L8.41429 6.99995L1.70718 13.7071L0.292969 12.2928L5.58586 6.99995Z" fill="#9494A0"></path>
+          </svg>
+        </small>
+      </li>
+    </ul> -->
+    <!--dp_ul end-->
+    <!-- <div class="mode_optz">
+      <h4>Restricted Mode</h4>
+      <a href="#" title="" class="mode_ch">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M17 5H7C3.13401 5 0 8.13401 0 12C0 15.866 3.13401 19 7 19H17C20.866 19 24 15.866 24 12C24 8.13401 20.866 5 17 5ZM2 12C2 9.23858 4.23858 7 7 7H17C19.7614 7 22 9.23858 22 12C22 14.7614 19.7614 17 17 17H7C4.23858 17 2 14.7614 2 12ZM17 16C14.7909 16 13 14.2091 13 12C13 9.79086 14.7909 8 17 8C19.2091 8 21 9.79086 21 12C21 14.2091 19.2091 16 17 16ZM19 12C19 13.1046 18.1046 14 17 14C15.8954 14 15 13.1046 15 12C15 10.8954 15.8954 10 17 10C18.1046 10 19 10.8954 19 12Z"
+            fill="#9494A0"></path>
+        </svg>
+      </a>
+      <div class="clearfix"></div>
+    </div> -->
+  </div>
+  <div class="sd_menu">
+    <ul class="mm_menu">
+      <li>
+        <span>
+          <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path routerLinkActive="menu_active" routerLink="/" [routerLinkActiveOptions]="{exact: true}" fill-rule="evenodd" clip-rule="evenodd" d="M4.88867 8L10.89 1.99867L16.8913 8H16.89V18H4.89001V8H4.88867ZM2.89001 9.99866L1.4132 11.4755L0 10.0623L9.47699 0.58529C10.2574 -0.195097 11.5226 -0.195097 12.303 0.58529L21.78 10.0623L20.3668 11.4755L18.89 9.99869V18C18.89 19.1046 17.9946 20 16.89 20H4.89001C3.78545 20 2.89001 19.1046 2.89001 18V9.99866Z"
+              fill="#9494A0" />
+          </svg>
+        </span>
+        <a routerLinkActive="menu_active" routerLink="/" [routerLinkActiveOptions]="{exact: true}" title="">Home</a>
+      </li>
+      <li>
+        <span>
+          <svg width="17" height="21" viewBox="0 0 17 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path routerLinkActive="menu_active" routerLink="/trending" fill-rule="evenodd" clip-rule="evenodd" d="M8.17515 10.53C8.7216 9.76303 8.66062 8.9553 8.28171 7.50235C7.53234 4.62882 7.83074 3.05383 10.4141 1.18916L11.675 0.279053L11.9799 1.80389C12.304 3.42441 12.8363 4.42671 14.2029 6.35464C14.2572 6.43122 14.2572 6.43122 14.3118 6.50815C16.2803 9.28542 16.9993 10.9596 16.9993 14C16.9993 17.6884 13.2707 21 8.99935 21C4.72776 21 0.999349 17.6888 0.999349 14C0.999349 13.9311 0.999419 13.9331 0.987737 13.6285C0.897382 11.2718 1.33316 9.42737 3.09642 7.43586C3.46896 7.01509 3.89243 6.61068 4.36898 6.22371L5.42097 5.36946L5.92701 6.62658C6.30093 7.55547 6.73905 8.28567 7.23396 8.82151C7.65313 9.27536 7.96409 9.84607 8.17515 10.53ZM4.59383 8.76166C3.23647 10.2947 2.91376 11.6606 2.98627 13.5518C2.99977 13.9039 2.99935 13.8915 2.99935 14C2.99935 16.5279 5.78295 19 8.99935 19C12.2155 19 14.9993 16.5275 14.9993 14C14.9993 11.4582 14.4311 10.135 12.6801 7.6647C12.6258 7.58818 12.6258 7.58818 12.5713 7.51125C11.5079 6.01111 10.874 4.96759 10.4547 3.80052C9.76983 4.62118 9.81009 5.43739 10.217 6.99766C10.9664 9.87118 10.668 11.4462 8.08462 13.3108L6.61162 14.3741L6.5012 12.5608C6.43065 11.4023 6.16841 10.6156 5.76474 10.1785C5.36591 9.74668 5.00582 9.24115 4.6829 8.66279C4.65278 8.69566 4.62309 8.72862 4.59383 8.76166Z"
+              fill="#9494A0" />
+          </svg>
+        </span>
+        <a routerLinkActive="menu_active" routerLink="/trending" title="">Trending</a>
+      </li>
+      <li *ngIf="tokenService.user">
+        <span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path routerLinkActive="menu_active" routerLink="/user-account/subscriptions" fill-rule="evenodd" clip-rule="evenodd" d="M18.6562 20.897L20.8733 18.6798L20.0925 15.843L20.4327 15.0305L23 13.5818V10.4464L20.44 8.99173L20.1055 8.18067L20.8961 5.34235L18.6774 3.12683L15.8403 3.90748L15.0296 3.56758L13.5808 1H10.4454L8.99072 3.56004L8.17985 3.89446L5.34198 3.10281L3.1267 5.31809L3.90748 8.15567L3.56758 8.96634L1 10.4151V13.5496L3.55774 15.0076L3.89252 15.8193L3.10197 18.6572L5.31809 20.8733L8.15567 20.0925L8.96644 20.4325L10.4153 22.999H13.5498L15.0067 20.4412L15.8183 20.1065L18.6562 20.897ZM18.8527 13.6256L17.9809 15.7078L18.6362 18.0886L18.0678 18.657L15.692 17.9951L13.609 18.8542L12.3873 20.999H11.5829L10.3714 18.8529L8.29155 17.9808L5.90947 18.6362L5.34203 18.0688L6.00385 15.693L5.14482 13.6101L3 12.3876V11.583L5.1471 10.3715L6.0192 8.29155L5.36375 5.90947L5.93001 5.34321L8.30576 6.00595L10.3895 5.14655L11.6093 3H12.4129L13.6245 5.1471L15.7044 6.0192L18.087 5.36362L18.6558 5.93166L17.9941 8.30696L18.8534 10.3906L21 11.6103V12.4139L18.8527 13.6256ZM12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12C16 14.2091 14.2091 16 12 16ZM14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z"
+              fill="#9494A0" />
+          </svg>
+        </span>
+        <a routerLinkActive="menu_active" routerLink="/subscriptions" title="">Subscriptions</a>
+      </li>
+    </ul>
+  </div>
+  <!--sd_menu end-->
+  <div *ngIf="tokenService.user" class="sd_menu">
+    <h3>Library</h3>
+    <ul class="mm_menu">
+      <li>
+        <span>
+          <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path routerLinkActive="menu_active" routerLink="/user-account/history" [routerLinkActiveOptions]="{exact: true}" fill-rule="evenodd" clip-rule="evenodd" d="M7 5.23169H4.11409C6.04466 3.02306 8.15921 2.23169 11 2.23169C15.9706 2.23169 20 6.26113 20 11.2317C20 16.2023 15.9706 20.2317 11 20.2317C6.02944 20.2317 2 16.2023 2 11.2317H0C0 17.3068 4.92487 22.2317 11 22.2317C17.0751 22.2317 22 17.3068 22 11.2317C22 5.15656 17.0751 0.231689 11 0.231689C7.78663 0.231689 5.23708 1.14225 3 3.48814V1.2229H1V7.23169H7V5.23169ZM16 10.2317H12V5.23168H10V12.2317H16V10.2317Z"
+              fill="#9494A0" />
+          </svg>
+        </span>
+        <a class="link" routerLinkActive="menu_active" routerLink="/user-account/history" [routerLinkActiveOptions]="{exact: true}" title="">History</a>
+      </li>
+      <li>
+        <span>
+          <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path routerLinkActive="menu_active" routerLink="/user-account/history/report" [routerLinkActiveOptions]="{exact: true}" fill-rule="evenodd" clip-rule="evenodd" d="M11 22.2317C4.92487 22.2317 0 17.3068 0 11.2317C0 5.15656 4.92487 0.231689 11 0.231689C17.0751 0.231689 22 5.15656 22 11.2317C22 17.3068 17.0751 22.2317 11 22.2317ZM11 20.2317C15.9706 20.2317 20 16.2022 20 11.2317C20 6.26112 15.9706 2.23169 11 2.23169C6.02944 2.23169 2 6.26112 2 11.2317C2 16.2022 6.02944 20.2317 11 20.2317ZM16 10.2317H12V5.2317H10V12.2317H16V10.2317Z"
+              fill="#9494A0" />
+          </svg>
+        </span>
+        <a routerLinkActive="menu_active" routerLink="/user-account/history/report" [routerLinkActiveOptions]="{exact: true}" title="">Report history</a>
+      </li>
+      <li>
+        <span>
+          <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path routerLinkActive="menu_active" routerLink="/user-account/watch-later" fill-rule="evenodd" clip-rule="evenodd" d="M11 22.2317C4.92487 22.2317 0 17.3068 0 11.2317C0 5.15656 4.92487 0.231689 11 0.231689C17.0751 0.231689 22 5.15656 22 11.2317C22 17.3068 17.0751 22.2317 11 22.2317ZM11 20.2317C15.9706 20.2317 20 16.2022 20 11.2317C20 6.26112 15.9706 2.23169 11 2.23169C6.02944 2.23169 2 6.26112 2 11.2317C2 16.2022 6.02944 20.2317 11 20.2317ZM16 10.2317H12V5.2317H10V12.2317H16V10.2317Z"
+              fill="#9494A0" />
+          </svg>
+        </span>
+        <a class="link" routerLinkActive="menu_active" routerLink="/user-account/watch-later" title="">Watch Later</a>
+      </li>
+      <li>
+        <span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path routerLinkActive="menu_active" routerLink="/user-account/purchased" fill-rule="evenodd" clip-rule="evenodd" d="M6.16961 15.1259L4.79339 23.1499L11.9994 19.3615L19.2054 23.1499L17.8291 15.1259L23.6589 9.44331L15.6024 8.27263L11.9994 0.972168L8.39638 8.27263L0.339844 9.44331L6.16961 15.1259ZM15.6802 14.4277L16.5491 19.4939L11.9994 17.1019L7.44965 19.4939L8.31857 14.4277L4.63777 10.8398L9.72451 10.1006L11.9994 5.49127L14.2742 10.1006L19.361 10.8398L15.6802 14.4277Z"
+              fill="#9494A0" />
+          </svg>
+        </span>
+        <a class="link" routerLinkActive="menu_active" routerLink="/user-account/purchased" title="">Purchases</a>
+      </li>
+      <li>
+        <span>
+          <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path routerLinkActive="menu_active" routerLink="/user-account/favorites" fill-rule="evenodd" clip-rule="evenodd" d="M16.5532 2.23171C15.1056 2.23169 14.1724 2.40415 13.1027 2.92776C12.7066 3.12162 12.335 3.35508 11.99 3.62745C11.6582 3.37035 11.3015 3.14761 10.9218 2.95982C9.83132 2.42046 8.85028 2.23169 7.45455 2.23169C3.71644 2.23169 1 5.32896 1 9.35156C1 12.3894 2.69383 15.324 5.84884 18.1616C7.50489 19.651 9.61932 21.125 11.1336 21.9092L12 22.3578L12.8664 21.9092C14.3807 21.125 16.4951 19.651 18.1512 18.1616C21.3062 15.324 23 12.3894 23 9.35156C23 5.37153 20.2579 2.24705 16.5532 2.23171ZM21 9.35156C21 11.7316 19.5862 14.181 16.8137 16.6745C15.3022 18.034 13.359 19.3926 12 20.1054C10.641 19.3926 8.69782 18.034 7.18628 16.6745C4.41382 14.181 3 11.7316 3 9.35156C3 6.3794 4.88364 4.23169 7.45455 4.23169C8.56428 4.23169 9.24813 4.36327 10.0351 4.75253C10.5 4.98246 10.9109 5.28606 11.2665 5.66546L12.0023 6.45039L12.7315 5.65924C13.0951 5.26464 13.512 4.95412 13.9819 4.72411C14.7459 4.35018 15.387 4.23169 16.5491 4.23169C19.0882 4.24222 21 6.42065 21 9.35156Z"
+              fill="#9494A0"></path>
+          </svg>
+        </span>
+        <a class="link" routerLinkActive="menu_active" routerLink="/user-account/favorites" title="">Favorites Videos</a>
+      </li>
+      <li>
+        <span>
+          <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path routerLinkActive="menu_active" routerLink="/user-account/playlist" fill-rule="evenodd" clip-rule="evenodd" d="M23 12.2317C23 18.3068 18.0751 23.2317 12 23.2317C5.92487 23.2317 1 18.3068 1 12.2317C1 6.15656 5.92487 1.23169 12 1.23169C18.0751 1.23169 23 6.15656 23 12.2317ZM3 12.2317C3 17.2022 7.02944 21.2317 12 21.2317C16.9706 21.2317 21 17.2022 21 12.2317C21 7.26112 16.9706 3.23169 12 3.23169C7.02944 3.23169 3 7.26112 3 12.2317ZM8 17.2317V7.2317C8 6.44626 8.86395 5.96742 9.53 6.3837L17.53 11.3837C18.1567 11.7754 18.1567 12.688 17.53 13.0797L9.53 18.0797C8.86395 18.496 8 18.0171 8 17.2317ZM10 9.03593L15.1132 12.2317L10 15.4274V9.03593Z"
+              fill="#DADADA"></path>
+          </svg>
+        </span>
+        <a class="link" routerLinkActive="menu_active" routerLink="/user-account/playlist" title="">Playlist</a>
+      </li>
+    </ul>
+  </div>
+  <!--sd_menu end-->
+  <div *ngIf="tokenService.user && tokenService.user.subscribed_channels" class="sd_menu subs_lst">
+    <h3>Subscriptions</h3>
+    <ul class="mm_menu">
+      <li *ngFor="let subscription of user_subscriptions">
+        <span class="usr_name colr1 link" routerLink="/channels/{{subscription?._id}}">{{ subscription.avatar_card }}</span>
+        <a routerLink="/channels/{{subscription?._id}}" title="">{{ subscription.title }}</a>
+        <small>{{ subscription.meta?.subscribers }}</small>
+      </li>
+    </ul>
+  </div>
+  <!--sd_menu end-->
+  <!-- <div *ngIf="tokenService.user" class="sd_menu">
+    <ul class="mm_menu">
+      <li>
+        <span>
+          <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path routerLinkActive="menu_active" routerLink="/user-account/profile" fill-rule="evenodd" clip-rule="evenodd" d="M18.6562 20.897L20.8733 18.6798L20.0925 15.843L20.4327 15.0305L23 13.5818V10.4464L20.44 8.99173L20.1055 8.18067L20.8961 5.34235L18.6774 3.12683L15.8403 3.90748L15.0296 3.56758L13.5808 1H10.4454L8.99072 3.56004L8.17985 3.89446L5.34198 3.10281L3.1267 5.31809L3.90748 8.15567L3.56758 8.96634L1 10.4151V13.5496L3.55774 15.0076L3.89252 15.8193L3.10197 18.6572L5.31809 20.8733L8.15567 20.0925L8.96644 20.4325L10.4153 22.999H13.5498L15.0067 20.4412L15.8183 20.1065L18.6562 20.897ZM18.8527 13.6256L17.9809 15.7078L18.6362 18.0886L18.0678 18.657L15.692 17.9951L13.609 18.8542L12.3873 20.999H11.5829L10.3714 18.8529L8.29155 17.9808L5.90947 18.6362L5.34203 18.0688L6.00385 15.693L5.14482 13.6101L3 12.3876V11.583L5.1471 10.3715L6.0192 8.29155L5.36375 5.90947L5.93001 5.34321L8.30576 6.00595L10.3895 5.14655L11.6093 3H12.4129L13.6245 5.1471L15.7044 6.0192L18.087 5.36362L18.6558 5.93166L17.9941 8.30696L18.8534 10.3906L21 11.6103V12.4139L18.8527 13.6256ZM12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12C16 14.2091 14.2091 16 12 16ZM14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z"
+              fill="#9494A0" />
+            </svg>
+          </span>
+        <a routerLinkActive="menu_active" routerLink="/user-account/profile" title="">Settings</a>
+      </li>
+      <li>
+        <span>
+          <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path routerLinkActive="menu_active" routerLink="/user-account/history/report" [routerLinkActiveOptions]="{exact: true}" fill-rule="evenodd" clip-rule="evenodd" d="M11 22.2317C4.92487 22.2317 0 17.3068 0 11.2317C0 5.15656 4.92487 0.231689 11 0.231689C17.0751 0.231689 22 5.15656 22 11.2317C22 17.3068 17.0751 22.2317 11 22.2317ZM11 20.2317C15.9706 20.2317 20 16.2022 20 11.2317C20 6.26112 15.9706 2.23169 11 2.23169C6.02944 2.23169 2 6.26112 2 11.2317C2 16.2022 6.02944 20.2317 11 20.2317ZM16 10.2317H12V5.2317H10V12.2317H16V10.2317Z"
+              fill="#9494A0" />
+          </svg>
+        </span>
+        <a routerLinkActive="menu_active" routerLink="/user-account/history/report" [routerLinkActiveOptions]="{exact: true}" title="">Report history</a>
+      </li>
+      <li *ngIf="tokenService.user">
+        <span>
+          <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="side_menu_svg_11" fill-rule="evenodd" clip-rule="evenodd" d="M7.99985 13L18.5856 13L15.2927 16.2929L16.707 17.7071L22.4141 12L16.707 6.29289L15.2927 7.70711L18.5856 11L7.99985 11L7.99985 13ZM3.99985 21L12.9998 21L12.9998 19L3.99985 19L3.99985 5L12.9998 5L12.9998 3L3.99985 3C2.89528 3 1.99985 3.89543 1.99985 5L1.99985 19C1.99985 20.1046 2.89528 21 3.99985 21Z"
+              fill="#9494A0" />
+            </svg>
+          </span>
+        <a class="link" (click)="signOut()" title="">Sign out</a>
+      </li>
+    </ul>
+  </div> -->
+  <!--sd_menu end-->
+  <div class="sd_menu m_linkz">
+    <ul class="mm_menu">
+      <li><a routerLinkActive="menu_active" routerLink="/page/about">About</a></li>
+      <li><a routerLinkActive="menu_active" routerLink="/page/community_rules">Community Rules </a></li>
+      <li><a routerLinkActive="menu_active" routerLink="/page/privacy_notice">Privacy</a></li>
+      <li><a routerLinkActive="menu_active" routerLink="/page/terms_of_sale">Terms</a></li>
+      <li><a routerLinkActive="menu_active" routerLink="/page/blogs">Blogs</a></li>
+      <li><a routerLinkActive="menu_active" routerLink="/page/contracts">Contact </a></li>
+      <li><a routerLinkActive="menu_active" routerLink="/page/donate">Donate</a></li>
+      <li><a routerLinkActive="menu_active" routerLink="/page/faq">FAQ</a></li>
+    </ul>
+    <span>{{ current_date | date:'yyyy' }} ProjectFitnessTV</span>
+  </div>
+  <!--sd_menu end-->
+  <div class="sd_menu">
+    <ul class="social_links">
+      <li>
+        <a href="https://www.facebook.com/PFitnessTV" target="blank" title="">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="iceon" fill-rule="evenodd" clip-rule="evenodd" d="M4 2H20C21.1046 2 22 2.89543 22 4V20C22 21.1046 21.1046 22 20 22H4C2.89543 22 2 21.1046 2 20V4C2 2.89543 2.89543 2 4 2ZM4 4V20H20V4H4ZM11.1331 12.0044H13V18H15V12.0044H16.9824V10.0044H15V9C15 8.44772 15.4477 8 16 8H17V6H16C14.3431 6 13 7.34315 13 9V10.0044H11.1331V12.0044Z"
+              fill="#9494A0" />
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://www.instagram.com/projectfitnesstv" target="blank" title="">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="iscon" fill-rule="evenodd" clip-rule="evenodd" d="M16 2H8C4.68629 2 2 4.68629 2 8V16C2 19.3137 4.68629 22 8 22H16C19.3137 22 22 19.3137 22 16V8C22 4.68629 19.3137 2 16 2ZM4 8C4 5.79086 5.79086 4 8 4H16C18.2091 4 20 5.79086 20 8V16C20 18.2091 18.2091 20 16 20H8C5.79086 20 4 18.2091 4 16V8ZM12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12C17 14.7614 14.7614 17 12 17ZM12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15ZM18 7C18 7.55228 17.5523 8 17 8C16.4477 8 16 7.55228 16 7C16 6.44772 16.4477 6 17 6C17.5523 6 18 6.44772 18 7Z"
+              fill="#9494A0" />
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://twitter.com/pfitnesstv" target="blank" title="">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="icsdon" fill-rule="evenodd" clip-rule="evenodd" d="M21.1195 4.50827L22.5343 4.67349L21.8983 5.948C21.5882 6.56953 21.2778 7.19105 20.967 7.81258C20.9302 7.94422 20.8654 8.05962 20.7697 8.20987C20.7296 8.27265 20.5929 8.47236 20.5865 8.48194C20.5504 8.53608 20.5237 8.57878 20.5045 8.61299V11.0015C20.5045 17.1135 14.5895 20.9974 9.00354 20.9974C7.86051 20.9974 6.99207 20.9427 5.99765 20.7257C4.36115 20.3685 3.14327 19.6587 2.58597 18.418L2.01221 17.1407L3.40659 17.0124C4.66801 16.8964 5.76169 16.6561 6.60159 16.3343C4.29577 15.9635 3.0036 14.9508 3.0036 13.0489V12.0489H4.0036C4.22331 12.0489 4.42143 12.0311 4.59854 11.9983C2.868 10.9636 2.00122 9.30379 2.00122 7.00152C2.00103 6.9034 2.00103 6.90339 2.00044 6.79847C1.99394 5.63803 2.05627 5.01797 2.37395 4.22659C2.57754 3.71941 2.87183 3.24988 3.2679 2.81967L4.02251 2L4.75617 2.83847C7.17394 5.60161 9.56395 7.27795 12.0042 7.48072C12.0146 4.93105 13.9415 3.00152 16.5043 3.00152C17.6991 3.00152 18.7828 3.45501 19.6345 4.27273C20.1006 4.36851 20.5957 4.44709 21.1195 4.50827ZM18.9086 6.16202L18.6021 6.0926L18.3904 5.86028C17.8785 5.29855 17.2359 5.00152 16.5043 5.00152C15.0414 5.00152 14.0041 6.04391 14.0041 7.50152C14.0041 7.73974 13.998 7.88942 13.9683 8.08615C13.8499 8.87116 13.4096 9.50152 12.5041 9.50152C9.50607 9.50152 6.80136 7.89542 4.16389 5.15228C4.02792 5.56561 3.99595 5.99047 4.00041 6.78727C4.00101 6.89384 4.00101 6.89384 4.00122 7.00152C4.00122 9.04953 4.83093 10.1698 6.79547 10.7942L7.49255 11.0158V11.7472C7.49255 12.6342 6.65222 13.4691 5.42268 13.8431C5.98631 14.2708 7.139 14.5015 9.00389 14.5015H10.0039V15.5015C10.0039 16.9343 8.35762 18.0561 5.87075 18.6419C6.68178 18.8903 7.76166 18.9974 9.00354 18.9974C13.618 18.9974 18.5045 15.7888 18.5045 11.0015V8.50152C18.5045 8.20774 18.5897 7.95273 18.7311 7.68759C18.7865 7.58393 18.8474 7.48509 18.9225 7.37237C18.9367 7.35115 18.9892 7.27426 19.0309 7.21279L19.1101 7.05429C19.2386 6.79745 19.3669 6.54061 19.4952 6.28377C19.2958 6.24599 19.1003 6.20541 18.9086 6.16202Z"
+              fill="#9494A0" />
+          </svg>
+        </a>
+      </li>
+    </ul>
+    <!--social_links end-->
+  </div>
+  <!--sd_menu end-->
+  <!-- <div class="dd_menu"></div> -->
+</div>
+<!--side_menu end-->
+
+<div class="search-page">
+  <form>
+    <div class="container">
+      <div class="form-field">
+        <input type="text" [(ngModel)]="search_term" name="search" placeholder="Enter Your Keywords">
+        <button (click)="search(search_term)" type="submit">
+          <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M10 18.1221C5.58172 18.1221 2 14.5403 2 10.1221C2 5.70379 5.58172 2.12207 10 2.12207C14.4183 2.12207 18 5.70379 18 10.1221C18 11.9708 17.3729 13.673 16.3199 15.0277L21.7071 20.415L20.2929 21.8292L14.9056 16.4419C13.551 17.495 11.8487 18.1221 10 18.1221ZM16 10.1221C16 13.4358 13.3137 16.1221 10 16.1221C6.68629 16.1221 4 13.4358 4 10.1221C4 6.80836 6.68629 4.12207 10 4.12207C13.3137 4.12207 16 6.80836 16 10.1221Z"
+              fill="#9494A0" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </form>
+  <a title="" class="close-search">
+    <svg (click)="closeSearch(); search_term = ''" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23ZM12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM8.70711 16.7071L12 13.4142L15.2929 16.7071L16.7071 15.2929L13.4142 12L16.7071 8.70711L15.2929 7.29289L12 10.5858L8.70711 7.29289L7.29289 8.70711L10.5858 12L7.29289 15.2929L8.70711 16.7071Z"
+        fill="#9494A0" />
+    </svg>
+  </a>
+</div>
+<!--search page end-->
+
+<!--form_popup end-->

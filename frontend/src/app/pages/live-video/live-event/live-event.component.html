@@ -1,0 +1,235 @@
+<section *ngIf="!edit_live && lives && lives.length" class="upload-detail">
+  <div class="container">
+    <h3> Curent live and upcoming events</h3>
+
+    <div class="row">
+      <div *ngFor="let live of lives" class="col-lg-3 col-md-3 col-sm-6 col-6 full_wdth">
+        <div class="videoo">
+          <div class="vid_thumbainl video_small_thumbnail">
+            <a [routerLink]="['/live/go', live._id]" title="Watch live" class="thumb">
+              <img *ngIf="live.live_info?.live_thumbnail" width="100%" [src]="live.live_info?.live_thumbnail" alt="">
+              <img *ngIf="!live.live_info?.live_thumbnail" width="100%" src="assets/images/upcomming_live.png" alt="">
+            </a>
+            <!-- <a [routerLink]="['/live', live._id]">
+              <span class="vid-time">{{ live.duration | hrminsec }}</span>
+              <span class="vid-time live-mark">LIVE</span>
+            </a> -->
+          </div>
+          <!--vid_thumbnail end-->
+          <div class="video_info">
+            <h3 style="margin-bottom: 0px !important"><a [routerLink]="['/live/go', live._id]" title="">{{ live.title | excerpt:50 }}</a></h3>
+            <h4 *ngIf="live.live_info?.status != 'LIVE'" style="margin-bottom: 20px !important"><span> Scheduled for: <small class="posted_dt">{{ live.live_info?.start | date:'yyyy-MM-dd, hh:mm a' }}</small></span></h4>
+            <h4 *ngIf="live.live_info?.status == 'LIVE'" style="margin-bottom: 20px !important"> &nbsp; </h4>
+            <div class="btn-sbmit" style="margin: 0">
+              <button *ngIf="live.live_info?.status != 'LIVE'" class="btn orange" type="button" (click)="goLiveNow(live._id)">
+                Go Live Now
+              </button>
+              <button *ngIf="live.live_info?.status == 'LIVE'" class="btn orange" type="button" (click)="goLiveNow(live._id)">
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+        <!--videoo end-->
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+  </div>
+</section>
+
+<section class="vid-title-sec upload-detail">
+  <div class="container">
+
+    <h3>{{ edit_live ? 'Edit' : 'Create' }} Live event</h3>
+
+    <h4 class="slct-hd"> Thumbnail <span style="color: red;" *ngIf="submit_form == true && image_size_error == true">(Image size too large, please choose lower size)</span> </h4>
+    <div class="vid_thumbainl tr">
+      <img *ngIf="live.live_info?.live_thumbnail" (click)="file_selector.click()" src="{{ live.live_info?.live_thumbnail }}" width="100%" height="100%" style="max-height: 144px !important;">
+      <svg *ngIf="!live.live_info?.live_thumbnail" (click)="file_selector.click()" width="36" height="41" style="margin-left: 40px; margin-top: 30px;" viewBox="0 0 36 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M20.0001 29.0001V7.82848L26.5859 14.4143L29.4143 11.5858L18.0001 0.171631L6.58586 11.5858L9.41429 14.4143L16.0001 7.82848V29.0001H20.0001ZM36 37V19H32V37H4V19H0V37C0 39.2092 1.79086 41 4 41H32C34.2091 41 36 39.2092 36 37Z" fill="#9494A0"/>
+      </svg>
+      <input class="file_selector" accept="image/*" type="file" name="file_selector" #file_selector (change)="filePrepare($event)">
+    </div>
+
+    <div class="video_info sr">
+      <h3>{{ live.title }}</h3>
+      <p>
+        {{ live.description }}
+      </p>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <br>
+    <br>
+
+    <form>
+      <div class="vid-title">
+        <h2 class="title-hd">Title <span style="font-size: 12px;color: red;" *ngIf="submit_form == true && !live.title">(Please, add the title)</span> </h2>
+        <div class="form_field">
+          <input type="text" maxlength="128" name="live_title" id="live_title" placeholder="Add here (99 characters remaining)" [(ngModel)]="live.title" required>
+        </div>
+      </div>
+
+      <div class="abt-vidz-pr">
+        <h2 class="title-hd"> Description </h2>
+        <div class="form_field">
+          <textarea name="live_description" maxlength="5000" [(ngModel)]="live.description" placeholder="Description"></textarea>
+        </div>
+      </div>
+
+      <div class="abt-tags">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="option">
+              <h2 class="title-hd">Privacy Settings </h2>
+              <div class="form_field">
+                <select name="privacy_settings" [(ngModel)]="live.privacy_settings">
+                  <option [value]="'PUBLIC'">Public</option>
+                  <option [value]="'PRIVATE'">Private</option>
+                </select>
+                <a title="" class="arw_vz">
+                  <svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.9394 7.51447L22.0607 9.63579L12 19.6964L1.93936 9.63579L4.06068 7.51447L12 15.4538L19.9394 7.51447Z" fill="#9494A0"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- As Eldad request-->
+          <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="option">
+              <h2 class="title-hd">Monetize </h2>
+              <div class="form_field">
+                <select name="monetize" [(ngModel)]="live.monetize">
+                  <option [ngValue]="true">Yes</option>
+                  <option [ngValue]="false">No</option>
+                </select>
+                <a title="" class="arw_vz">
+                  <svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.9394 7.51447L22.0607 9.63579L12 19.6964L1.93936 9.63579L4.06068 7.51447L12 15.4538L19.9394 7.51447Z" fill="#9494A0"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!!live.monetize" class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="option">
+              <h2 class="title-hd">Price <span style="color: red;" *ngIf="submit_form == true && live.monetize == true && !live.price">(Please, add the price)</span></h2>
+              <div class="form_field">
+                <input placeholder="Enter a price value" type="text" name="price" [(ngModel)]="live.price">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="abt-tags">
+        <div class="row">
+          <!-- <div class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="option">
+              <h2 class="title-hd">Schedule for later </h2>
+              <div class="form_field">
+                <select name="schedule_for_later" [(ngModel)]="schedule_for_later">
+                  <option value="YES">Yes</option>
+                  <option value="NO">No</option>
+                </select>
+                <a title="" class="arw_vz">
+                  <svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.9394 7.51447L22.0607 9.63579L12 19.6964L1.93936 9.63579L4.06068 7.51447L12 15.4538L19.9394 7.51447Z" fill="#9494A0"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          -->
+          
+          <div *ngIf="schedule_for_later=='YES'" class="col-lg-3 col-md-3 col-sm-6 col-12">
+            <div class="option">
+              <h2 class="title-hd">Date </h2>
+              <div class="form_field">
+                <input type="date" class="datepicker" [ngModel]="event_date | date: 'yyyy-MM-dd'" (ngModelChange)="event_date = $event" name="event_date" placeholder="Select Date...">
+                <!--
+                <a title="" class="arw_vz">
+                  <svg width="24" height="26" viewBox="0 0 24 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.9394 7.51447L22.0607 9.63579L12 19.6964L1.93936 9.63579L4.06068 7.51447L12 15.4538L19.9394 7.51447Z" fill="#9494A0"></path>
+                  </svg>
+                </a>
+                -->
+              </div>
+            </div>
+          </div>
+          <div *ngIf="schedule_for_later=='YES'" class="col-lg-3 col-md-2 col-sm-6 col-12">
+            <div class="option">
+              <h2 class="title-hd">Start Time <span id="starttimeerror" style="font-size: 12px; display:none;color: red;">(Please, select time to start.)</span></h2>
+              <div class="form_field">
+                <mat-form-field appearance="none">
+                  <input matInput class="input-time"
+                         [ngxTimepicker]="defaultTime" readonly
+                         name="event_hour" [(ngModel)]="event_hour">
+                  <ngx-material-timepicker #defaultTime [defaultTime]="minimumTime"></ngx-material-timepicker>
+                  
+              </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-2 col-sm-6 col-12">
+            <div class="option">
+              <h2 class="title-hd">Max. people (50 max.)</h2>
+              <div class="form_field">
+                    <mat-form-field appearance="none">
+                        <input matInput class="right-align"
+                               type="number"
+                               max="50"
+                               min="2"
+                               name="maxNoPeople" [(ngModel)]="maxNoPeople"
+                        />
+                    </mat-form-field>
+                    </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="abt-tags">
+        <div class="row">
+          <div class="col-lg-9 col-md-9 col-sm-8 col-12">
+            <h2 class="title-hd">Tags ({{ 13 - live.tags.split(" ").length }} Tags Remaining) </h2>
+            <div class="form_field pr">
+              <input type="text" name="tags" [(ngModel)]="live.tags" placeholder="tags are separated by space">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category">
+        <h2 class="title-hd">Category (select up to 6 categories)</h2>
+        <div class="category-typ">
+          <ul class="catgss_list">
+            <li *ngFor="let category of categories; index as i;">
+              <div class="chekbox-lg">
+                <label>
+                  <input type="checkbox" [(ngModel)]="category.checked" name="category-{{i}}" (change)="checkbox_clicked($event, category)" value="ab">
+                  <b class="checkmark"></b>
+                  <span>{{ category.title }}</span>
+                </label>
+              </div>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+          <div class="btn-sbmit">
+            <button *ngIf="edit_live==false" class="btn" [ngClass]="{'orange': schedule_for_later == 'NO'}" type="button" (click)="create_live()">
+              <span *ngIf="schedule_for_later=='YES'">Create Live event</span>
+              <span *ngIf="schedule_for_later=='NO'">Go Live Now</span>
+            </button>
+            <button *ngIf="edit_live==true" class="btn" [ngClass]="{'orange': schedule_for_later == 'NO'}" type="button" (click)="update_live()">
+              <span *ngIf="schedule_for_later=='YES'">Update Live event</span>
+              <span *ngIf="schedule_for_later=='NO'">Go Live Now</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
